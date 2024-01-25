@@ -6,7 +6,7 @@ const HomePage: React.FC = () => {
     <div className="bg-gray-100 flex items-left justify-top">
       <div className="text-left">
         <h1 className="text-4xl font-bold mb-4">EasyTask</h1>
-        <p className="text-gray-600">This is a simple homepage!</p>
+        <p className="text-gray-600">This is an invisible homepage!</p>
       </div>
     </div>
   );
