@@ -33,4 +33,11 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+my-app/next-env.d.ts
+
+# JetBrains IDE
+.idea/
+
+# Keys
+*.key
+*.key.pub
