@@ -87,7 +87,7 @@ export default function Login() {
                     <Input placeholder="Enter your password" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Doesn't have any account? <a href="/signup" className="underline text-black hover:text-originalColor">Sign up</a>
+                    Doesnt have any account? <a href="/signup" className="underline text-black hover:text-originalColor">Sign up</a>
                     </FormDescription>
                   <FormMessage />
                 </FormItem>
