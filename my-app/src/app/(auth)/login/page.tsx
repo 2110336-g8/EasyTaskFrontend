@@ -1,9 +1,11 @@
-import Login from "@/components/login/login"
+import LoginForm from "@/components/login/loginForm"
 
-export default function Home() {
+const LoginPage: React.FC = () => {
   return (
     <div>
-      <Login/>
-    </div>    
-  )
-}
+      <LoginForm />
+    </div>
+  );
+};
+
+export default LoginPage;
