@@ -141,7 +141,24 @@ export default function BankAccountForm() {
                       <FormItem>
                         <FormLabel className="text-black">Account number</FormLabel>
                         <FormControl>
-                          <Input placeholder="012-3-45678-9" {...field} />
+                          <Input placeholder="012-3-45678-9" {...field}
+                          onChange={(e) => {
+                            let rawValue = e.target.value;
+                            // Remove non-digit characters
+                            rawValue = rawValue.replace(/\D/g, '');
+                        
+                            // Limit the maximum length to 10 characters
+                            rawValue = rawValue.slice(0, 10);
+                        
+                            // Apply the desired format
+                            const formattedValue = rawValue.replace(/^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,5})$/, (_, p1, p2, p3, p4) =>
+                              [p1, p2, p3, p4].filter(Boolean).join('-')
+                            );
+                        
+                            field.onChange(formattedValue);
+                          }}
+                          maxLength={13} // Set maxLength to 12 to account for the hyphens in the format
+                        />
                         </FormControl>
                         <FormMessage className="text-xs" />
                       </FormItem>
