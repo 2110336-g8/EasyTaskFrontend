@@ -1,7 +1,8 @@
 import { LoginResponse } from "@/types";
+import getConfig from 'next/config';
 
-const apiUrl = process.env.API_BASE_URL || "http://localhost:5001";
-const loginUrl = `${apiUrl}/v1/auth/login`;
+const apiUrl = process.env.NEXT_PUBLIC_BACK_HOSTNAME || `localhost:${process.env.NEXT_PUBLIC_BACK_PORT}`;
+const loginUrl = `http://${apiUrl}/v1/auth/login`;
 
 export async function userLogIn(email: string, password: string): Promise<LoginResponse> {
     try {
