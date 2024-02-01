@@ -10,7 +10,7 @@ const config = {
 	],
   prefix: "",
   theme: {
-    colors: {
+colors: {
       blueple: '#5851dd',
     },
     container: {
