@@ -32,6 +32,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import { Label } from "@radix-ui/react-select"
 
 const formSchema = z.object({
   bankName: z.string().min(1,{
@@ -83,7 +84,7 @@ export default function BankAccountForm() {
   }
   return (
     <div className="flex items-center justify-center h-screen">
-      <Card className="w-[350px]">
+      <Card className="w-[400px]">
         <CardHeader className="text-center">
           <CardTitle>Bank account</CardTitle>
           <CardDescription>You will receive work wages cia this bank account</CardDescription>
@@ -98,7 +99,7 @@ export default function BankAccountForm() {
                     name="bankName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bank name</FormLabel>
+                        <FormLabel className="text-black">Bank name</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
@@ -112,7 +113,7 @@ export default function BankAccountForm() {
                                 <SelectItem value="KrungSri">KrungSri</SelectItem>
                             </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                       </FormItem>
                     )}
                   />
@@ -123,11 +124,11 @@ export default function BankAccountForm() {
                     name="accountName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Account name</FormLabel>
+                        <FormLabel className="text-black">Account name</FormLabel>
                         <FormControl>
                           <Input placeholder="User Easytask" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                       </FormItem>
                     )}
                   />
@@ -138,18 +139,18 @@ export default function BankAccountForm() {
                     name="accountNumber"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Account number</FormLabel>
+                        <FormLabel className="text-black">Account number</FormLabel>
                         <FormControl>
                           <Input placeholder="012-3-45678-9" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                       </FormItem>
                     )}
                   />
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="grid w-full items-center gap-4">
               <Button className="w-full">Done</Button>
               <CardDescription>
                 <a href="/login" className="underline text-black hover:text-originalColor">Skip for now</a>
