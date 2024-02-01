@@ -71,7 +71,7 @@ export default function LoginForm() {
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
-        <CardHeader className="text-center">
+        <CardHeader className="text-center" >
           <CardTitle>Login</CardTitle>
         </CardHeader>
         <Form {...form}>
@@ -101,11 +101,8 @@ export default function LoginForm() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your password" {...field} />
+                          <Input placeholder="Enter your password" type="password" {...field} />
                         </FormControl>
-                        <FormDescription>
-                          Doesnt have any account? <a href="/signup" className="underline text-black hover:text-originalColor">Sign up</a>
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -113,8 +110,11 @@ export default function LoginForm() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="grid w-full items-center gap-1">
               <Button className="w-full">Login</Button>
+              <CardDescription>
+                Doesn't have any account? <a href="/signup" className="underline text-black hover:text-originalColor">Sign up</a>
+              </CardDescription>
             </CardFooter>
           </form>
         </Form>

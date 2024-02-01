@@ -26,17 +26,21 @@ import {
 import { Label } from "@/components/ui/label"
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
+  firstName: z.string().max(64, {
+    message: "user",
+  }),
+  lastName: z.string().max(64, {
+    message: "easytask",
   }),
 });
 
-export default function SignupForm() {
+export default function ProfileSetupForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      firstName: "",
+      lastName: "",
     },
   });
 
@@ -67,9 +71,9 @@ export default function SignupForm() {
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
-        <CardHeader className="text-center">
-          <CardTitle>Sign up</CardTitle>
-          <CardDescription>Welcome to Easy Task</CardDescription>
+        <CardHeader className="text-center" >
+          <CardTitle>Set up your profile</CardTitle>
+          <CardDescription>Setting up your profile can gain more opportunities</CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -78,12 +82,27 @@ export default function SignupForm() {
                 <div className="flex flex-col space-y-1.5">
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>First name</FormLabel>
                         <FormControl>
-                          <Input placeholder="user.easytask@email.com" {...field} />
+                          <Input placeholder="user" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="easytask"  {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -93,10 +112,7 @@ export default function SignupForm() {
               </div>
             </CardContent>
             <CardFooter className="grid w-full items-center gap-1">
-              <Button className="w-full">Verify your email</Button>
-              <CardDescription>
-                Already have an account? <a href="/login" className="underline text-black hover:text-originalColor">Log in</a>
-              </CardDescription>
+              <Button className="w-full">Next</Button>
             </CardFooter>
           </form>
         </Form>
