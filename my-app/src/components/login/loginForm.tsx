@@ -1,5 +1,4 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -23,7 +22,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import { userLogIn } from "@/lib/userLogIn"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -35,7 +35,9 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  // 1. Define your form.
+
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,30 +46,21 @@ export default function LoginForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
-
-    //   if (result?.error) {
-    //     // Handle specific error cases
-    //     alert(result.error)
-    //     console.error('Authentication failed:', result.error);
-    //   } else {
-    //     // Authentication successful
-    //     router.push('/home');
-    //   }
-    // } catch (error) {
-    //   // Handle unexpected errors (e.g., network issues)
-    //   console.error('Unexpected error during authentication:', error);
-    //   // Show a user-friendly error message
-    // }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const result = await userLogIn(values.email, values.password);
+      if (result?.error) {
+        alert(result.error)
+        console.error('Authentication failed:', result.error);
+      } else {
+        router.push('/');
+      }
+    } catch (error) {
+      alert(error)
+      console.error('Unexpected error during authentication:', error);
+    }
   }
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
