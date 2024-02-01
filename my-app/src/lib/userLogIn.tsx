@@ -1,8 +1,11 @@
 import { LoginResponse } from "@/types";
 
+const apiUrl = process.env.API_BASE_URL || "http://localhost:5001";
+const loginUrl = `${apiUrl}/v1/auth/login`;
+
 export async function userLogIn(email: string, password: string): Promise<LoginResponse> {
     try {
-        const res = await fetch(`${process.env.API_BASE_URL}/v1/auth/login` || "http://localhost:5001/v1/auth/login", {
+        const res = await fetch(loginUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
