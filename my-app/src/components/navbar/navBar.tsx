@@ -21,7 +21,7 @@ export default function NavBar() {
       style={{ backgroundColor: "#5851dd" }}
     >
       <div className="flex items-center">
-        <p className="text-lg font-medium text-slate-200">Easy Task</p>
+        <p className="text-lg font-medium text-slate-100">Easy Task</p>
       </div>
     </div>
   );
