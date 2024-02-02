@@ -4,7 +4,6 @@ import { LoginResponse } from "@/types";
 export async function userLogIn(email: string, password: string): Promise<LoginResponse> {
     return axios.post("/v1/auth/login", { email, password })
         .then((res) => {
-            console.log("here2");
             const result: LoginResponse = res.data;
             if (result.success) {
                 // setToken(result.token);
