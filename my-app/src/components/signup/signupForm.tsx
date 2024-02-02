@@ -41,29 +41,52 @@ export default function SignupForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const apiUrl = 'http://api.easytask.vt.in.th/auth/sendOtp';
 
-    //   if (result?.error) {
-    //     // Handle specific error cases
-    //     alert(result.error)
-    //     console.error('Authentication failed:', result.error);
-    //   } else {
-    //     // Authentication successful
-    //     router.push('/home');
-    //   }
-    // } catch (error) {
-    //   // Handle unexpected errors (e.g., network issues)
-    //   console.error('Unexpected error during authentication:', error);
-    //   // Show a user-friendly error message
-    // }
+      // Prepare the request payload
+      const data = {
+        email: values.email,
+      };
+
+      // Make a POST request to the API
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        // Handle success response
+      } else if (response.status === 400) {
+        const errorData = await response.json();
+        // Handle 400 Bad Request
+        console.error(errorData.details || 'Bad Request');
+        form.setError('email', {
+          type: 'manual',
+          message: errorData.details || 'Bad Request',
+        });
+      } else if (response.status === 403) {
+        const errorData = await response.json();
+        // Handle 403 Forbidden
+        console.error(errorData.details || 'Forbidden');
+        form.setError('email', {
+          type: 'manual',
+          message: errorData.details || 'Forbidden',
+        });
+      } else {
+        // Handle other error cases
+        console.error('An error occurred');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error(error);
+      // You may want to set an error state in your form here
+    }
   }
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
