@@ -1,8 +1,11 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { instance } from '@/utils/axiosInstance';
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Home Page
-    </main>
-  );
+    return (
+        <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+            Home Page
+        </main>
+    );
 }
