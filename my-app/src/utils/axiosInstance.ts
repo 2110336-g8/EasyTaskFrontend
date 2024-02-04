@@ -1,14 +1,27 @@
 import axios, { AxiosInstance } from 'axios';
+import { clientStorage } from '@/utils/storageService';
 
-const token = 'your_token_here';
-
-const instance: AxiosInstance = axios.create({
+export const instance: AxiosInstance = axios.create({
     baseURL: `http://${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
     },
 });
 
-export default instance;
+instance.interceptors.request.use(
+    function (config) {
+        const authType = 'Bearer';
+        const token = clientStorage.get().token;
+        const auth = `${authType} ${token}`;
 
+        // Set Authorization header here
+        if (token) {
+            config.headers['Authorization'] = auth;
+        }
+
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    },
+);
