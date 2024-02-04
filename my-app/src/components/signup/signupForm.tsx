@@ -24,6 +24,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
+import { toast } from "../ui/use-toast"
+import { emailVerification } from "@/lib/signupEmail"
+
 
 const formSchema = z.object({
   email: z.string().email({
@@ -32,6 +36,12 @@ const formSchema = z.object({
 });
 
 export default function SignupForm() {
+  const router = useRouter();
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,53 +50,32 @@ export default function SignupForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const apiUrl = 'http://api.easytask.vt.in.th/auth/sendOtp';
-
-      // Prepare the request payload
-      const data = {
-        email: values.email,
-      };
-
-      // Make a POST request to the API
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        // Handle success response
-      } else if (response.status === 400) {
-        const errorData = await response.json();
-        // Handle 400 Bad Request
-        console.error(errorData.details || 'Bad Request');
-        form.setError('email', {
-          type: 'manual',
-          message: errorData.details || 'Bad Request',
-        });
-      } else if (response.status === 403) {
-        const errorData = await response.json();
-        // Handle 403 Forbidden
-        console.error(errorData.details || 'Forbidden');
-        form.setError('email', {
-          type: 'manual',
-          message: errorData.details || 'Forbidden',
-        });
+      const result = await emailVerification(values.email);
+      if (result?.error) {
+        console.error('Authentication failed:', result.error);
+        if (result.error === "Validation Error") {
+          setError('invalidText', {
+            type: 'manual',
+            message: 'This email or password is not correct.',
+          });
+        }
       } else {
-        // Handle other error cases
-        console.error('An error occurred');
+        console.log('success1');
+        router.push('/signup/verification');
       }
     } catch (error) {
-      // Handle network or other errors
-      console.error(error);
-      // You may want to set an error state in your form here
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
     }
   }
 
+  
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
@@ -120,6 +109,7 @@ export default function SignupForm() {
               <CardDescription>
                 Already have an account? <a href="/login" className="underline text-black hover:text-originalColor">Log in</a>
               </CardDescription>
+              {errors.invalidText && <FormMessage>{`${errors.invalidText.message}`}</FormMessage>}
             </CardFooter>
           </form>
         </Form>

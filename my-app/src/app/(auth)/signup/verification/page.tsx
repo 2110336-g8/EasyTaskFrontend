@@ -5,10 +5,10 @@ import VerificationForm from "@/components/signup/verificationForm";
 const SignupPage: React.FC = () => {
   return (
     <div>
-      <SignupForm />
+      {/* <SignupForm /> */}
       {/* <PasswordForm /> */}
       {/* <ProfileSetupForm /> */}
-      {/* <VerificationForm /> */}
+      <VerificationForm />
     </div>
   );
 };

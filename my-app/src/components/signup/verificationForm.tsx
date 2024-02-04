@@ -26,9 +26,25 @@ import {
 import { Label } from "@/components/ui/label"
 
 const formSchema = z.object({
-  // otp1: z.number().int().max(1, {
-  //   message: "",
-  // }),
+  otp1: z.string().max(1, {
+    message: "",
+  }),
+  otp2: z.string().max(1, {
+    message: "",
+  }),
+  otp3: z.string().max(1, {
+    message: "",
+  }),
+  otp4: z.string().max(1, {
+    message: "",
+  }),
+  otp5: z.string().max(1, {
+    message: "",
+  }),
+
+  otp6: z.string().max(1, {
+    message: "",
+  }),
   // otp2: z.number().int().max(1, {
   //   message: "",
   // }),
@@ -51,12 +67,12 @@ export default function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      otp1: 0,
-      otp2: 0,
-      otp3: 0,
-      otp4: 0,
-      otp5: 0,
-      otp6: 0
+      otp1: "",
+      otp2: "",
+      otp3: "",
+      otp4: "",
+      otp5: "",
+      otp6: ""
     },
   });
 

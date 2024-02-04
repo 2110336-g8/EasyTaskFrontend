@@ -24,6 +24,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
+import { toast } from "../ui/use-toast"
 
 const formSchema = z.object({
   firstName: z.string().max(64, {
@@ -35,6 +37,13 @@ const formSchema = z.object({
 });
 
 export default function ProfileSetupForm() {
+
+  const router = useRouter();
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,85 +53,31 @@ export default function ProfileSetupForm() {
     },
   });
 
+
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const apiUrl = 'http://api.easytask.vt.in.th/auth/sendOtp';
-
-      // Prepare the request payload
-      const data = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-      };
-
-      // Make a POST request to the API
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        // Handle success response
-      } else if (response.status === 204) {
-        const errorData = await response.json();
-        // Handle 400 Bad Request
-        console.error(errorData.details || 'Bad Request');
-        form.setError('firstName', {
-          type: 'manual',
-          message: errorData.details || 'Bad Request',
-        });
-      } 
-        else {
-        // Handle other error cases
-        console.error('An error occurred');
-      }
-    } catch (error) {
-      // Handle network or other errors
-      console.error(error);
-      // You may want to set an error state in your form here
-    }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // try {
+    //   const result = await userLogIn(values.email, values.password);
+    //   if (result?.error) {
+    //     console.error('Authentication failed:', result.error);
+    //     if (result.error === "Unauthorized") {
+    //       setError('invalidText', {
+    //         type: 'manual',
+    //         message: 'This email or password is not correct.',
+    //       });
+    //     }
+    //   } else {
+    //     router.push('/');
+    //   }
+    // } catch (error) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: "There was a problem with your request.",
+    //   })
+    //   console.error('Unexpected error during authentication:', error);
+    // }
   }
-
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   try {
-  //     const apiUrl = 'http://api.easytask.vt.in.th/auth/sendOtp';
-
-  //     const response = await axios.post(apiUrl, {
-  //       email: values.email,
-  //     });
-
-  //     if (response.status === 200) {
-  //       const responseData = response.data;
-  //       console.log(responseData);
-  //       // Handle success response
-  //     }
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       const axiosError = error as axios.AxiosError;
-  //       if (axiosError.response?.status === 400) {
-  //         const errorData = axiosError.response.data;
-  //         console.error(errorData.details || 'Bad Request');
-  //         form.setError('email', {
-  //           type: 'manual',
-  //           message: errorData.details || 'Bad Request',
-  //         });
-  //       } else if (axiosError.response?.status === 403) {
-  //         const errorData = axiosError.response.data;
-  //         console.error(errorData.details || 'Forbidden');
-  //         form.setError('email', {
-  //           type: 'manual',
-  //           message: errorData.details || 'Forbidden',
-  //         });
-  //       } else {
-  //         console.error('An error occurred');
-  //       }
-  //     } else {
-  //       // Handle network or other errors
-  //       console.error(error);
-  //     }
-  //   }
 
   return (
     <div className="flex items-center justify-center h-screen">
