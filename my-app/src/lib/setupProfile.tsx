@@ -1,20 +1,31 @@
-import axios from "@/utils/axiosInstance";
-import { LoginResponse } from "@/types";
+import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
+import { ProfileResponse } from '@/types/profile';
 
-export async function userLogIn(email: string, password: string): Promise<LoginResponse> {
-    return axios.post("/v1/auth/login", { email, password })
-        .then((res) => {
-            const result: LoginResponse = res.data;
+export async function setupProfile(
+    email: string,
+    firstName: string,
+    lastName: string,
+    password: string,
+): Promise<ProfileResponse> {
+    return instance
+        .post('/v1/auth/login', { email, firstName, lastName, password })
+        .then(res => {
+            const result: ProfileResponse = res.data;
             if (result.success) {
-                // setToken(result.token);
+                // Authorized
+                clientStorage.set({
+                    token: result.token,
+                    user: result.user,
+                });
             }
             return result;
         })
-        .catch((error) => {
-            if (error.response && error.response.status === 401) { //Unauthorized
+        .catch(error => {
+            if (error.response && error.response.status === 403 || error.response && error.response.status === 400) {
+                // Unauthorized
                 return error.response.data;
             }
-            return Promise.reject('Can not fetch user');
+            return Promise.reject("Can't fetch user!");
         });
 }
-

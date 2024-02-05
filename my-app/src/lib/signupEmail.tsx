@@ -1,8 +1,10 @@
-import axios from "@/utils/axiosInstance";
+import { instance } from '@/utils/axiosInstance';
 import { EmailResponse } from "@/types";
 
-export async function emailVerification(email: string): Promise<EmailResponse> {
-    return axios.post("/v1/auth/sendOTP", { email })
+export async function emailVerification(
+    email: string
+    ): Promise<EmailResponse> {
+    return instance.post("/v1/auth/sendOTP", { email })
         .then((res) => {
             const result: EmailResponse = res.data;
             if (result.success) {
