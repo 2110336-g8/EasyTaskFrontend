@@ -27,12 +27,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 
 const formSchema = z.object({
-    email: z.string().email({
-        message: 'Please enter a valid email address.',
-    }),
-    password: z.string().min(8, {
-        message: 'Password must be at least 8 characters.',
-    }),
+    email: z.string(),
+    password: z.string(),
 });
 
 export default function LoginForm() {
@@ -90,7 +86,7 @@ export default function LoginForm() {
                                         name='email'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Email</FormLabel>
+                                                <FormLabel className='text-base text-black'>Email</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder='user.easytask@email.com'
@@ -108,7 +104,7 @@ export default function LoginForm() {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Password</FormLabel>
+                                                <FormLabel className='text-base text-black'>Password</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder='Enter your password'
@@ -124,6 +120,9 @@ export default function LoginForm() {
                             </div>
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-1'>
+                            {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
                             <Button className='w-full'>Login</Button>
                             <CardDescription>
                                 Doesn't have any account?{' '}
@@ -134,9 +133,6 @@ export default function LoginForm() {
                                     Sign up
                                 </a>
                             </CardDescription>
-                            {errors.invalidText && (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
-                            )}
                         </CardFooter>
                     </form>
                 </Form>
