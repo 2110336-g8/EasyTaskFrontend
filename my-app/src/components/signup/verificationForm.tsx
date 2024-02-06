@@ -25,6 +25,10 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 
+import { SignupContextType, ISignupInfo } from "@/types/signup"
+import { SignupContext } from "../../context/signupInfoContext"
+import React from "react"
+
 const formSchema = z.object({
   otp1: z.string().max(1, {
     message: "",
@@ -62,7 +66,7 @@ const formSchema = z.object({
   // }),
 });
 
-export default function LoginForm() {
+export default function VerificationForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,6 +104,8 @@ export default function LoginForm() {
     //   // Show a user-friendly error message
     // }
   }
+  const { signupInfo } = React.useContext(SignupContext) as SignupContextType;
+  console.log(signupInfo);
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
@@ -121,7 +127,7 @@ export default function LoginForm() {
                       <FormControl>
                         <Input maxLength={1} placeholder="" {...field} />
                       </FormControl>
-                      <FormMessage />x
+                      <FormMessage />
                     </FormItem>
                   )}
                 />

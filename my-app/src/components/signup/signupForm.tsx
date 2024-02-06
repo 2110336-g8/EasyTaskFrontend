@@ -24,24 +24,33 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+
 import { useRouter } from "next/navigation"
 import { toast } from "../ui/use-toast"
 import { emailVerification } from "@/lib/signupEmail"
 
+import { SignupContextType, ISignupInfo } from "@/types/signup"
+import { SignupContext } from "../../context/signupInfoContext"
+import React from "react"
+
+import { Dispatch, SetStateAction } from 'react';
+
+type SignupFormProps = {
+  setAuthType: Dispatch<SetStateAction<string>>;
+};
 
 const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
 });
-
-export default function SignupForm() {
+export default function SignupForm({ setAuthType }: SignupFormProps) {
   const router = useRouter();
   const {
     setError,
     formState: { errors },
   } = useForm();
-
+  
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +58,8 @@ export default function SignupForm() {
       email: "",
     },
   });
-
+  
+  const { updateSignupInfo } = React.useContext(SignupContext) as SignupContextType;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const result = await emailVerification(values.email);
@@ -63,7 +73,16 @@ export default function SignupForm() {
         }
       } else {
         console.log('success1');
-        router.push('/signup/verification');
+        updateSignupInfo({
+          email: values.email,
+          firstName: "",
+          lastName: "",
+          password: "",
+          bankName: "",
+          bankAccName: "",
+          bankAccNo: "",
+        })
+        setAuthType('verification');
       }
     } catch (error) {
       toast({
