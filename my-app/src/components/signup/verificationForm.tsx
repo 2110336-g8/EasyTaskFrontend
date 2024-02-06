@@ -25,6 +25,10 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 
+import { SignupContextType, ISignupInfo } from "@/types/signup"
+import { SignupContext } from "../../context/signupInfoContext"
+import React from "react"
+
 const formSchema = z.object({
   otp1: z.string().max(1, {
     message: "",
@@ -45,24 +49,9 @@ const formSchema = z.object({
   otp6: z.string().max(1, {
     message: "",
   }),
-  // otp2: z.number().int().max(1, {
-  //   message: "",
-  // }),
-  // otp3: z.number().int().max(1, {
-  //   message: "",
-  // }),
-  // otp4: z.number().int().max(1, {
-  //   message: "",
-  // }),
-  // otp5: z.number().int().max(1, {
-  //   message: "",
-  // }),
-  // otp6: z.number().int().max(1, {
-  //   message: "",
-  // }),
 });
 
-export default function LoginForm() {
+export default function VerificationForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,40 +65,36 @@ export default function LoginForm() {
     },
   });
 
+  // const email = useGlobalState();
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
-
-    //   if (result?.error) {
-    //     // Handle specific error cases
-    //     alert(result.error)
-    //     console.error('Authentication failed:', result.error);
-    //   } else {
-    //     // Authentication successful
-    //     router.push('/home');
-    //   }
-    // } catch (error) {
-    //   // Handle unexpected errors (e.g., network issues)
-    //   console.error('Unexpected error during authentication:', error);
-    //   // Show a user-friendly error message
-    // }
+    const combinedOTP = `${values.otp1}${values.otp2}${values.otp3}${values.otp4}${values.otp5}${values.otp6}`;
+    console.log(combinedOTP);
+   
   }
+
+  function handleResendCode() {
+    // Logic for the second button (Resend code)
+    console.log("Resending code...");
+    // router.push({
+    //   pathname: '/signup/verification',
+    //   query: { email: 'sth' },
+    // } as any);    
+    // ... additional logic for the second button
+  }
+  
+  const { signupInfo } = React.useContext(SignupContext) as SignupContextType;
+  console.log(signupInfo);
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
         <CardHeader className="text-center" >
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Verification</CardTitle>
+          <CardDescription>Please enter code in your email for verification</CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
-            <FormLabel>OTP</FormLabel>
             <div className="flex space-x-4">
               {/* First Field */}
               <div className="flex flex-col space-y-1.5">
@@ -121,7 +106,7 @@ export default function LoginForm() {
                       <FormControl>
                         <Input maxLength={1} placeholder="" {...field} />
                       </FormControl>
-                      <FormMessage />x
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -213,10 +198,8 @@ export default function LoginForm() {
           </CardContent>
 
             <CardFooter className="grid w-full items-center gap-1">
-              <Button className="w-full">Login</Button>
-              <CardDescription>
-                Doesn't have any account? <a href="/signup" className="underline text-black hover:text-originalColor">Sign up</a>
-              </CardDescription>
+              <Button type="submit" className="w-full">Done</Button>
+              <Button type="button" onClick={handleResendCode} className="w-full bg-color-white border border-blue-300 text-blue-300 hover:bg-blue-500 hover:text-white">Resend code</Button>
             </CardFooter>
           </form>
         </Form>

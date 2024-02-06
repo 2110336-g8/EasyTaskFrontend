@@ -2,7 +2,8 @@ import { instance } from '@/utils/axiosInstance';
 import { OtpResponse } from '@/types/otp';
 
 export async function otpVerification(
-    email: string, otp: string
+    email: string, 
+    otp: string,
     ): Promise<OtpResponse> {
     return instance.post("/v1/auth/sendOtp", { email, otp })
         .then((res) => {

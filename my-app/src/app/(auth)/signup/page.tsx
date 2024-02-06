@@ -1,16 +1,25 @@
-import SignupForm from "@/components/signup/signupForm";
-import PasswordForm from "@/components/signup/passwordForm";
-import ProfileSetupForm from "@/components/signup/profileSetupForm";
-import VerificationForm from "@/components/signup/verificationForm";
-const SignupPage: React.FC = () => {
+"use client"
+import { useRouter } from 'next/navigation';
+import SignupForm from '@/components/signup/signupForm';
+import VerificationForm from '@/components/signup/verificationForm';
+import SignupInfoProvider from '@/context/signupInfoContext';
+import { useEffect, useState } from 'react';
+
+const AuthPage:React.FC = () => {
+  const router = useRouter();
+
+  // Initialize the type query parameter when the component mounts
+  const [authType, setAuthType] = useState('email'); 
+
+  console.log(authType)
   return (
-    <div>
-      <SignupForm />
-      {/* <PasswordForm /> */}
-      {/* <ProfileSetupForm /> */}
-      {/* <VerificationForm /> */}
-    </div>
+    <SignupInfoProvider>
+      <div>
+        {authType === 'email' && <SignupForm setAuthType={setAuthType} />}
+        {authType === 'verification' && <VerificationForm />}
+      </div>
+    </SignupInfoProvider>
   );
 };
 
-export default SignupPage;
+export default AuthPage;
