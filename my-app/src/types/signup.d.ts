@@ -3,6 +3,7 @@ export interface ISignupInfo {
     firstName: string;
     lastName: string;
     password: string;
+    phoneNumber: string;
     bankName: string;
     bankAccName: string;
     bankAccNo: string;

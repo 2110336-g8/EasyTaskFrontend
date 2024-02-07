@@ -70,7 +70,6 @@ export default function ProfileSetupForm({ setAuthType }: props) {
   // 2. Define a submit handler.
   const { updateSignupInfo , signupInfo} = React.useContext(SignupContext) as SignupContextType;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // console.log(values.phoneNumber.replace(/-/g, ''))
     try {
       // const result = await setupProfile(values.email);
       if (values.firstName.trim() === "" || values.lastName.trim() === "" || values.phoneNumber.trim() === "") {
@@ -86,6 +85,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
           firstName: values.firstName,
           lastName: values.lastName,
           password: signupInfo.password,
+          phoneNumber: values.phoneNumber.replace(/-/g, ''),
           bankName: "",
           bankAccName: "",
           bankAccNo: "",

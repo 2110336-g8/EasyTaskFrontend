@@ -75,6 +75,7 @@ export default function PasswordForm({ setAuthType }: props) {
           firstName: "",
           lastName: "",
           password: values.password,
+          phoneNumber:"",
           bankName: "",
           bankAccName: "",
           bankAccNo: "",
