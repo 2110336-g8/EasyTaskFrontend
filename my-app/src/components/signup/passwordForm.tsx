@@ -25,7 +25,9 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { toast } from "../ui/use-toast"
-
+import { SignupContextType, ISignupInfo } from "@/types/signup"
+import { SignupContext } from "../../context/signupInfoContext"
+import React from "react"
 import { Dispatch, SetStateAction } from 'react';
 
 type props = {
@@ -43,6 +45,11 @@ const formSchema = z.object({
 
 export default function PasswordForm({ setAuthType }: props) {
   // 1. Define your form.
+  const { updateSignupInfo , signupInfo} = React.useContext(SignupContext) as SignupContextType;
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,29 +59,38 @@ export default function PasswordForm({ setAuthType }: props) {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
-
-    //   if (result?.error) {
-    //     // Handle specific error cases
-    //     alert(result.error)
-    //     console.error('Authentication failed:', result.error);
-    //   } else {
-    //     // Authentication successful
-    //     router.push('/home');
-    //   }
-    // } catch (error) {
-    //   // Handle unexpected errors (e.g., network issues)
-    //   console.error('Unexpected error during authentication:', error);
-    //   // Show a user-friendly error message
-    // }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const result = values.password === values.confirmedPassword;
+      if (!result) {
+        setError('invalidText', {
+          type: 'manual',
+          message: 'Your password is not match',
+        });
+        
+      } else {
+        console.log('success1');
+        updateSignupInfo({
+          email: signupInfo.email,
+          firstName: "",
+          lastName: "",
+          password: values.password,
+          bankName: "",
+          bankAccName: "",
+          bankAccNo: "",
+        })
+        setAuthType('profileSetup');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
   }
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
@@ -92,7 +108,7 @@ export default function PasswordForm({ setAuthType }: props) {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
                           <Input type="password" placeholder="Enter your password" {...field} />
                         </FormControl>
@@ -109,7 +125,7 @@ export default function PasswordForm({ setAuthType }: props) {
                       <FormItem>
                         <FormLabel>Confirm your password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="Enter your password" {...field} />
+                          <Input type="password" placeholder="Enter your password again" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -119,6 +135,9 @@ export default function PasswordForm({ setAuthType }: props) {
               </div>
             </CardContent>
             <CardFooter className="grid w-full items-center gap-1">
+            {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
               <Button className="w-full">Next</Button>
             </CardFooter>
           </form>
