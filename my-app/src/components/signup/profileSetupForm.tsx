@@ -70,6 +70,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
   // 2. Define a submit handler.
   const { updateSignupInfo , signupInfo} = React.useContext(SignupContext) as SignupContextType;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log(values.phoneNumber.replace(/-/g, ''))
     try {
       // const result = await setupProfile(values.email);
       if (values.firstName.trim() === "" || values.lastName.trim() === "" || values.phoneNumber.trim() === "") {
@@ -150,7 +151,23 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                       <FormItem>
                         <FormLabel>Phone number</FormLabel>
                         <FormControl>
-                          <Input placeholder="098-765-4321" {...field} />
+                          <Input placeholder="098-765-4321" {...field}
+                          onChange={(e) => {
+                            let rawValue = e.target.value;
+                            // Remove non-digit characters
+                            rawValue = rawValue.replace(/\D/g, '');
+                        
+                            // Limit the maximum length to 10 characters
+                            rawValue = rawValue.slice(0, 10);
+                        
+                            // Apply the desired format
+                            const formattedValue = rawValue.replace(/^(\d{0,3})(\d{0,3})(\d{0,4})$/, (_, p1, p2, p3) =>
+                              [p1, p2, p3].filter(Boolean).join('-')
+                            );
+                        
+                            field.onChange(formattedValue);
+                          }}
+                          maxLength={12}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

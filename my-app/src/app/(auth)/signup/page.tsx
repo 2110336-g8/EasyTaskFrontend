@@ -12,7 +12,7 @@ const AuthPage:React.FC = () => {
   const router = useRouter();
 
   // Initialize the type query parameter when the component mounts
-  const [authType, setAuthType] = useState('password'); 
+  const [authType, setAuthType] = useState('email'); 
 
   console.log(authType)
   return (
