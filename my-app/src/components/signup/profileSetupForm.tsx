@@ -27,6 +27,12 @@ import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { toast } from "../ui/use-toast"
 
+import { Dispatch, SetStateAction } from 'react';
+
+type props = {
+  setAuthType: Dispatch<SetStateAction<string>>;
+};
+
 const formSchema = z.object({
   firstName: z.string().max(64, {
     message: "user",
@@ -36,7 +42,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function ProfileSetupForm() {
+export default function ProfileSetupForm({ setAuthType }: props) {
 
   const router = useRouter();
   const {

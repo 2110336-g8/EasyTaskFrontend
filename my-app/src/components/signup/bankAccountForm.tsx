@@ -33,6 +33,13 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { Label } from "@radix-ui/react-select"
+import { toast } from "../ui/use-toast"
+
+import { Dispatch, SetStateAction } from 'react';
+
+type props = {
+  setAuthType: Dispatch<SetStateAction<string>>;
+};
 
 const formSchema = z.object({
   bankName: z.string().min(1,{
@@ -47,7 +54,7 @@ const formSchema = z.object({
 });
 
 
-export default function BankAccountForm() {
+export default function BankAccountForm({ setAuthType }: props) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
