@@ -24,6 +24,13 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { toast } from "../ui/use-toast"
+
+import { Dispatch, SetStateAction } from 'react';
+
+type props = {
+  setAuthType: Dispatch<SetStateAction<string>>;
+};
 
 const formSchema = z.object({
     password: z.string().min(8, {
@@ -34,7 +41,7 @@ const formSchema = z.object({
     }),
 });
 
-export default function PasswordForm() {
+export default function PasswordForm({ setAuthType }: props) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
