@@ -27,15 +27,29 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          100: '#E0E7FF',
+          300: '#98A7ED',
+          500: '#5951E5',
+          700: '#282494',
+          900: '#100E44',
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          100: '#FEF3C7',
+          500: '#F7B60E',
+          700: '#B56D17',
+          900: '#814B24',
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
-        },
+        }, 
+        error:{
+          100: '#FEE2E2',
+          500: '#EF4444',
+          700: '#DC2626',
+          900: '#7F1D1D',        },       
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

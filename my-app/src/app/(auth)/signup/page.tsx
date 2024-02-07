@@ -4,6 +4,8 @@ import SignupForm from '@/components/signup/signupForm';
 import VerificationForm from '@/components/signup/verificationForm';
 import SignupInfoProvider from '@/context/signupInfoContext';
 import { useEffect, useState } from 'react';
+import PasswordForm from '@/components/signup/passwordForm';
+import BankAccountForm from '@/components/signup/bankAccountForm';
 
 const AuthPage:React.FC = () => {
   const router = useRouter();
@@ -16,10 +18,16 @@ const AuthPage:React.FC = () => {
     <SignupInfoProvider>
       <div>
         {authType === 'email' && <SignupForm setAuthType={setAuthType} />}
-        {authType === 'verification' && <VerificationForm />}
+        {authType === 'verification' && <VerificationForm setAuthType={setAuthType}/>}
+        {authType === 'password' && <PasswordForm />}
+        {authType === 'bankAccount' && <BankAccountForm />}
+        
       </div>
     </SignupInfoProvider>
   );
 };
 
 export default AuthPage;
+
+
+
