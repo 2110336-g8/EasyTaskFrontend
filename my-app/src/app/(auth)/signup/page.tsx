@@ -18,7 +18,7 @@ const AuthPage:React.FC = () => {
     <SignupInfoProvider>
       <div>
         {authType === 'email' && <SignupForm setAuthType={setAuthType} />}
-        {authType === 'verification' && <VerificationForm />}
+        {authType === 'verification' && <VerificationForm setAuthType={setAuthType}/>}
         {authType === 'password' && <PasswordForm />}
         {authType === 'bankAccount' && <BankAccountForm />}
         
