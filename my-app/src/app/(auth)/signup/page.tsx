@@ -12,7 +12,7 @@ const AuthPage:React.FC = () => {
   const router = useRouter();
 
   // Initialize the type query parameter when the component mounts
-  const [authType, setAuthType] = useState('email'); 
+  const [authType, setAuthType] = useState('password'); 
 
   console.log(authType)
   return (
@@ -21,8 +21,8 @@ const AuthPage:React.FC = () => {
         {authType === 'email' && <SignupForm setAuthType={setAuthType} />}
         {authType === 'verification' && <VerificationForm setAuthType={setAuthType}/>}
         {authType === 'password' && <PasswordForm setAuthType={setAuthType} />}
-        {authType === 'bankAccount' && <BankAccountForm setAuthType={setAuthType}/>}
         {authType === 'profileSetup' && <ProfileSetupForm setAuthType={setAuthType}/>}
+        {authType === 'bankAccount' && <BankAccountForm setAuthType={setAuthType}/>}
       </div>
     </SignupInfoProvider>
   );

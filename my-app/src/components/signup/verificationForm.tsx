@@ -253,11 +253,11 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
           </CardContent>
 
             <CardFooter className="grid w-full items-center gap-1">
-            {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
-                            ):<FormMessage><br></br></FormMessage>}
               <Button type="submit" className="w-full">Done</Button>
               <Button type="button" onClick={handleResendCode} className="w-full bg-color-white border border-blue-300 text-blue-300 hover:bg-blue-500 hover:text-white">Resend code</Button>
+              {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
             </CardFooter>
           </form>
         </Form>

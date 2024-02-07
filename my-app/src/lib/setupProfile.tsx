@@ -7,6 +7,10 @@ export async function setupProfile(
     firstName: string,
     lastName: string,
     password: string,
+    phoneNumber: string,
+    bankName: string,
+    bankAccName: string,
+    bankAccNo: string,
 ): Promise<ProfileResponse> {
     return instance
         .post('/v1/auth/login', { email, firstName, lastName, password })

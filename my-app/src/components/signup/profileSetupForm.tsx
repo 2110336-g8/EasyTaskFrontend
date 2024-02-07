@@ -27,6 +27,9 @@ import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { toast } from "../ui/use-toast"
 
+import { SignupContextType, ISignupInfo } from "@/types/signup"
+import { SignupContext } from "../../context/signupInfoContext"
+import React from "react";
 import { Dispatch, SetStateAction } from 'react';
 
 type props = {
@@ -39,6 +42,9 @@ const formSchema = z.object({
   }),
   lastName: z.string().max(64, {
     message: "easytask",
+  }),
+  phoneNumber: z.string().max(64, {
+    message: "098-765-4321",
   }),
 });
 
@@ -56,33 +62,43 @@ export default function ProfileSetupForm({ setAuthType }: props) {
     defaultValues: {
       firstName: "",
       lastName: "",
+      phoneNumber: ""
     },
   });
 
 
   // 2. Define a submit handler.
+  const { updateSignupInfo , signupInfo} = React.useContext(SignupContext) as SignupContextType;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // try {
-    //   const result = await userLogIn(values.email, values.password);
-    //   if (result?.error) {
-    //     console.error('Authentication failed:', result.error);
-    //     if (result.error === "Unauthorized") {
-    //       setError('invalidText', {
-    //         type: 'manual',
-    //         message: 'This email or password is not correct.',
-    //       });
-    //     }
-    //   } else {
-    //     router.push('/');
-    //   }
-    // } catch (error) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Uh oh! Something went wrong.",
-    //     description: "There was a problem with your request.",
-    //   })
-    //   console.error('Unexpected error during authentication:', error);
-    // }
+    try {
+      // const result = await setupProfile(values.email);
+      if (values.firstName.trim() === "" || values.lastName.trim() === "" || values.phoneNumber.trim() === "") {
+        setError('invalidText', {
+          type: 'manual',
+          message: 'Please complete the fill.',
+        });
+      }
+      else {
+        console.log('success1');
+        updateSignupInfo({
+          email: signupInfo.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          password: signupInfo.password,
+          bankName: "",
+          bankAccName: "",
+          bankAccNo: "",
+        })
+        setAuthType('bankAccount');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
   }
 
   return (
@@ -126,10 +142,28 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                     )}
                   />
                 </div>
+                <div className="flex flex-col space-y-1.5">
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="098-765-4321" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </CardContent>
             <CardFooter className="grid w-full items-center gap-1">
               <Button className="w-full">Next</Button>
+              {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
             </CardFooter>
           </form>
         </Form>

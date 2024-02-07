@@ -135,10 +135,10 @@ export default function PasswordForm({ setAuthType }: props) {
               </div>
             </CardContent>
             <CardFooter className="grid w-full items-center gap-1">
-            {errors.invalidText ? (
+              <Button className="w-full">Next</Button>
+              {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
                             ):<FormMessage><br></br></FormMessage>}
-              <Button className="w-full">Next</Button>
             </CardFooter>
           </form>
         </Form>
