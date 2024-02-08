@@ -56,7 +56,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function NavBar() {
     return (
-        <div className='py-4 px-6 flex items-center justify-between bg-blueple'>
+        <div className='fixed top-0 w-full h-[120px] py-4 px-6 flex items-center justify-between bg-blueple'>
             <div className='flex items-center'>
                 <p className='text-white text-lg font-medium'>Easy Task</p>
             </div>
