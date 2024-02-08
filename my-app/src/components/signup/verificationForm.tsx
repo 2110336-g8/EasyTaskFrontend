@@ -25,9 +25,18 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 
+import { useRouter } from "next/navigation"
 import { SignupContextType, ISignupInfo } from "@/types/signup"
 import { SignupContext } from "../../context/signupInfoContext"
+import { emailVerification } from "@/lib/signupEmail"
 import React from "react"
+import { toast } from "../ui/use-toast"
+import { Dispatch, SetStateAction } from 'react';
+import { otpVerification } from "@/lib/OTPVerification"
+
+type SignupFormProps = {
+  setAuthType: Dispatch<SetStateAction<string>>;
+};
 
 const formSchema = z.object({
   otp1: z.string().max(1, {
@@ -51,7 +60,12 @@ const formSchema = z.object({
   }),
 });
 
-export default function VerificationForm() {
+export default function VerificationForm({ setAuthType }: SignupFormProps) {
+  const router = useRouter();
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,27 +78,68 @@ export default function VerificationForm() {
       otp6: ""
     },
   });
+  const { signupInfo } = React.useContext(SignupContext) as SignupContextType;
+  console.log(signupInfo);
 
   // const email = useGlobalState();
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const combinedOTP = `${values.otp1}${values.otp2}${values.otp3}${values.otp4}${values.otp5}${values.otp6}`;
-    console.log(combinedOTP);
-   
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const combinedOTP = `${values.otp1}${values.otp2}${values.otp3}${values.otp4}${values.otp5}${values.otp6}`;
+      console.log(combinedOTP);
+      const result = await otpVerification(signupInfo.email, combinedOTP);
+      if (result?.error) {
+        console.error('Authentication failed:', result.error);
+        if (result.error === "Failed to verify OTP") {
+          setError('invalidText', {
+            type: 'manual',
+            message: 'Failed to verify OTP, Please try again',
+          });
+        }
+      } else {
+        console.log('success1');
+        setAuthType('password');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
   }
 
-  function handleResendCode() {
+  async function handleResendCode() {
     // Logic for the second button (Resend code)
     console.log("Resending code...");
-    // router.push({
-    //   pathname: '/signup/verification',
-    //   query: { email: 'sth' },
-    // } as any);    
-    // ... additional logic for the second button
+    try {
+      const result = await emailVerification(signupInfo.email);
+      if (result?.error) {
+        console.error('Authentication failed:', result.error);
+        if (result.error === "Cannot Create OTP Error") {
+          setError('invalidText', {
+            type: 'manual',
+            message: result.details,
+          });
+        }
+      } else {
+        console.log('success1');
+        
+        setAuthType('verification');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
   }
   
-  const { signupInfo } = React.useContext(SignupContext) as SignupContextType;
-  console.log(signupInfo);
+  
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[350px]">
@@ -200,6 +255,9 @@ export default function VerificationForm() {
             <CardFooter className="grid w-full items-center gap-1">
               <Button type="submit" className="w-full">Done</Button>
               <Button type="button" onClick={handleResendCode} className="w-full bg-color-white border border-blue-300 text-blue-300 hover:bg-blue-500 hover:text-white">Resend code</Button>
+              {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
             </CardFooter>
           </form>
         </Form>

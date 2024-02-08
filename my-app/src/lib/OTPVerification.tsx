@@ -5,9 +5,10 @@ export async function otpVerification(
     email: string, 
     otp: string,
     ): Promise<OtpResponse> {
-    return instance.post("/v1/auth/sendOtp", { email, otp })
+    return instance.post("/v1/auth/verifyOtp", { email, otp })
         .then((res) => {
             const result: OtpResponse = res.data;
+            console.log(email, otp);
             if (result.success) {
                 // setToken(result.token);
                 console.log(result.message)

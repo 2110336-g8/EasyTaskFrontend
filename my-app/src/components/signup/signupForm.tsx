@@ -40,9 +40,7 @@ type SignupFormProps = {
 };
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
+  email: z.string(),
 });
 export default function SignupForm({ setAuthType }: SignupFormProps) {
   const router = useRouter();
@@ -65,10 +63,16 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
       const result = await emailVerification(values.email);
       if (result?.error) {
         console.error('Authentication failed:', result.error);
-        if (result.error === "Validation Error") {
+        if (result.error === "Cannot Create OTP Error") {
           setError('invalidText', {
             type: 'manual',
-            message: 'This email or password is not correct.',
+            message: result.details,
+          });
+        }
+        else if (result.error === "Validation Error") {
+          setError('invalidText', {
+            type: 'manual',
+            message: 'Please enter valid email',
           });
         }
       } else {
@@ -78,6 +82,7 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
           firstName: "",
           lastName: "",
           password: "",
+          phoneNumber:"",
           bankName: "",
           bankAccName: "",
           bankAccNo: "",
@@ -124,11 +129,13 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
               </div>
             </CardContent>
             <CardFooter className="grid w-full items-center gap-1">
+            {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
               <Button className="w-full">Verify your email</Button>
               <CardDescription>
                 Already have an account? <a href="/login" className="underline text-black hover:text-originalColor">Log in</a>
               </CardDescription>
-              {errors.invalidText && <FormMessage>{`${errors.invalidText.message}`}</FormMessage>}
             </CardFooter>
           </form>
         </Form>
