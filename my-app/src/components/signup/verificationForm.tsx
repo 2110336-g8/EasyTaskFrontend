@@ -61,7 +61,6 @@ const formSchema = z.object({
 });
 
 export default function VerificationForm({ setAuthType }: SignupFormProps) {
-  const router = useRouter();
   const {
     setError,
     formState: { errors },

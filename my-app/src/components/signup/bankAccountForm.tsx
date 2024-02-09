@@ -36,6 +36,11 @@ import { Label } from "@radix-ui/react-select"
 import { toast } from "../ui/use-toast"
 
 import { Dispatch, SetStateAction } from 'react';
+import { SignupContext } from "@/context/signupInfoContext"
+import React from "react"
+import { SignupContextType } from "@/types/signup"
+import { setupProfile } from "@/lib/setupProfile"
+import { useRouter } from "next/navigation"
 
 type props = {
   setAuthType: Dispatch<SetStateAction<string>>;
@@ -56,6 +61,13 @@ const formSchema = z.object({
 
 export default function BankAccountForm({ setAuthType }: props) {
   // 1. Define your form.
+  const router = useRouter();
+
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,30 +77,104 @@ export default function BankAccountForm({ setAuthType }: props) {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // try {
-    //   const result = await signIn('credentials', {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
-
-    //   if (result?.error) {
-    //     // Handle specific error cases
-    //     alert(result.error)
-    //     console.error('Authentication failed:', result.error);
-    //   } else {
-    //     // Authentication successful
-    //     router.push('/home');
-    //   }
-    // } catch (error) {
-    //   // Handle unexpected errors (e.g., network issues)
-    //   console.error('Unexpected error during authentication:', error);
-    //   // Show a user-friendly error message
-    // }
+  const { updateSignupInfo,signupInfo } = React.useContext(SignupContext) as SignupContextType;
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const result = await setupProfile(signupInfo.email,
+        signupInfo.firstName,
+        signupInfo.lastName,
+        signupInfo.password,
+        signupInfo.phoneNumber,
+        values.bankName,
+        values.accountName,
+        values.accountNumber
+        );
+      if (result?.error) {
+        console.error('Registration failed:', result.error);
+        if (result.details === "Email is already used") {
+          setError('invalidText', {
+            type: 'manual',
+            message: result.details,
+          });
+        }
+        else if (result.error === "Email is not verified") {
+          setError('invalidText', {
+            type: 'manual',
+            message: result.details,
+          });
+        }
+      } else {
+        console.log('success1');
+        updateSignupInfo({
+          email: "",
+          firstName: "",
+          lastName: "",
+          password: "",
+          phoneNumber:"",
+          bankName: "",
+          bankAccName: "",
+          bankAccNo: "",
+        })
+        router.push('/');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
   }
+
+  async function handleSkipForNow() {
+    try {
+      const result = await setupProfile(signupInfo.email,
+        signupInfo.firstName,
+        signupInfo.lastName,
+        signupInfo.password,
+        signupInfo.phoneNumber,
+        "",
+        "",
+        ""
+        );
+        if (result?.error) {
+          console.error('Registration failed:', result.error);
+          if (result.details === "Email is already used") {
+            setError('invalidText', {
+              type: 'manual',
+              message: result.details,
+            });
+          }
+          else if (result.error === "Email is not verified") {
+            setError('invalidText', {
+              type: 'manual',
+              message: result.details,
+            });
+          }
+        }else {
+        updateSignupInfo({
+          email: "",
+          firstName: "",
+          lastName: "",
+          password: "",
+          phoneNumber:"",
+          bankName: "",
+          bankAccName: "",
+          bankAccNo: "",
+        })
+        router.push('/');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      console.error('Unexpected error during authentication:', error);
+    }
+  }
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="w-[400px]">
@@ -176,8 +262,11 @@ export default function BankAccountForm({ setAuthType }: props) {
             </CardContent>
             <CardFooter className="grid w-full items-center gap-4">
               <Button className="w-full">Done</Button>
+              {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ):<FormMessage><br></br></FormMessage>}
               <CardDescription>
-                <a href="/login" className="underline text-black hover:text-originalColor">Skip for now</a>
+                <a className="underline text-black hover:text-originalColor" onClick={handleSkipForNow}>Skip for now</a>
               </CardDescription>
             </CardFooter>
           </form>

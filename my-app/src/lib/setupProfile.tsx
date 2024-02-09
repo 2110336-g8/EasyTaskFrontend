@@ -13,7 +13,7 @@ export async function setupProfile(
     bankAccNo: string,
 ): Promise<ProfileResponse> {
     return instance
-        .post('/v1/auth/login', { email, firstName, lastName, password })
+        .post('/v1/auth/register', { email, firstName, lastName, password,phoneNumber,bankName,bankAccName,bankAccNo })
         .then(res => {
             const result: ProfileResponse = res.data;
             if (result.success) {

@@ -9,8 +9,7 @@ import BankAccountForm from '@/components/signup/bankAccountForm';
 import ProfileSetupForm from '@/components/signup/profileSetupForm';
 
 const AuthPage:React.FC = () => {
-  const router = useRouter();
-
+  
   // Initialize the type query parameter when the component mounts
   const [authType, setAuthType] = useState('email'); 
 
