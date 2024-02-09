@@ -9,8 +9,8 @@ export default async function MainLayout({
 }) {
     return (
         <div className='relative min-h-full flex justify-center bg-inherit'>
-            <NavBar />
             <main className='relative bg-inherit w-full min-h-full mt-[120px] mb-[20px] mx-[8px] tablet:mx-[96px] desktop::mx-[200px] pt-[56px]'>
+                <NavBar />
                 {children}
                 <Footer />
             </main>
