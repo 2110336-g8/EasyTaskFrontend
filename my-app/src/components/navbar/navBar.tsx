@@ -9,7 +9,7 @@ export default function NavBar() {
     return (
         <div className='fixed top-0 left-0 right-0 bg-blueple py-6'>
             <div className='max-w-7xl mx-auto px-4 flex items-center justify-between'>
-                <h1 className='text-white text-lg font-semibold'>EasyTask</h1>
+                <h1 className='text-white text-lg font-semibold ml-4'>EasyTask</h1>
                 <ul className='flex items-center justify-end'>
                     <li className='flex items-center'>
                         <button className='flex flex-col justify-center items-center w-24 h-16 p-2 gap-1 text-white font-medium hover:text-gray-300 rounded-md'>
