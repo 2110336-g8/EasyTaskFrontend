@@ -10,6 +10,16 @@ const config = {
 	],
   prefix: "",
   theme: {
+    screens: {
+      'tablet': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'laptop': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'desktop': '1280px',
+      // => @media (min-width: 1280px) { ... }
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -19,6 +29,7 @@ const config = {
     },
     extend: {
       colors: {
+        blueple: '#5851dd',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -1,18 +1,19 @@
-import NavBar from "@/components/navbar/navBar"
-import "../globals.css"
+import NavBar from '@/components/navbar/navBar';
+import '../globals.css';
+import Footer from '@/components/homepage/footer';
 
 export default async function MainLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
-
     return (
-        <div>
-            <NavBar />
-            <div className='mt-28 mx-auto bg-white lg:w-[700px] xl:w-[800px] 2xl:w-[1000px]'>
+        <div className='relative min-h-full flex justify-center bg-inherit'>
+            <main className='relative bg-inherit w-full min-h-full mt-[120px] mb-[20px] mx-[8px] tablet:mx-[96px] desktop::mx-[200px] pt-[56px]'>
+                <NavBar />
                 {children}
-            </div>
+                <Footer />
+            </main>
         </div>
-    )
+    );
 }
