@@ -66,7 +66,7 @@ export default function ViewTask() {
                                 Team
                             </h1>
                             <div className='h-10 flex flex-col justify-end'>
-                                <p className='text-center text-[20px] text-slate-700 font-thin tracking-tighter'>
+                                <p className='text-center text-[20px] text-slate-700 font-light tracking-tighter'>
                                     2
                                 </p>
                             </div>
@@ -80,13 +80,15 @@ export default function ViewTask() {
                             </h2>
                         </div>
                     </div>
-                    <div className='space-y-1'>
-                        <Label htmlFor='description'>Description</Label>
-                        <Input
-                            type='text'
-                            placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-                            className='block w-full whitespace-pre-line break-words'
-                        />
+                    <div className="space-y-1 flex flex-col">
+                        <Label htmlFor="description">Description</Label>
+                        <div className="relative flex-1">
+                            <Input
+                            type="text"
+                            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                            className="block w-full resize-none h-[160px] py-2 px-3"
+                            />
+                        </div>
                     </div>
                     <div className='space-y-1'>
                         <Label htmlFor='duration'>Duration</Label>
