@@ -1,6 +1,4 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { instance } from '@/utils/axiosInstance';
 
 export default function Home() {
     return (
