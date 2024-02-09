@@ -52,8 +52,8 @@ export default function ViewTask() {
                             />
                         </div>
                     </Card>
-                    <div className='flex justify-between items-center'>
-                        <div className='flex flex-col items-start'>
+                    <div className='flex justify-between items-center flex-grow flex-shrink'>
+                        <div className='flex flex-col items-start flex-grow flex-shrink'>
                             <h1 className='font-inter text-16 text-gray-900 leading-24'>
                                 Category
                             </h1>
@@ -61,17 +61,21 @@ export default function ViewTask() {
                                 Graphics
                             </Button>
                         </div>
-                        <div className='flex flex-col items-center'>
+                        <div className='flex flex-col items-center flex-grow flex-shrink'>
                             <h1 className='font-inter text-16 text-gray-900 leading-24'>
                                 Team
                             </h1>
-                            <p>2</p>
+                            <div className='h-10 flex flex-col justify-end'>
+                                <p className='text-center text-[20px] text-slate-700 font-thin tracking-tighter'>
+                                    2
+                                </p>
+                            </div>
                         </div>
-                        <div className='flex flex-col items-end'>
+                        <div className='flex flex-col items-end flex-grow flex-shrink'>
                             <h1 className='font-inter text-16 text-gray-900 leading-24'>
                                 All Wages
                             </h1>
-                            <h2 className='font-inter font-bold text-slate-700 text-30 leading-36 tracking-tighter text-42'>
+                            <h2 className='font-inter font-bold text-slate-700 tracking-tighter text-3xl'>
                                 ฿ 2000
                             </h2>
                         </div>
@@ -88,7 +92,7 @@ export default function ViewTask() {
                         <Label htmlFor='duration'>Duration</Label>
                         <CardDescription className='break-all'>
                             <DateRangePicker
-                                align='center'
+                                align='end'
                                 locale='en-GB'
                                 showCompare={false}
                             />
