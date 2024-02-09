@@ -19,6 +19,8 @@ const config = {
 
       'desktop': '1280px',
       // => @media (min-width: 1280px) { ... }
+      
+      'desktop-l': '1440px'
     },
     container: {
       center: true,

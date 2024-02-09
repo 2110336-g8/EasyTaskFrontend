@@ -8,9 +8,9 @@ export default async function MainLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className='relative min-h-full flex justify-center bg-inherit'>
-            <main className='relative bg-inherit w-full min-h-full mt-[120px] mb-[20px] mx-[8px] tablet:mx-[96px] desktop::mx-[200px] pt-[56px]'>
-                <NavBar />
+        <div className='w-full min-h-full flex justify-center bg-inherit'>
+            <NavBar />
+            <main className='h-full w-full desktop:w-[1200px] desktop-l:w-[1400px] mx-auto mt-[120px] mb-[20px] bg-white flex flex-col gap-[40px]'>
                 {children}
                 <Footer />
             </main>
