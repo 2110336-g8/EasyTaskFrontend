@@ -7,7 +7,7 @@ import {
 
 export default function NavBar() {
     return (
-        <div className='fixed top-0 left-0 right0 bg-blueple py-6'>
+        <div className='fixed top-0 left-0 right0 bg-blueple py-6 w-full'>
             <div className='max-w-7xl mx-auto px-4 flex items-center justify-between'>
                 <h1 className='text-white text-lg font-semibold ml-4'>EasyTask</h1>
                 <ul className='flex items-center justify-end'>
