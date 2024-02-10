@@ -98,6 +98,37 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif']
+      },
+      fontSize: {
+        'h1': ['40px', { lineHeight: '48px' }], 
+        'h2': ['30px', { lineHeight: '36px' }], 
+        'h3': ['24px', { lineHeight: '30px' }],
+        'h4': ['20px', { lineHeight: '28px' }],
+        'p': ['16px', { lineHeight: '24px' }],
+        'small': ['14px', { lineHeight: '20px' }],
+        'smaller': ['12px', { lineHeight: '16px' }],
+      },
+      fontWeight: {
+        'h1': 'semi-bold', 
+        'h2': 'bold', 
+        'h3': 'medium',
+        'h4': 'regular',
+        'p': 'regular',
+        'small': 'regular',
+        'smaller':'regular',
+      },
+      letterSpacing: {
+        'h1': '-0.012em',
+        'h2': '-0.0075em',
+        'h3': '-0.006em',
+        'h4': '-0.005em',
+        'p': '0em',
+        'small': '0em',
+        'smaller': '0em',
+
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
