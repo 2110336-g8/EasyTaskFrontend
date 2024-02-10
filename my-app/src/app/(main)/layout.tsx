@@ -10,7 +10,7 @@ export default async function MainLayout({
     return (
         <div className='w-full min-h-full flex justify-center bg-inherit'>
             <NavBar />
-            <main className='h-full w-full desktop:w-[1200px] desktop-l:w-[1400px] mx-auto mt-[120px] mb-[20px] bg-white flex flex-col gap-[40px]'>
+            <main className='h-full w-full desktop:w-[1200px] desktop-l:w-[1328px] pt-[40px] mx-auto mt-[120px] mb-[20px] bg-white flex flex-col gap-[40px]'>
                 {children}
                 <Footer />
             </main>
