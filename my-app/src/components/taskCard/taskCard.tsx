@@ -8,7 +8,7 @@ export default function TaskCard(props: TaskCardProps) {
     return (
         <Link
             href={'/task/' + props.taskId}
-            className='rounded-lg bg-card text-card-foreground shadow-sm inner-border col-span-6 laptop:col-span-3 h-[400px] w-[320px] overflow-hidden'
+            className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-6 laptop:col-span-3 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>
                 <img
