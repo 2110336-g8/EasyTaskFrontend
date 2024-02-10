@@ -1,4 +1,4 @@
-import ViewTask from "@/components/task/viewTask";
+import ViewTask from "@/components/task/detailTask";
 import React from "react";
 
 export default function TaskDetailPage() {
