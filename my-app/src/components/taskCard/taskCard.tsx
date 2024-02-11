@@ -12,7 +12,7 @@ export default function TaskCard(props: TaskCardProps) {
         >
             <div className='w-full h-[180px]'>
                 <img
-                    className='w-full h-full'
+                    className='w-full h-full object-cover'
                     src={props.image || '/mocktask.png'}
                     alt={''}
                 />
@@ -24,18 +24,18 @@ export default function TaskCard(props: TaskCardProps) {
                     </div>
                     <div className='flex flex-col gap-[4px]'>
                         <div className='w-full gap-[4px] flex items-center font-small text-small tracking-small text-slate-500'>
-                            <CalendarDaysIcon className='stroke-slate-500 stroke-[1.5] w-[16px] h-[16px]' />
+                            <CalendarDaysIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                             {props.startDate} - {props.endDate}
                         </div>
                         {props.location ? (
                             <div className='w-full gap-[4px] flex items-center font-small text-small tracking-small text-slate-500'>
-                                <MapPinIcon className='stroke-slate-500 stroke-[1.5] w-[16px] h-[16px]' />
+                                <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                                 {props.location}
                             </div>
                         ) : null}
                         {props.workers ? (
                             <div className='w-full gap-[4px] flex items-centerfont-small text-small tracking-small text-slate-500'>
-                                <UsersIcon className='stroke-slate-500 stroke-[1.5] w-[16px] h-[16px]' />
+                                <UsersIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                                 Team up for {props.workers} people
                             </div>
                         ) : null}
