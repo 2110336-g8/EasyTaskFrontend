@@ -4,7 +4,7 @@ export interface ISignupInfo {
     lastName: string;
     password: string;
     phoneNumber: string;
-    bankName: string;
+    bankId: string;
     bankAccName: string;
     bankAccNo: string;
   }

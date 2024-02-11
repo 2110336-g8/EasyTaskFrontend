@@ -10,7 +10,7 @@ import ProfileSetupForm from '@/components/signup/profileSetupForm';
 
 const AuthPage: React.FC = () => {
     // Initialize the type query parameter when the component mounts
-    const [authType, setAuthType] = useState('bankAccount');
+    const [authType, setAuthType] = useState('email');
 
     console.log(authType);
     return (
