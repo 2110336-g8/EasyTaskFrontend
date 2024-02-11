@@ -19,33 +19,33 @@ export default function TaskCard(props: TaskCardProps) {
             </div>
             <div className='flex flex-col justify-between w-full h-[220px] p-[16px] pt-[8px]'>
                 <div className='flex flex-col gap-[12px]'>
-                    <div className='font-h3 text-h3 tracking-h3 text-slate-900 line-clamp-2 break-words'>
+                    <h3 className='text-slate-900 line-clamp-2 break-words'>
                         {props.title}
-                    </div>
+                    </h3>
                     <div className='flex flex-col gap-[4px]'>
-                        <div className='w-full gap-[4px] flex items-center font-small text-small tracking-small text-slate-500'>
+                        <small className='w-full gap-[4px] flex items-center text-slate-500'>
                             <CalendarDaysIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                             {props.startDate} - {props.endDate}
-                        </div>
+                        </small>
                         {props.location ? (
-                            <div className='w-full gap-[4px] flex items-center font-small text-small tracking-small text-slate-500'>
+                            <small className='w-full gap-[4px] flex items-center text-slate-500'>
                                 <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                                 {props.location}
-                            </div>
+                            </small>
                         ) : null}
                         {props.workers ? (
-                            <div className='w-full gap-[4px] flex items-centerfont-small text-small tracking-small text-slate-500'>
+                            <small className='w-full gap-[4px] flex items-center text-slate-500'>
                                 <UsersIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                                 Team up for {props.workers} people
-                            </div>
+                            </small>
                         ) : null}
                     </div>
                 </div>
                 <div className='w-full flex flex-row justify-between'>
                     {props.category ? (
-                        <div className='px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 font-p text-p tracking-p text-primary-500'>
+                        <p className='px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
                             {props.category}
-                        </div>
+                        </p>
                     ) : (
                         <div />
                     )}
