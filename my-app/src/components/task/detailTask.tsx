@@ -57,7 +57,7 @@ export default function ViewTask() {
                             <h1 className='font-inter text-16 text-gray-900 leading-24'>
                                 Category
                             </h1>
-                            <Button className='rounded-md border border-primary-500 bg-background-bg-background text-primary-500 hover:bg-primary-500 hover:text-white'>
+                            <Button disabled className='rounded-md border border-primary-500 bg-background-bg-background text-primary-500 disabled:opacity-100'>
                                 Graphics
                             </Button>
                         </div>
@@ -94,7 +94,7 @@ export default function ViewTask() {
                         <Label htmlFor='duration'>Duration</Label>
                         <CardDescription className='break-all'>
                             <DateRangePicker
-                                align='end'
+                                align='start'
                                 locale='en-GB'
                                 showCompare={false}
                             />
