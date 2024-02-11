@@ -96,6 +96,7 @@ export default function BankAccountForm({ setAuthType }: props) {
         SignupContext,
     ) as SignupContextType;
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log(values);
         try {
             if (
                 values.bankName.trim() === '' ||
@@ -138,7 +139,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                     lastName: '',
                     password: '',
                     phoneNumber: '',
-                    bankName: '',
+                    bankId: '',
                     bankAccName: '',
                     bankAccNo: '',
                 });
@@ -179,7 +180,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                     lastName: '',
                     password: '',
                     phoneNumber: '',
-                    bankName: '',
+                    bankId: '',
                     bankAccName: '',
                     bankAccNo: '',
                 });

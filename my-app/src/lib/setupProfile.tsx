@@ -8,12 +8,21 @@ export async function setupProfile(
     lastName: string,
     password: string,
     phoneNumber: string,
-    bankName: string,
+    bankId: string,
     bankAccName: string,
     bankAccNo: string,
 ): Promise<ProfileResponse> {
     return instance
-        .post('/v1/auth/register', { email, firstName, lastName, password,phoneNumber,bankName,bankAccName,bankAccNo })
+        .post('/v1/auth/register', {
+            email,
+            firstName,
+            lastName,
+            password,
+            phoneNumber,
+            bankId,
+            bankAccName,
+            bankAccNo,
+        })
         .then(res => {
             const result: ProfileResponse = res.data;
             if (result.success) {
@@ -26,7 +35,10 @@ export async function setupProfile(
             return result;
         })
         .catch(error => {
-            if (error.response && error.response.status === 403 || error.response && error.response.status === 400) {
+            if (
+                (error.response && error.response.status === 403) ||
+                (error.response && error.response.status === 400)
+            ) {
                 // Unauthorized
                 return error.response.data;
             }

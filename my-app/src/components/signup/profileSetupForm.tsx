@@ -95,7 +95,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                     lastName: values.lastName,
                     password: signupInfo.password,
                     phoneNumber: values.phoneNumber.replace(/-/g, ''),
-                    bankName: '',
+                    bankId: '',
                     bankAccName: '',
                     bankAccNo: '',
                 });

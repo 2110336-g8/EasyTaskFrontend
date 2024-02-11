@@ -14,7 +14,7 @@ const SignupInfoProvider: React.FC<{children: React.ReactNode}> = ({ children })
         password: "",
         phoneNumber:"",
         // Optional field
-        bankName: "", // Might be change later what format to use (maybe some id)
+        bankId: "", // Might be change later what format to use (maybe some id)
         bankAccName: "",// Is this neccessry ?
         bankAccNo: "",//len == 10 & must be valid account number
     }

@@ -84,7 +84,7 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                     lastName: '',
                     password: '',
                     phoneNumber: '',
-                    bankName: '',
+                    bankId: '',
                     bankAccName: '',
                     bankAccNo: '',
                 });
