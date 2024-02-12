@@ -198,7 +198,7 @@ export default function BankAccountForm({ setAuthType }: props) {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[400px]'>
+            <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle>Bank account</CardTitle>
                     <CardDescription>
@@ -343,8 +343,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className='grid w-full items-center'>
-                            <Button className='w-full'>Done</Button>
+                        <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -352,9 +351,10 @@ export default function BankAccountForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
+                            <Button className='w-full'>Done</Button>
                             <CardDescription>
                                 <a
-                                    className='underline text-black cursor-pointer hover:text-originalColor mt-4'
+                                    className='underline text-black cursor-pointer hover:text-originalColor'
                                     onClick={handleSkipForNow}
                                 >
                                     Skip for now

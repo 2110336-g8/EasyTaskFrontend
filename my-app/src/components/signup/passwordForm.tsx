@@ -96,7 +96,7 @@ export default function PasswordForm({ setAuthType }: props) {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[350px]'>
+            <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle>Password</CardTitle>
                     <CardDescription>
@@ -149,8 +149,7 @@ export default function PasswordForm({ setAuthType }: props) {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className='grid w-full items-center gap-1'>
-                            <Button className='w-full'>Next</Button>
+                        <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -158,6 +157,7 @@ export default function PasswordForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
+                            <Button className='w-full'>Next</Button>
                         </CardFooter>
                     </form>
                 </Form>

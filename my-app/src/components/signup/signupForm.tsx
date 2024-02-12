@@ -102,7 +102,7 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[350px]'>
+            <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle>Sign up</CardTitle>
                     <CardDescription>Welcome to Easy Task</CardDescription>
@@ -131,10 +131,7 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className='grid w-full items-center gap-1'>
-                            <Button className='w-full'>
-                                Verify your email
-                            </Button>
+                        <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -142,11 +139,14 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                                     <br></br>
                                 </FormMessage>
                             )}
+                            <Button className='w-full'>
+                                Verify your email
+                            </Button>
                             <CardDescription>
                                 Already have an account?{' '}
                                 <a
                                     href='/login'
-                                    className='underline text-black hover:text-originalColor mt-4'
+                                    className='underline text-black hover:text-originalColor'
                                 >
                                     Log in
                                 </a>

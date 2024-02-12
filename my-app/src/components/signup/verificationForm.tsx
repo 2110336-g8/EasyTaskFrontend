@@ -140,7 +140,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[350px]'>
+            <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle>Verification</CardTitle>
                     <CardDescription>
@@ -277,7 +277,14 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                             </div>
                         </CardContent>
 
-                        <CardFooter className='grid w-full items-center gap-1'>
+                        <CardFooter className='grid w-full items-center gap-3'>
+                            {errors.invalidText ? (
+                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ) : (
+                                <FormMessage>
+                                    <br></br>
+                                </FormMessage>
+                            )}
                             <Button type='submit' className='w-full'>
                                 Done
                             </Button>
@@ -288,13 +295,6 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                             >
                                 Resend code
                             </Button>
-                            {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
-                            ) : (
-                                <FormMessage>
-                                    <br></br>
-                                </FormMessage>
-                            )}
                         </CardFooter>
                     </form>
                 </Form>

@@ -33,7 +33,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
     const router = useRouter();
-    
+
     const {
         setError,
         formState: { errors },
@@ -73,11 +73,11 @@ export default function LoginForm() {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[350px]'>
+            <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
-                <Form {...form}>
+                <Form {...form} >
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <CardContent>
                             <div className='grid w-full items-center gap-4'>
@@ -87,7 +87,9 @@ export default function LoginForm() {
                                         name='email'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black'>Email</FormLabel>
+                                                <FormLabel className='text-base text-black'>
+                                                    Email
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder='user.easytask@email.com'
@@ -105,7 +107,9 @@ export default function LoginForm() {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black'>Password</FormLabel>
+                                                <FormLabel className='text-base text-black'>
+                                                    Password
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder='Enter your password'
@@ -120,10 +124,14 @@ export default function LoginForm() {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className='grid w-full items-center gap-1'>
+                        <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
-                            ):<FormMessage><br></br></FormMessage>}
+                            ) : (
+                                <FormMessage>
+                                    <br></br>
+                                </FormMessage>
+                            )}
                             <Button className='w-full'>Login</Button>
                             <CardDescription>
                                 Doesn't have any account?{' '}
