@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { clientStorage } from '@/utils/storageService';
 
 export const instance: AxiosInstance = axios.create({
-    baseURL: `https://${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
+    baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
     headers: {
         'Content-Type': 'application/json',
     },
