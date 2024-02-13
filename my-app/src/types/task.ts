@@ -34,5 +34,18 @@ export interface TaskCardProps {
     wages: string;
     startDate: string;
     endDate: string;
-    workers: number;
+    workers: string;
+}
+
+export interface ViewTaskProps {
+    taskId: string;
+    title: string;
+    category?: string;
+    image?: string;
+    description?: string;
+    location?: string;
+    wages: string;
+    startDate: string;
+    endDate: string;
+    workers: string;
 }

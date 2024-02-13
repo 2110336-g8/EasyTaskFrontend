@@ -23,7 +23,7 @@ export default async function TaskList() {
         startDate: dayjs(task.startDate).format('DD MMM YYYY'),
         endDate: dayjs(task.endDate).format('DD MMM YYYY'),
         location: task.location,
-        workers: task.workers,
+        workers: task.workers.toLocaleString(),
         wages: task.wages.toLocaleString(),
         category: task.category,
     }));
