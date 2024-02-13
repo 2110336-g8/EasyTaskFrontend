@@ -45,7 +45,7 @@ export default function NavBar() {
                     <li>
                         <button className='flex flex-col justify-center items-center w-24 h-16 p-2 gap-1 text-white font-medium hover:text-gray-300 rounded-md'>
                             <PersonIcon className='h-5 w-5' />
-                            <a href='#' className='text-sm'>
+                            <a href='/logout' className='text-sm'>
                                 Account
                             </a>
                         </button>
