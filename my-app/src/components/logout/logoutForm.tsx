@@ -24,9 +24,9 @@ const LogoutForm: React.FC = () => {
           animate={{ y: 0 }} 
           transition={{ duration: 3, damping: 10, type: "spring" }} 
         >
-          <Button className="flex" onClick={() => { handleToggle(); }}>
+          <button className="flex" onClick={() => { handleToggle(); }}>
             {isLogin ? "Logout" : "Login"}
-          </Button>
+          </button>
         </motion.div>
       </div>
     </div>
