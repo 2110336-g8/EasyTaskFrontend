@@ -1,5 +1,5 @@
 export interface Task {
-    taskId: string;
+    _id: string;
     title: string;
     category?: string;
     description?: string;
@@ -10,19 +10,28 @@ export interface Task {
     startDate: Date;
     endDate: Date;
     workers: number; //
-    customerID: string;
+    customerId: string;
     hiredWorkers: Array<{
         workerId: string;
         status: 'In Progress' | 'Completed' | 'Cancel';
     }>;
 }
+
+export interface AllTasksResponse {
+    taskCount: number;
+    success: boolean;
+    currentPage: number;
+    size: number;
+    tasks: Task[];
+}
+
 export interface TaskCardProps {
     taskId: string;
     title: string;
     category?: string;
     image?: string;
     location?: string;
-    wages: number;
+    wages: string;
     startDate: string;
     endDate: string;
     workers: number;

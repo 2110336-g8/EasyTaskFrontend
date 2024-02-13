@@ -50,7 +50,7 @@ export default function TaskCard(props: TaskCardProps) {
                         <div />
                     )}
                     <div className='font-extrabold text-[24px]/[32px] tracking-[.006em] text-slate-700'>
-                        ฿ {props.wages.toLocaleString()}
+                        ฿ {props.wages}
                     </div>
                 </div>
             </div>
