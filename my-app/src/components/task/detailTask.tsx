@@ -1,130 +1,72 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import Image from 'next/image';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { DateRangePicker } from '@/components/ui/range-date-picker';
+import { ViewTaskProps } from '@/types/task';
+import { ArrowLeftIcon } from 'lucide-react';
 
-interface Task {
-    title: string;
-    description: string;
-    duration: Date;
-    location: string;
-    category: string;
-    teamSize: number;
-    wages: number;
-}
-
-export default function ViewTask() {
+export default function ViewTask(props: ViewTaskProps) {
     return (
-        <div className='flex justify-center items-center min-h-screen'>
-            <Card className='w-[640px]'>
-                <CardHeader className='flex justify-between'>
-                    <div className='flex justify-between'>
-                        <div className='flex items-left'>
-                            <CardTitle className='text-4xl break-words'>
-                                Design task carddddddddddddddd
-                            </CardTitle>
-                        </div>
-                        <div className='flex items-right'>
-                            <Button>Apply Now</Button>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent className='space-y-2'>
-                    <Card className='h-[360px] relative'>
-                        <div className='relative w-full h-full '>
-                            <Image
-                                src='/cyberpunk.png'
-                                alt='Cyberpunk Image'
-                                layout='fill'
-                                objectFit='cover'
-                                className='rounded-lg overflow-hidden'
-                            />
-                        </div>
-                    </Card>
+        <div className='flex justify-center items-center'>
+            <div className='flex flex-col w-[640px] gap-[40px]'>
+                <div className='absolute'>
+                    <a className='relative right-[80px]' href='/task'>
+                        <ArrowLeftIcon className=' w-[40px] h-[40px]' />
+                    </a>
+                </div>
+                <div className='w-full flex flex-row justify-between gap-[8px]'>
+                    <h1 className='max-w-[500px] text-slate-900 text-balance break-words '>
+                        {props.title}
+                    </h1>
+                    <Button className=''>Apply Now</Button>
+                </div>
+                <div className='w-full h-[360px] '>
+                    <img
+                        src={props.image || '/mocktask.png'}
+                        alt=''
+                        className='rounded-lg w-full h-full object-cover'
+                    />
+                </div>
+                <div className='flex flex-col gap-[24px]'>
                     <div className='flex justify-between items-center flex-grow flex-shrink'>
-                        <div className='flex flex-col items-start flex-grow flex-shrink'>
-                            <h1 className='font-inter text-16 text-gray-900 leading-24'>
-                                Category
-                            </h1>
-                            <Button disabled className='rounded-md border border-primary-500 bg-background-bg-background text-primary-500 disabled:opacity-100'>
-                                Graphics
-                            </Button>
+                        <div className='flex flex-col gap-[8px] items-start flex-grow flex-shrink'>
+                            <h4 className='text-slate-900'>Category</h4>
+                            <p className='px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
+                                {props.category}
+                            </p>
                         </div>
-                        <div className='flex flex-col items-center flex-grow flex-shrink'>
-                            <h1 className='font-inter text-16 text-gray-900 leading-24'>
-                                Team
-                            </h1>
+                        <div className='flex flex-col gap-[8px] items-center flex-grow flex-shrink'>
+                            <h4 className='text-slate-900'>Team</h4>
                             <div className='h-10 flex flex-col justify-end'>
-                                <p className='text-center text-[20px] text-slate-700 font-light tracking-tighter'>
-                                    2
-                                </p>
+                                <h4 className='text-center text-slate-700'>
+                                    {props.workers}
+                                </h4>
                             </div>
                         </div>
-                        <div className='flex flex-col items-end flex-grow flex-shrink'>
-                            <h1 className='font-inter text-16 text-gray-900 leading-24'>
-                                All Wages
-                            </h1>
-                            <h2 className='font-inter font-bold text-slate-700 tracking-tighter text-3xl'>
-                                ฿ 2000
-                            </h2>
+                        <div className='flex flex-col gap-[8px] items-end flex-grow flex-shrink'>
+                            <h4 className='text-slate-900'>All Wages</h4>
+                            <h2 className='text-slate-700'>฿ {props.wages}</h2>
                         </div>
                     </div>
-                    <div className="space-y-1 flex flex-col">
-                        <Label htmlFor="description">Description</Label>
-                        <div className="relative flex-1">
-                            <Input
-                            type="text"
-                            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                            className="block w-full resize-none h-[160px] py-2 px-3"
-                            />
-                        </div>
+                    <div className='flex flex-col gap-[8px]'>
+                        <h4 className='text-slate-900'>Description</h4>
+                        <p className='text-slate-600 text-pretty break-words'>
+                            {props.description}
+                        </p>
                     </div>
-                    <div className='space-y-1'>
-                        <Label htmlFor='duration'>Duration</Label>
-                        <CardDescription className='break-all'>
-                            <DateRangePicker
-                                align='start'
-                                locale='en-GB'
-                                showCompare={false}
-                            />
-                        </CardDescription>
+                    <div className='flex flex-col gap-[8px]'>
+                        <h4 className='text-slate-900'>Duration</h4>
+                        <p className='text-slate-600'>
+                            {props.startDate} - {props.endDate}
+                        </p>
                     </div>
-                    <div className='space-y-1'>
-                        <Label htmlFor='duration'>Location</Label>
-                        <Input
-                            type='text'
-                            placeholder='gg map?'
-                            className='block w-full whitespace-pre-line break-words'
-                        />
+                    <div className='flex flex-col gap-[8px]'>
+                        <h4 className='text-slate-900'>Location</h4>
+                        <p className='text-slate-600'>{props.location}</p>
+                        {/* change to map later */}
                     </div>
-                </CardContent>
-                <CardFooter className='flex justify-center'>
-                    <Button className='w-full'>Apply Now</Button>
-                </CardFooter>
-            </Card>
+                </div>
+                <Button className='w-full'>Apply Now</Button>
+            </div>
         </div>
     );
 }
-
-// Sample Task data
-const sampleTask: Task = {
-    title: 'Design task carddddddddddddddd',
-    description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    duration: new Date(),
-    location: 'Some location',
-    category: 'Graphics',
-    teamSize: 2,
-    wages: 2000,
-};
