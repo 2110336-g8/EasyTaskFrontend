@@ -112,13 +112,13 @@ const config = {
                 smaller: ['12px', { lineHeight: '16px' }],
             },
             fontWeight: {
-                h1: 'semi-bold',
-                h2: 'bold',
-                h3: 'medium',
-                h4: 'regular',
-                p: 'regular',
-                small: 'regular',
-                smaller: 'regular',
+                h1: '600', //semibold
+                h2: '700', //bold
+                h3: '500', //medium
+                h4: '400', //regular
+                p: '400', //regular
+                small: '400', //regular
+                smaller: '400', //regular
             },
             letterSpacing: {
                 h1: '-0.012em',
