@@ -1,5 +1,3 @@
-'use client';
-
 import dayjs from 'dayjs';
 import TaskCard from '@/components/taskCard/taskCard';
 import { AllTasksResponse, Task, TaskCardProps } from '@/types/task';
