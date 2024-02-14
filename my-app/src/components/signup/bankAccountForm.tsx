@@ -55,7 +55,7 @@ type props = {
 };
 
 const formSchema = z.object({
-    bankName: z.string(),
+    bankId: z.string(),
     accountName: z.string(),
     accountNumber: z.string(),
 });
@@ -86,7 +86,7 @@ export default function BankAccountForm({ setAuthType }: props) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            bankName: '',
+            bankId: '',
             accountName: '',
             accountNumber: '',
         },
@@ -99,7 +99,7 @@ export default function BankAccountForm({ setAuthType }: props) {
         console.log(values);
         try {
             if (
-                values.bankName.trim() === '' ||
+                values.bankId.trim() === '' ||
                 values.accountName.trim() === '' ||
                 values.accountNumber.trim() === ''
             ) {
@@ -121,16 +121,23 @@ export default function BankAccountForm({ setAuthType }: props) {
                 signupInfo.lastName,
                 signupInfo.password,
                 signupInfo.phoneNumber,
-                values.bankName,
+                values.bankId,
                 values.accountName,
                 values.accountNumber.replace(/-/g, ''),
             );
             if (result?.error) {
                 console.error('Registration failed:', result.details);
-                setError('invalidText', {
-                    type: 'manual',
-                    message: result.details,
-                });
+                if (result.details === 'Email is not verified') {
+                    setError('restartText', {
+                        type: 'manual',
+                        message: 'Email verification has expired, please ',
+                    });
+                } else {
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: result.details,
+                    });
+                }
             } else {
                 console.log('success1');
                 updateSignupInfo({
@@ -169,10 +176,17 @@ export default function BankAccountForm({ setAuthType }: props) {
             );
             if (result?.error) {
                 console.error('Registration failed:', result.details);
-                setError('invalidText', {
-                    type: 'manual',
-                    message: result.details,
-                });
+                if (result.details === 'Email is not verified') {
+                    setError('restartText', {
+                        type: 'manual',
+                        message: 'Email verification has expired, please ',
+                    });
+                } else {
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: result.details,
+                    });
+                }
             } else {
                 updateSignupInfo({
                     email: '',
@@ -196,6 +210,9 @@ export default function BankAccountForm({ setAuthType }: props) {
         }
     }
 
+    async function handleTryAgain() {
+        setAuthType('email');
+    }
     return (
         <div className='flex items-center justify-center h-screen'>
             <Card className='w-[450px] p-10'>
@@ -212,7 +229,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                                 <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
-                                        name='bankName'
+                                        name='bankId'
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className='text-black'>
@@ -346,6 +363,16 @@ export default function BankAccountForm({ setAuthType }: props) {
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
                                 <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                            ) : errors.restartText ? (
+                                <FormMessage>
+                                    {`${errors.restartText.message}`}
+                                    <a
+                                        className='underline cursor-pointer hover:text-originalColor'
+                                        onClick={handleTryAgain}
+                                    >
+                                        try again
+                                    </a>
+                                </FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
@@ -354,7 +381,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                             <Button className='w-full'>Done</Button>
                             <CardDescription>
                                 <a
-                                    className='underline text-black cursor-pointer hover:text-originalColor'
+                                    className='underline cursor-pointer hover:text-originalColor'
                                     onClick={handleSkipForNow}
                                 >
                                     Skip for now
