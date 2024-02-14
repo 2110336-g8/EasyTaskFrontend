@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -26,29 +25,25 @@ import {
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Label } from '@radix-ui/react-select';
 import { toast } from '../ui/use-toast';
 
 import {
     Dispatch,
     SetStateAction,
-    experimental_useEffectEvent,
     useEffect,
     useState,
 } from 'react';
 import { SignupContext } from '@/context/signupInfoContext';
 import React from 'react';
-import { SignupContextType } from '@/types/signup';
 import { setupProfile } from '@/lib/setupProfile';
 import { useRouter } from 'next/navigation';
 import { getAllBanks } from '@/lib/getAllBanks';
 import { Bank } from '@/types/bank';
+import { SignupContextType } from '@/types/auth';
 
 type props = {
     setAuthType: Dispatch<SetStateAction<string>>;

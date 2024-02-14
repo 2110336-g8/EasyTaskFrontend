@@ -1,5 +1,5 @@
+import { EmailResponse } from '@/types/auth';
 import { instance } from '@/utils/axiosInstance';
-import { EmailResponse } from "@/types";
 
 export async function emailVerification(
     email: string

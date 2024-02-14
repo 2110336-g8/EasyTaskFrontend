@@ -1,5 +1,5 @@
+import { OtpResponse } from '@/types/auth';
 import { instance } from '@/utils/axiosInstance';
-import { OtpResponse } from '@/types/otp';
 
 export async function otpVerification(
     email: string, 

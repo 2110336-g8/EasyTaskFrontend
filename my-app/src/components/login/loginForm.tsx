@@ -87,7 +87,7 @@ export default function LoginForm() {
                                         name='email'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black font-p text-p tracking-p'>
+                                                <FormLabel className='text-black font-p text-p tracking-p'>
                                                     Email
                                                 </FormLabel>
                                                 <FormControl>
@@ -108,7 +108,7 @@ export default function LoginForm() {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black font-p text-p tracking-p'>
+                                                <FormLabel className='text-black font-p text-p tracking-p'>
                                                     Password
                                                 </FormLabel>
                                                 <FormControl>

@@ -8,10 +8,8 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -23,16 +21,14 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 
-import { useRouter } from 'next/navigation';
-import { SignupContextType, ISignupInfo } from '@/types/signup';
 import { SignupContext } from '../../context/signupInfoContext';
 import { emailVerification } from '@/lib/signupEmail';
 import React from 'react';
 import { toast } from '../ui/use-toast';
 import { Dispatch, SetStateAction } from 'react';
 import { otpVerification } from '@/lib/OTPVerification';
+import { SignupContextType } from '@/types/auth';
 
 type SignupFormProps = {
     setAuthType: Dispatch<SetStateAction<string>>;

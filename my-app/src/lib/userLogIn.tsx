@@ -1,5 +1,5 @@
+import { LoginResponse } from '@/types/auth';
 import { instance } from '@/utils/axiosInstance';
-import { LoginResponse } from '@/types';
 import { clientStorage } from '@/utils/storageService';
 
 export async function userLogIn(

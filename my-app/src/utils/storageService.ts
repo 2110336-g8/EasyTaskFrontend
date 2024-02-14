@@ -1,4 +1,5 @@
-import { isString, isUser, User } from '@/types';
+import { User } from '@/types/user';
+import { isString, isUser } from './utils';
 
 export interface StorageKeys {
     token: string;

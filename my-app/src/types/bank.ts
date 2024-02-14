@@ -3,3 +3,8 @@ export interface Bank {
     name: string;
     url: string;
 }
+
+export interface AllBanksResponse {
+    success: boolean;
+    banks: Bank[];
+}

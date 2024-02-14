@@ -1,7 +1,7 @@
 "use client"
 
+import { ISignupInfo, SignupContextType } from '@/types/auth';
 import * as React from 'react';
-import { SignupContextType,ISignupInfo } from '@/types/signup';
 
 export const SignupContext = React.createContext<SignupContextType | null>(null);
 

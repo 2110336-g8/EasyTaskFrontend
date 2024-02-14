@@ -1,6 +1,6 @@
+import { ProfileResponse } from '@/types/auth';
 import { instance } from '@/utils/axiosInstance';
 import { clientStorage } from '@/utils/storageService';
-import { ProfileResponse } from '@/types/profile';
 
 export async function setupProfile(
     email: string,

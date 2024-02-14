@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -23,12 +22,11 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { toast } from '../ui/use-toast';
-import { SignupContextType, ISignupInfo } from '@/types/signup';
 import { SignupContext } from '../../context/signupInfoContext';
 import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
+import { SignupContextType } from '@/types/auth';
 
 type props = {
     setAuthType: Dispatch<SetStateAction<string>>;
@@ -98,7 +96,9 @@ export default function PasswordForm({ setAuthType }: props) {
         <div className='flex items-center justify-center h-screen font-sans'>
             <Card className='w-[640px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle className='font-h1 text-h1 tracking-h1'>Password</CardTitle>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>
+                        Password
+                    </CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         You can log in again with this password
                     </CardDescription>
@@ -113,7 +113,9 @@ export default function PasswordForm({ setAuthType }: props) {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='font-p text-p tracking-p'>Password</FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>
+                                                    Password
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         className='font-small text-p tracking-small'
@@ -159,7 +161,9 @@ export default function PasswordForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Next</Button>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
+                                Next
+                            </Button>
                         </CardFooter>
                     </form>
                 </Form>

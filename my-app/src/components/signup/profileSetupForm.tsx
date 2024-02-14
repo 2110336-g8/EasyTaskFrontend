@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -23,14 +22,13 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 
-import { SignupContextType, ISignupInfo } from '@/types/signup';
 import { SignupContext } from '../../context/signupInfoContext';
 import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
+import { SignupContextType } from '@/types/auth';
 
 type props = {
     setAuthType: Dispatch<SetStateAction<string>>;

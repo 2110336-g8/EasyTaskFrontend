@@ -1,5 +1,5 @@
+import { AllBanksResponse } from '@/types/bank';
 import { instance } from '@/utils/axiosInstance';
-import { AllBanksResponse } from '@/types';
 
 export async function getAllBanks(): Promise<AllBanksResponse> {
     return instance
