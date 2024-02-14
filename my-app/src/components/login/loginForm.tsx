@@ -72,10 +72,10 @@ export default function LoginForm() {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen'>
+        <div className='flex items-center justify-center h-screen font-sans'>
             <Card className='w-[450px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Login</CardTitle>
+                    <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>Login</CardTitle>
                 </CardHeader>
                 <Form {...form} >
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -87,12 +87,13 @@ export default function LoginForm() {
                                         name='email'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black'>
+                                                <FormLabel className='text-base text-black font-p text-p tracking-p'>
                                                     Email
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder='user.easytask@email.com'
+                                                        className='font-small text-small tracking-small'
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -107,11 +108,12 @@ export default function LoginForm() {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-base text-black'>
+                                                <FormLabel className='text-base text-black font-p text-p tracking-p'>
                                                     Password
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-small tracking-small'
                                                         placeholder='Enter your password'
                                                         type='password'
                                                         {...field}
@@ -126,18 +128,18 @@ export default function LoginForm() {
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full'>Login</Button>
-                            <CardDescription>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Login</Button>
+                            <CardDescription className='text-slate-500 text-[16px]'>
                                 Doesn't have any account?{' '}
                                 <a
                                     href='/signup'
-                                    className='underline text-black hover:text-originalColor'
+                                    className='text-primary-700 font-bold hover:text-originalColor'
                                 >
                                     Sign up
                                 </a>
