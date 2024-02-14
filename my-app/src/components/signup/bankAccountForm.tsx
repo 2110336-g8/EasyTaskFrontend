@@ -214,11 +214,11 @@ export default function BankAccountForm({ setAuthType }: props) {
         setAuthType('email');
     }
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[450px] p-10'>
+        <div className='flex items-center justify-center h-screen font-sans'>
+            <Card className='w-[640px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Bank account</CardTitle>
-                    <CardDescription>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>Bank account</CardTitle>
+                    <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         You will receive work wages cia this bank account
                     </CardDescription>
                 </CardHeader>
@@ -232,7 +232,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                                         name='bankId'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-black'>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     Bank name
                                                 </FormLabel>
                                                 <Select
@@ -277,11 +277,12 @@ export default function BankAccountForm({ setAuthType }: props) {
                                         name='accountName'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-black'>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     Account name
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='User Easytask'
                                                         {...field}
                                                     />
@@ -297,11 +298,12 @@ export default function BankAccountForm({ setAuthType }: props) {
                                         name='accountNumber'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className='text-black'>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     Account number
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='012-3-45678-9'
                                                         {...field}
                                                         onChange={e => {
@@ -362,12 +364,12 @@ export default function BankAccountForm({ setAuthType }: props) {
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : errors.restartText ? (
                                 <FormMessage>
                                     {`${errors.restartText.message}`}
                                     <a
-                                        className='underline cursor-pointer hover:text-originalColor'
+                                        className='text-error-500 text-[16px] underline cursor-pointer hover:text-originalColor'
                                         onClick={handleTryAgain}
                                     >
                                         try again
@@ -381,7 +383,7 @@ export default function BankAccountForm({ setAuthType }: props) {
                             <Button className='w-full'>Done</Button>
                             <CardDescription>
                                 <a
-                                    className='underline cursor-pointer hover:text-originalColor'
+                                    className='underline cursor-pointer hover:text-originalColor font-p text-p tracking-p text-slate-400'
                                     onClick={handleSkipForNow}
                                 >
                                     Skip for now

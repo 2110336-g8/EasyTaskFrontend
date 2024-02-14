@@ -73,7 +73,7 @@ export default function LoginForm() {
 
     return (
         <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[500px] p-10'>
+            <Card className='w-[640px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>Login</CardTitle>
                 </CardHeader>
