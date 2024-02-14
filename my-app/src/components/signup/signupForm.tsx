@@ -102,7 +102,7 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
 
     return (
         <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[500px] p-10'>
+            <Card className='w-[640px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle className='font-h1 text-h1 tracking-h1'>Sign up</CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>Welcome to Easy Task</CardDescription>
