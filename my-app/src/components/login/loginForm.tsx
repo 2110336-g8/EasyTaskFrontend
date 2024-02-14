@@ -73,7 +73,7 @@ export default function LoginForm() {
 
     return (
         <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[450px] p-10'>
+            <Card className='w-[500px] p-10'>
                 <CardHeader className='text-center'>
                     <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>Login</CardTitle>
                 </CardHeader>
@@ -93,7 +93,7 @@ export default function LoginForm() {
                                                 <FormControl>
                                                     <Input
                                                         placeholder='user.easytask@email.com'
-                                                        className='font-small text-small tracking-small'
+                                                        className='font-small text-p tracking-small'
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -113,7 +113,7 @@ export default function LoginForm() {
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        className='font-small text-small tracking-small'
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='Enter your password'
                                                         type='password'
                                                         {...field}

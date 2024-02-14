@@ -112,11 +112,11 @@ export default function ProfileSetupForm({ setAuthType }: props) {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[450px] p-10'>
+        <div className='flex items-center justify-center h-screen font-sans'>
+            <Card className='w-[500px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Set up your profile</CardTitle>
-                    <CardDescription>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>Set up your profile</CardTitle>
+                    <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         Setting up your profile can gain more opportunities
                     </CardDescription>
                 </CardHeader>
@@ -130,11 +130,12 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                                         name='firstName'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     First name
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='user'
                                                         {...field}
                                                     />
@@ -150,9 +151,10 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                                         name='lastName'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Last name</FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>Last name</FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                    className='font-small text-p tracking-small'
                                                         placeholder='easytask'
                                                         {...field}
                                                     />
@@ -168,11 +170,12 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                                         name='phoneNumber'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     Phone number
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='098-765-4321'
                                                         {...field}
                                                         onChange={e => {
@@ -231,13 +234,13 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full'>Next</Button>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Next</Button>
                         </CardFooter>
                     </form>
                 </Form>
