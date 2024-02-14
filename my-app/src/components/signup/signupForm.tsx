@@ -101,11 +101,11 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[450px] p-10'>
+        <div className='flex items-center justify-center h-screen font-sans'>
+            <Card className='w-[500px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Sign up</CardTitle>
-                    <CardDescription>Welcome to Easy Task</CardDescription>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>Sign up</CardTitle>
+                    <CardDescription className='font-p text-p tracking-p text-slate-400'>Welcome to Easy Task</CardDescription>
                 </CardHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -117,9 +117,10 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                                         name='email'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Email</FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>Email</FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         placeholder='user.easytask@email.com'
                                                         {...field}
                                                     />
@@ -133,20 +134,20 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full'>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
                                 Verify your email
                             </Button>
-                            <CardDescription>
+                            <CardDescription className='text-slate-500 text-[16px]'>
                                 Already have an account?{' '}
                                 <a
                                     href='/login'
-                                    className='underline text-black hover:text-originalColor'
+                                    className='text-primary-700 font-bold hover:text-originalColor'
                                 >
                                     Log in
                                 </a>

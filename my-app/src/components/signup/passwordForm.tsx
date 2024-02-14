@@ -95,11 +95,11 @@ export default function PasswordForm({ setAuthType }: props) {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[450px] p-10'>
+        <div className='flex items-center justify-center h-screen font-sans'>
+            <Card className='w-[500px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Password</CardTitle>
-                    <CardDescription>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>Password</CardTitle>
+                    <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         You can log in again with this password
                     </CardDescription>
                 </CardHeader>
@@ -113,9 +113,10 @@ export default function PasswordForm({ setAuthType }: props) {
                                         name='password'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Password</FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>Password</FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         type='password'
                                                         placeholder='Enter your password'
                                                         {...field}
@@ -132,11 +133,12 @@ export default function PasswordForm({ setAuthType }: props) {
                                         name='confirmedPassword'
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
+                                                <FormLabel className='font-p text-p tracking-p'>
                                                     Confirm your password
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
+                                                        className='font-small text-p tracking-small'
                                                         type='password'
                                                         placeholder='Enter your password again'
                                                         {...field}
@@ -151,13 +153,13 @@ export default function PasswordForm({ setAuthType }: props) {
                         </CardContent>
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full'>Next</Button>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Next</Button>
                         </CardFooter>
                     </form>
                 </Form>

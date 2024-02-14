@@ -139,11 +139,11 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
     }
 
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <Card className='w-[450px] p-10'>
+        <div className='flex items-center justify-center h-screen font-sans'>
+            <Card className='w-[500px] p-10'>
                 <CardHeader className='text-center'>
-                    <CardTitle>Verification</CardTitle>
-                    <CardDescription>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>Verification</CardTitle>
+                    <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         Please enter code in your email for verification
                     </CardDescription>
                 </CardHeader>
@@ -160,6 +160,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -180,6 +181,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         type='text'
                                                         pattern='[0-9]'
                                                         maxLength={1}
@@ -202,6 +204,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         type='text'
                                                         pattern='[0-9]'
                                                         maxLength={1}
@@ -224,6 +227,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -244,6 +248,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -264,6 +269,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
+                                                        className='text-p'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -279,19 +285,19 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
 
                         <CardFooter className='grid w-full items-center gap-3'>
                             {errors.invalidText ? (
-                                <FormMessage>{`${errors.invalidText.message}`}</FormMessage>
+                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
                                 <FormMessage>
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button type='submit' className='w-full'>
+                            <Button type='submit' className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
                                 Done
                             </Button>
                             <Button
                                 type='button'
                                 onClick={handleResendCode}
-                                className='w-full bg-color-white border border-blue-300 text-blue-300 hover:bg-blue-500 hover:text-white'
+                                className='w-full bg-color-white border border-primary-300 text-primary-300 hover:bg-primary-500 hover:text-white'
                             >
                                 Resend code
                             </Button>
