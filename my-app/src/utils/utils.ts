@@ -22,3 +22,8 @@ export function isUser(object: any): object is User {
         (object.bankAccNo === undefined || isString(object.bankAccNo))
     );
 }
+
+export const range = (start:number, end:number) => {
+    let length = end - start + 1;
+    return Array.from({ length }, (_, idx) => idx + start);
+};
