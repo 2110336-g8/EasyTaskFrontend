@@ -1,7 +1,7 @@
 import { AllTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
-export async function getAllTasks(): Promise<AllTasksResponse> {
+export function getAllTasks(): Promise<AllTasksResponse> {
     return instance
         .get('/v1/tasks', {})
         .then(response => {
