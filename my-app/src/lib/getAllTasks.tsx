@@ -1,7 +1,7 @@
 import { AllTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
-export async function getAllTasks(): Promise<AllTasksResponse> {
+export const getAllTasks = async function (): Promise<AllTasksResponse> {
     return instance
         .get('/v1/tasks', {})
         .then(response => {
@@ -15,4 +15,4 @@ export async function getAllTasks(): Promise<AllTasksResponse> {
             // Other errors
             return Promise.reject('Can not fetch tasks');
         });
-}
+};

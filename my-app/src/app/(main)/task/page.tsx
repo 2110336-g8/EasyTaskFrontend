@@ -15,27 +15,29 @@ import { getAllTasks } from '@/lib/getAllTasks';
 import { useEffect, useState } from 'react';
 
 export default function TaskList() {
-
     const [taskList, setTaskList] = useState<TaskCardProps[]>([]);
     useEffect(() => {
         const fetchData = async () => {
-            const taskListData: AllTasksResponse = await getAllTasks();
-            const formattedTaskList: TaskCardProps[] = taskListData.tasks.map(
-                task => ({
-                    taskId: task._id,
-                    image: task.image,
-                    title: task.title,
-                    startDate: dayjs(task.startDate).format('DD MMM YYYY'),
-                    endDate: dayjs(task.endDate).format('DD MMM YYYY'),
-                    location: task.location,
-                    workers: task.workers.toLocaleString(),
-                    wages: task.wages.toLocaleString(),
-                    category: task.category,
-                }),
-            );
-            setTaskList(formattedTaskList);
+            getAllTasks().then((taskListData: AllTasksResponse) => {
+                const formattedTaskList: TaskCardProps[] =
+                    taskListData.tasks.map(task => ({
+                        taskId: task._id,
+                        image: task.image,
+                        title: task.title,
+                        startDate: dayjs(task.startDate).format('DD MMM YYYY'),
+                        endDate: dayjs(task.endDate).format('DD MMM YYYY'),
+                        location: task.location,
+                        workers: task.workers.toLocaleString(),
+                        wages: task.wages.toLocaleString(),
+                        category: task.category,
+                    }));
+                setTaskList(formattedTaskList);
+            });
         };
-        fetchData();
+
+        fetchData().catch(e => {
+            console.error('Cannot fetch data. Error: ', e);
+        });
     }, []);
 
     return (

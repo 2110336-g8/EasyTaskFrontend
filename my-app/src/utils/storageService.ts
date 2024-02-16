@@ -20,7 +20,7 @@ export function isStorageKeys(object: any): object is StorageKeys {
 class ClientStorage {
     private static storageKey: string = 'EasyTaskSession';
 
-    static new(values?: StorageKeys): StorageKeys {
+    static new_key(values?: StorageKeys): StorageKeys {
         if (typeof values === 'undefined')
             return {
                 token: '',
@@ -46,7 +46,7 @@ class ClientStorage {
             return item;
         }
 
-        return this.new();
+        return this.new_key();
     }
 
     static set(values: StorageKeys): boolean {

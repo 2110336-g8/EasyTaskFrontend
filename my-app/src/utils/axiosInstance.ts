@@ -9,19 +9,23 @@ export const instance: AxiosInstance = axios.create({
 });
 
 instance.interceptors.request.use(
-    function (config) {
+    config => {
         const authType = 'Bearer';
         const token = clientStorage.get().token;
         const auth = `${authType} ${token}`;
 
+        console.log(`Intercepted token`, token);
         // Set Authorization header here
+
         if (token) {
             config.headers['Authorization'] = auth;
         }
 
+        console.log(`Intercepted auth header`, config.headers['Authorization']);
+
         return config;
     },
-    function (error) {
+    error => {
         return Promise.reject(error);
     },
 );
