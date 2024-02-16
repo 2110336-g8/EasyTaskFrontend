@@ -13,7 +13,7 @@ instance.interceptors.request.use(
         const authType = 'Bearer';
         const token = clientStorage.get().token;
         const auth = `${authType} ${token}`;
-
+        console.log("toke in axios:",token)
         // Set Authorization header here
         if (token) {
             config.headers['Authorization'] = auth;
