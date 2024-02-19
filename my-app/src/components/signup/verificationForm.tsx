@@ -24,11 +24,11 @@ import {
 
 import { SignupContext } from '../../context/signupInfoContext';
 import { emailVerification } from '@/lib/signupEmail';
-import React from 'react';
 import { toast } from '../ui/use-toast';
 import { Dispatch, SetStateAction } from 'react';
 import { otpVerification } from '@/lib/OTPVerification';
 import { SignupContextType } from '@/types/auth';
+import React, { useState , useEffect} from 'react';
 
 type SignupFormProps = {
     setAuthType: Dispatch<SetStateAction<string>>;
@@ -60,6 +60,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
     const {
         setError,
         formState: { errors },
+        handleSubmit
     } = useForm();
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -76,6 +77,18 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
     const { signupInfo } = React.useContext(SignupContext) as SignupContextType;
     console.log(signupInfo);
 
+    const [showButtonA, setShowButtonA] = useState(true);
+    const [showCountdown, setShowCountdown] = useState(false);
+    const [seconds, setSeconds] = useState(60);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+    useEffect(() => {
+        const isAllFieldsFilled = Object.values(form.getValues()).every(value => value !== '');
+        console.log(isAllFieldsFilled);
+        if (isAllFieldsFilled) {
+            form.handleSubmit(onSubmit)();
+        }
+    }, [form]);
     // const email = useGlobalState();
     // 2. Define a submit handler.
 
@@ -92,6 +105,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                         message: 'Failed to verify OTP, Please try again',
                     });
                 }
+                
             } else {
                 console.log('success1');
                 setAuthType('password');
@@ -105,6 +119,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
             console.error('Unexpected error during authentication:', error);
         }
     };
+
+    
 
     async function handleResendCode() {
         // Logic for the second button (Resend code)
@@ -121,8 +137,24 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                 }
             } else {
                 console.log('success1');
-
+                
                 setAuthType('verification');
+                setShowButtonA(true);
+                setShowCountdown(true);
+                setIsButtonDisabled(true);
+                setSeconds(60);
+                const countdownInterval = setInterval(() => {
+                    setSeconds(prevSeconds => {
+                    if (prevSeconds === 0) {
+                        clearInterval(countdownInterval);
+                        setShowButtonA(true);
+                        setShowCountdown(false);
+                        setIsButtonDisabled(false);
+                        return 0;
+                    }
+                    return prevSeconds - 1;
+                    });
+                }, 1000);
             }
         } catch (error) {
             toast({
@@ -135,9 +167,14 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
     }
 
     return (
-        <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[640px] p-10'>
-                <CardHeader className='text-center'>
+        <div className='flex flex-col items-center justify-center h-screen font-sans'>
+            <img
+                        src='/logoEasyTask.jpg'
+                        alt='Image'
+                        className='image object-cover w-[303px] m-[20px]'
+                />
+            <Card className='w-[640px] h-[600px] p-10'>
+                <CardHeader className='text-center m-[20px]'>
                     <CardTitle className='font-h1 text-h1 tracking-h1'>Verification</CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         Please enter code in your email for verification
@@ -146,7 +183,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <CardContent>
-                            <div className='flex space-x-4'>
+                            <div className='flex space-x-4 m-[20px]'>
                                 {/* First Field */}
                                 <div className='flex flex-col space-y-1.5'>
                                     <FormField
@@ -279,7 +316,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                             </div>
                         </CardContent>
 
-                        <CardFooter className='grid w-full items-center gap-3'>
+                        <CardFooter className='grid w-full items-center gap-3 m-[20px]'>
                             {errors.invalidText ? (
                                 <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -290,13 +327,20 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                             <Button type='submit' className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
                                 Done
                             </Button>
-                            <Button
-                                type='button'
+                            {showCountdown && (
+                                <div >
+                                <p className="text-error-500 text-right">{seconds} s</p>
+                                </div> 
+                            )}
+                            {showButtonA && (
+                                <Button
                                 onClick={handleResendCode}
-                                className='w-full bg-color-white border border-primary-300 text-primary-300 hover:bg-primary-500 hover:text-white'
-                            >
+                                className={`w-full bg-primary-500 text-p font-extra-bold tracking-p text-white ${showCountdown ? 'w-full bg-slate-400 text-p font-extra-bold tracking-p text- cursor-not-allowed' : ''}`}
+                                disabled={isButtonDisabled}
+                                >
                                 Resend code
-                            </Button>
+                                </Button>
+                            )}
                         </CardFooter>
                     </form>
                 </Form>
