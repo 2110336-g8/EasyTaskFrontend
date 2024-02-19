@@ -209,9 +209,14 @@ export default function BankAccountForm({ setAuthType }: props) {
         setAuthType('email');
     }
     return (
-        <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[640px] p-10'>
-                <CardHeader className='text-center'>
+        <div className='flex flex-col items-center justify-center h-screen font-sans'>
+            <img
+                        src='/logoEasyTask.jpg'
+                        alt='Image'
+                        className='image object-cover w-[303px] m-[20px]'
+                />
+            <Card className='w-[640px] h-[600px] p-10 m-[20px]'>
+                <CardHeader className='text-center m-[20px]'>
                     <CardTitle className='font-h1 text-h1 tracking-h1'>Bank account</CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         You will receive work wages cia this bank account
@@ -375,19 +380,18 @@ export default function BankAccountForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full'>Done</Button>
-                            <CardDescription>
-                                <a
-                                    className='underline cursor-pointer hover:text-originalColor font-p text-p tracking-p text-slate-400'
-                                    onClick={handleSkipForNow}
-                                >
-                                    Skip for now
-                                </a>
-                            </CardDescription>
+                            <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>Done</Button>
+                            
                         </CardFooter>
                     </form>
                 </Form>
             </Card>
+            <a
+                className='underline cursor-pointer hover:text-originalColor font-p text-p tracking-p text-slate-400'
+                onClick={handleSkipForNow}
+            >
+                Skip for now
+            </a>
         </div>
     );
 }

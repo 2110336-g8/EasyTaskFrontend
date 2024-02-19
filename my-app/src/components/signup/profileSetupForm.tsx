@@ -110,9 +110,14 @@ export default function ProfileSetupForm({ setAuthType }: props) {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen font-sans'>
-            <Card className='w-[640px] p-10'>
-                <CardHeader className='text-center'>
+        <div className='flex flex-col items-center justify-center h-screen font-sans'>
+            <img
+                        src='/logoEasyTask.jpg'
+                        alt='Image'
+                        className='image object-cover w-[303px] m-[20px]'
+                />
+            <Card className='w-[640px] h-[704px] p-10 m-[20px]'>
+                <CardHeader className='text-center m-[20px]'>
                     <CardTitle className='font-h1 text-h1 tracking-h1'>Set up your profile</CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         Setting up your profile can gain more opportunities
@@ -121,7 +126,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <CardContent>
-                            <div className='grid w-full items-center gap-4'>
+                            <div className='grid w-full items-center gap-4 m-[20px]'>
                                 <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
@@ -230,7 +235,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className='grid w-full items-center gap-3'>
+                        <CardFooter className='grid w-full items-center gap-3 m-[20px]'>
                             {errors.invalidText ? (
                                 <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -238,7 +243,7 @@ export default function ProfileSetupForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Next</Button>
+                            <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>Next</Button>
                         </CardFooter>
                     </form>
                 </Form>
