@@ -110,6 +110,7 @@ const config = {
                 p: ['16px', { lineHeight: '24px' }],
                 small: ['14px', { lineHeight: '20px' }],
                 smaller: ['12px', { lineHeight: '16px' }],
+                button: ['20px', { lineHeight: '28px' }],
             },
             fontWeight: {
                 h1: '600', //semibold
@@ -119,6 +120,7 @@ const config = {
                 p: '400', //regular
                 small: '400', //regular
                 smaller: '400', //regular
+                button: '600',
             },
             letterSpacing: {
                 h1: '-0.012em',
@@ -128,6 +130,7 @@ const config = {
                 p: '0em',
                 small: '0em',
                 smaller: '0em',
+                button: '-0.005em',
             },
         },
     },

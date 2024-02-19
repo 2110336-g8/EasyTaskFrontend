@@ -1,9 +1,15 @@
 import { AllTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
-export const getAllTasks = async function (): Promise<AllTasksResponse> {
+export const getAllTasks = async function ({
+    page = 1,
+    limit = 8,
+}: {
+    page?: number;
+    limit?: number;
+}): Promise<AllTasksResponse> {
     return instance
-        .get('/v1/tasks', {})
+        .post('/v1/tasks/page', { page, limit })
         .then(response => {
             return response.data as AllTasksResponse;
         })
