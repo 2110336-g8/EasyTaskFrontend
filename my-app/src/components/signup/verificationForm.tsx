@@ -127,6 +127,13 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
         console.log('Resending code...');
         try {
             const result = await emailVerification(signupInfo.email);
+            
+            setAuthType('verification');
+            setShowButtonA(true);
+            setShowCountdown(true);
+            setIsButtonDisabled(true);
+            setSeconds(60);
+            
             if (result?.error) {
                 console.error('Authentication failed:', result.error);
                 if (result.error === 'Cannot Create OTP Error') {
@@ -137,12 +144,6 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                 }
             } else {
                 console.log('success1');
-                
-                setAuthType('verification');
-                setShowButtonA(true);
-                setShowCountdown(true);
-                setIsButtonDisabled(true);
-                setSeconds(60);
                 const countdownInterval = setInterval(() => {
                     setSeconds(prevSeconds => {
                     if (prevSeconds === 0) {
