@@ -18,10 +18,10 @@ export interface Task {
 }
 
 export interface AllTasksResponse {
-    taskCount: number;
+    count: number;
     success: boolean;
-    currentPage: number;
-    size: number;
+    page: number;
+    limit: number;
     tasks: Task[];
 }
 

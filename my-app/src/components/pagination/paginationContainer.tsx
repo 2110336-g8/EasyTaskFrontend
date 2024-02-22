@@ -50,7 +50,7 @@ const PaginationContainer: React.FC<{
     let lastPage = paginationRange[paginationRange.length - 1];
 
     return (
-        <Pagination className='my-[40px]'>
+        <Pagination className='text-slate-600 my-[40px]'>
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
