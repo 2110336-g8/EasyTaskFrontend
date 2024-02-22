@@ -2,13 +2,23 @@
 import React, { useState } from 'react';
 import MapComponent from '@/components/google/map';
 
-const Home = () => {
+const CreateTask = () => {
+    const [position, setPosition] = useState({ lat: 0, lng: 0 });
+
+    const handlePositionChange = (newPosition: {
+        lat: number;
+        lng: number;
+    }) => {
+        setPosition(newPosition);
+    };
+
     return (
         <div>
-            <h1>My Next.js App with Google Maps</h1>
-            <MapComponent />
+            <MapComponent onPositionChange={handlePositionChange} />
+            <p>Latitude: {position.lat}</p>
+            <p>Longitude: {position.lng}</p>
         </div>
     );
 };
 
-export default Home;
+export default CreateTask;

@@ -74,10 +74,7 @@ export default function CreateTaskForm() {
     return (
         <div className='flex items-center justify-center h-screen font-sans'>
             <Card className='w-[640px] p-10'>
-                <CardHeader className='text-center'>
-                    <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>Login</CardTitle>
-                </CardHeader>
-                <Form {...form} >
+                <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <CardContent>
                             <div className='grid w-full items-center gap-4'>
@@ -88,11 +85,16 @@ export default function CreateTaskForm() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className='text-black font-p text-p tracking-p'>
-                                                    Email
+                                                    Title
+                                                    <span
+                                                        style={{ color: 'red' }}
+                                                    >
+                                                        *
+                                                    </span>
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder='user.easytask@email.com'
+                                                        placeholder='Enter task title here'
                                                         className='font-small text-p tracking-small'
                                                         {...field}
                                                     />
@@ -134,7 +136,9 @@ export default function CreateTaskForm() {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>Login</Button>
+                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
+                                Login
+                            </Button>
                             <CardDescription className='text-slate-500 text-[16px]'>
                                 Doesn't have any account?{' '}
                                 <a
