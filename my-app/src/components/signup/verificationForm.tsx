@@ -81,14 +81,40 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
     const [showCountdown, setShowCountdown] = useState(false);
     const [seconds, setSeconds] = useState(60);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [prevOTP,setPrevOTP] = useState('');
+    const [countdownStarted, setCountdownStarted] = useState(false);
+    const [started, setStarted] = useState(false);
 
+    // useEffect(() => {
+    //     console.log("countdownStarted value:", countdownStarted);
+    //     if (!countdownStarted) {
+    //         // setCountdownStarted(true);
+    //         startCountdown();
+    //         console.log('start');
+    //     }
+    // },[]);
+
+    if (!countdownStarted) {
+        startCountdown();
+        setCountdownStarted(true);
+        console.log('start');
+    }
+    
     useEffect(() => {
+
         const isAllFieldsFilled = Object.values(form.getValues()).every(value => value !== '');
+        const allValues = Object.values(form.getValues());
+        const combinedValues = allValues.join('');
+        const isNewOTP = prevOTP != combinedValues;
+
+        console.log(combinedValues);
         console.log(isAllFieldsFilled);
-        if (isAllFieldsFilled) {
+        if (isAllFieldsFilled && isNewOTP) {
+            setPrevOTP(combinedValues);
             form.handleSubmit(onSubmit)();
         }
-    }, [form]);
+    }, [form.watch()]);
+    
     // const email = useGlobalState();
     // 2. Define a submit handler.
 
@@ -120,16 +146,36 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
         }
     };
 
+    async function startCountdown() {
+        setShowButtonA(true);
+        setShowCountdown(true);
+        setIsButtonDisabled(true);
+        setCountdownStarted(true);
+;       setSeconds(60);
     
+        const countdownInterval = setInterval(() => {
+            setSeconds(prevSeconds => {
+                if (prevSeconds === 0) {
+                    clearInterval(countdownInterval);
+                    setShowButtonA(true);
+                    setShowCountdown(false);
+                    setIsButtonDisabled(false);
+                    return 0;
+                }
+                return prevSeconds - 1;
+            });
+        }, 1000);
+    }
 
     async function handleResendCode() {
         // Logic for the second button (Resend code)
         console.log('Resending code...');
         try {
             const result = await emailVerification(signupInfo.email);
+            startCountdown();
             if (result?.error) {
                 console.error('Authentication failed:', result.error);
-                if (result.error === 'Cannot Create OTP Error') {
+                if (result.details === 'This email alredy generated otp less than 1 min, Please try again later') {
                     setError('invalidText', {
                         type: 'manual',
                         message: result.details,
@@ -138,23 +184,6 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
             } else {
                 console.log('success1');
                 
-                setAuthType('verification');
-                setShowButtonA(true);
-                setShowCountdown(true);
-                setIsButtonDisabled(true);
-                setSeconds(60);
-                const countdownInterval = setInterval(() => {
-                    setSeconds(prevSeconds => {
-                    if (prevSeconds === 0) {
-                        clearInterval(countdownInterval);
-                        setShowButtonA(true);
-                        setShowCountdown(false);
-                        setIsButtonDisabled(false);
-                        return 0;
-                    }
-                    return prevSeconds - 1;
-                    });
-                }, 1000);
             }
         } catch (error) {
             toast({
@@ -324,9 +353,6 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button type='submit' className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
-                                Done
-                            </Button>
                             {showCountdown && (
                                 <div >
                                 <p className="text-error-500 text-right">{seconds} s</p>
