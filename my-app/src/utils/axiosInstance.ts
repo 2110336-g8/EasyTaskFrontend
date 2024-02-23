@@ -14,14 +14,14 @@ instance.interceptors.request.use(
         const token = clientStorage.get().token;
         const auth = `${authType} ${token}`;
 
-        console.log(`Intercepted token`, token);
+        // console.log(`Intercepted token`, token);
         // Set Authorization header here
 
         if (token) {
             config.headers['Authorization'] = auth;
         }
 
-        console.log(`Intercepted auth header`, config.headers['Authorization']);
+        // console.log(`Intercepted auth header`, config.headers['Authorization']);
 
         return config;
     },

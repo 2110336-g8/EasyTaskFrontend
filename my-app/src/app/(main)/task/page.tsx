@@ -1,23 +1,79 @@
 'use client';
 import dayjs from 'dayjs';
-import TaskCard from '@/components/taskCard/taskCard';
+import TaskCard from '@/components/taskList/taskCard';
 import PaginationContainer from '@/components/pagination/paginationContainer';
 import { AllTasksResponse, TaskCardProps } from '@/types/task';
 import { getAllTasks } from '@/lib/getAllTasks';
 import { useEffect, useState } from 'react';
+import SearchBar from '@/components/ui/searchbar';
+import { toast } from '@/components/ui/use-toast';
+import FilterTaskList from '@/components/taskList/filter';
+
+type WageRange = [number | null, number | null];
 
 export default function TaskList() {
     const limit = 8;
     const [taskList, setTaskList] = useState<TaskCardProps[]>([]);
-    const [page, setPage] = useState(1);
-    const [totalPageCount, setTotalPageCount] = useState(1);
+    const [page, setPage] = useState<number>(1);
+    const [totalPageCount, setTotalPageCount] = useState<number>(1);
+    const [categoryFilters, setCategoryFilters] = useState<Set<string>>(
+        new Set(),
+    );
+    const [isIndividual, setIndividual] = useState<boolean | null>(null);
+    const [wageRangeFilters, setWageRangeFilters] = useState<Set<WageRange>>(
+        new Set(),
+    );
+
+    const updateCategoryFilters = (value: string) => {
+        const newFilters = new Set(categoryFilters);
+        if (newFilters.has(value)) {
+            newFilters.delete(value);
+        } else {
+            newFilters.add(value);
+        }
+        setCategoryFilters(newFilters);
+    };
+
+    const updateWageRangeFilters = (value: WageRange) => {
+        const newFilters = new Set(wageRangeFilters);
+        if (newFilters.has(value)) {
+            newFilters.delete(value);
+        } else {
+            newFilters.add(value);
+        }
+        setWageRangeFilters(newFilters);
+    };
+
+    const updateIndividualFilter = (newIndiv: boolean) => {
+        if (isIndividual === null) {
+            setIndividual(newIndiv);
+        } else {
+            if (newIndiv === isIndividual) {
+                setIndividual(null);
+            } else {
+                setIndividual(newIndiv);
+            }
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
-            // console.log('page', page);
-            getAllTasks({ page, limit }).then(
-                (taskListData: AllTasksResponse) => {
-                    // console.log(taskListData)
+            console.log('page', page);
+            console.log('categoryFilters', categoryFilters);
+            console.log('isIndividual', isIndividual);
+            getAllTasks({
+                page,
+                limit,
+                ...(categoryFilters.size > 0 && {
+                    categoryFilters: Array.from(categoryFilters),
+                }),
+                ...(isIndividual !== null && { isIndividual }),
+                ...(wageRangeFilters.size > 0 && {
+                    wageRangeFilters: Array.from(wageRangeFilters),
+                }),
+            })
+                .then((taskListData: AllTasksResponse) => {
+                    console.log(taskListData);
                     const formattedTaskList: TaskCardProps[] =
                         taskListData.tasks.map(task => ({
                             taskId: task._id,
@@ -27,37 +83,57 @@ export default function TaskList() {
                                 'DD MMM YYYY',
                             ),
                             endDate: dayjs(task.endDate).format('DD MMM YYYY'),
-                            location: task.location,
+                            location: task.location?.name,
                             workers: task.workers.toLocaleString(),
                             wages: task.wages.toLocaleString(),
                             category: task.category,
                         }));
                     setTaskList(formattedTaskList);
                     setTotalPageCount(
-                        Math.ceil(taskListData.count/ limit || 1),
+                        Math.ceil(taskListData.count / limit || 1),
                     );
-                },
-            );
+                })
+                .catch(e => {
+                    toast({
+                        variant: 'destructive',
+                        title: 'Uh oh! Something went wrong.',
+                        description: 'There was a problem with your request.',
+                    });
+                    console.error('Cannot fetch data. Error: ', e);
+                });
         };
-
-        fetchData().catch(e => {
-            console.error('Cannot fetch data. Error: ', e);
-        });
-    }, [page]);
+        fetchData();
+    }, [page, categoryFilters, isIndividual]);
 
     return (
-        <main className='flex flex-col'>
-            <h4 className='text-slate-500 mb-[24px]'>Recently posted</h4>
-            <div className='grid grid-cols-12 h-full w-full gap-y-[24px] gap-x-[16px] justify-items-center'>
-                {taskList.map((task, index) => (
-                    <TaskCard key={index} {...task} />
-                ))}
-            </div>
-            <PaginationContainer
-                setPage={setPage}
-                totalPageCount={totalPageCount}
-                currentPage={page}
+        <main className='flex flex-col gap-[40px] items-center '>
+            <SearchBar />
+            <FilterTaskList
+                updateCategoryFilters={updateCategoryFilters}
+                updateIndividualFilter={updateIndividualFilter}
+                updateWageRangeFilters={updateWageRangeFilters}
             />
+            {taskList.length > 0 ? (
+                <div className='w-fit'>
+                    <h4 className='text-slate-500 mb-[24px]'>
+                        Recently posted
+                    </h4>
+                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-full w-fit gap-x-[16px] gap-y-[24px] justify-between'>
+                        {taskList.map((task, index) => (
+                            <TaskCard key={index} {...task} />
+                        ))}
+                    </div>
+                    <PaginationContainer
+                        setPage={setPage}
+                        totalPageCount={totalPageCount}
+                        currentPage={page}
+                    />
+                </div>
+            ) : (
+                <h4 className='w-fit text-slate-500 mb-[24px]'>
+                    There is no matched task
+                </h4>
+            )}
         </main>
     );
 }

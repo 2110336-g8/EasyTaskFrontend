@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='en' className='h-full'>
-            <body className={`${inter.className} relative m-0 h-full bg-white`}>
+            <body className={`${inter.className} relative m-0 p-0 h-full bg-white`}>
                 {children}
                 <Toaster />
             </body>
