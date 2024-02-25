@@ -9,13 +9,13 @@ export default function SideNav() {
                 <SmileIcon className="size-[24px]"></SmileIcon>
                 <p>Your Profile</p>
             </Link>
-            <Link href='payment' className="flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200">
+            <Link href='bankAccount' className="flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200">
                 <Landmark className="size-[24px]"></Landmark>
                 <p>Bank Account</p>
             </Link>
-            <Link href='incomes' className="flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200">
+            <Link href='adsPayment' className="flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200">
                 <Banknote className="size-[24px]"></Banknote>
-                <p>Incomes</p>
+                <p>Ads Payment</p>
             </Link>
             <Link href='control' className="flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200">
                 <User className="size-[24px]"></User>
