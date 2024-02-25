@@ -40,16 +40,19 @@ export default function PersonalInfo() {
     const [isEditing, setEditing] = useState(false)
 
     useEffect(() => {
-        form.resetField('firstName')
-        form.resetField('lastName')
-        form.resetField('phoneNumber')
+        form.reset()
     }, [isEditing])
 
     const schema: ZodType<PersonalData> = z.object({
         firstName: z.string().max(64, { message: "First name cannot be longer than 64 characters" }),
         lastName: z.string().max(64, { message: "Last name cannot be longer than 64 characters" }),
         phoneNumber: z.string(),
-    })
+    }).refine(
+        data => [0, 12].includes(data.phoneNumber.length), {
+        message: 'Please fill a valid phone number',
+        path: ['phoneNumber']
+    }
+    )
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -118,6 +121,7 @@ export default function PersonalInfo() {
                                         </FormControl>
                                     </FormItem>
                                 )} />
+                            {form.formState.errors.firstName && <p className="text-error-500">{form.formState.errors.firstName.message}</p>}
                             <FormField control={form.control}
                                 name='lastName'
                                 render={({ field }) => (
@@ -128,6 +132,7 @@ export default function PersonalInfo() {
                                         </FormControl>
                                     </FormItem>
                                 )} />
+                            {form.formState.errors.lastName && <p className="text-error-500">{form.formState.errors.lastName.message}</p>}
                             <FormField control={form.control}
                                 name='phoneNumber'
                                 render={({ field }) => (
@@ -157,6 +162,7 @@ export default function PersonalInfo() {
                                         </FormControl>
                                     </FormItem>
                                 )} />
+                            {form.formState.errors.phoneNumber && <p className="text-error-500">{form.formState.errors.phoneNumber.message}</p>}
                         </div>
                     </Form> :
                     <div className="w-full grid grid-cols-3 gap-x-[16px] gap-y-[24px] pt-[12px] item-center">
