@@ -1,8 +1,7 @@
 'use client';
 
+import { WageRange } from '@/app/(main)/task/page';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
-
-type WageRange = [number | null, number | null];
 
 const mockCategory: string[] = [
     'Graphic Design',
@@ -21,15 +20,15 @@ const mockWageRange: WageRange[] = [
     [5000, 10000],
     [10000, 50000],
     [50000, 100000],
-    [100000, null],
+    [100000, -1],
 ];
 
 const formatWageRange = (range: WageRange): string => {
     let formattedRange: string;
 
-    if (range[0] === null && range[1] !== null) {
+    if (range[0] === -1 && range[1] !== -1) {
         formattedRange = `${range[1]?.toLocaleString() ?? 'N/A'}-`;
-    } else if (range[0] !== null && range[1] === null) {
+    } else if (range[0] !== -1 && range[1] === -1) {
         formattedRange = `${range[0]?.toLocaleString() ?? 'N/A'}+`;
     } else {
         formattedRange = `${range[0]?.toLocaleString() ?? 'N/A'}-${range[1]?.toLocaleString() ?? 'N/A'}`;

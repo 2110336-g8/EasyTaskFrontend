@@ -1,27 +1,31 @@
+import { WageRange } from '@/app/(main)/task/page';
 import { AllTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
 export const getAllTasks = async function ({
     page = 1,
     limit = 8,
+    name,
     categoryFilters,
     isIndividual,
+    wageRangeFilters
 }: {
     page: number;
     limit: number;
+    name?: string;
     categoryFilters?: string[];
     isIndividual?: boolean;
-    // wageRangeFilters?: ;
+    wageRangeFilters?: WageRange[];
 }): Promise<AllTasksResponse> {
     return instance
         .post('/v1/tasks/page', {
             page,
             limit,
+            name,
             filter: {
                 category: categoryFilters,
                 individual: isIndividual,
-                // startingWage,
-                // endingWage,
+                wages: wageRangeFilters
             },
         })
         .then(response => {
