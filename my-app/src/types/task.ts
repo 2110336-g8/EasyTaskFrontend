@@ -31,6 +31,11 @@ export interface AllTasksResponse {
     tasks: Task[];
 }
 
+export interface GetCategoriesResponse {
+    success: boolean;
+    categories: string[];
+}
+
 export interface TaskCardProps {
     taskId: string;
     title: string;

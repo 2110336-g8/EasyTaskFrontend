@@ -1,5 +1,5 @@
 import { WageRange } from '@/app/(main)/task/page';
-import { AllTasksResponse } from '@/types/task';
+import { AllTasksResponse, GetCategoriesResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
 export const getAllTasks = async function ({
@@ -38,5 +38,22 @@ export const getAllTasks = async function ({
             }
             // Other errors
             return Promise.reject('Can not fetch tasks');
+        });
+};
+
+export const getCategories = async function (): Promise<GetCategoriesResponse> {
+    return instance
+        .get('/v1/tasks/categories', {
+        })
+        .then(response => {
+            return response.data as GetCategoriesResponse;
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 500) {
+                // Unauthorized
+                return error.response.data as GetCategoriesResponse;
+            }
+            // Other errors
+            return Promise.reject('Can not fetch categories');
         });
 };

@@ -2,17 +2,10 @@
 
 import { WageRange } from '@/app/(main)/task/page';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
-
-const mockCategory: string[] = [
-    'Graphic Design',
-    'Marketing',
-    'Translation',
-    'Images and Sound',
-    'Programming and Tech',
-    'Consultant',
-    'Management',
-    'General',
-];
+import { toast } from '../ui/use-toast';
+import { useEffect, useState } from 'react';
+import { getCategories} from '@/lib/getAllTasks';
+import { GetCategoriesResponse } from '@/types/task';
 
 const mockWageRange: WageRange[] = [
     [0, 1000],
@@ -46,10 +39,29 @@ export default function FilterTaskList({
     updateIndividualFilter: (isIndividual: boolean) => void;
     updateWageRangeFilters: (range: WageRange) => void;
 }) {
+    const [categories, setCategories] = useState<string[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            getCategories()
+                .then((categoriesData: GetCategoriesResponse) => {
+                    setCategories(categoriesData.categories);
+                })
+                .catch(e => {
+                    toast({
+                        variant: 'destructive',
+                        title: 'Uh oh! Something went wrong.',
+                        description: 'There was a problem with your request.',
+                    });
+                    console.error('Cannot fetch data. Error: ', e);
+                });
+        };
+        fetchData();
+    }, []);
+
     return (
         <div className='flex flex-col gap-[16px]'>
             <ToggleGroup type='multiple'>
-                {mockCategory.map((category, index) => (
+                {categories.map((category, index) => (
                     <ToggleGroupItem
                         onClick={() => updateCategoryFilters(category)}
                         value={category}
