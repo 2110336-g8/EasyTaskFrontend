@@ -1,24 +1,19 @@
-'use client';
-import React, { useState } from 'react';
+import React from 'react';
+import Map from '@/components/createTask/openStreetMap';
 import MapComponent from '@/components/google/map';
-
-const CreateTask = () => {
-    const [position, setPosition] = useState({ lat: 0, lng: 0 });
-
-    const handlePositionChange = (newPosition: {
-        lat: number;
-        lng: number;
-    }) => {
-        setPosition(newPosition);
-    };
-
+const TaskCreatePage: React.FC = () => {
     return (
-        <div>
-            <MapComponent onPositionChange={handlePositionChange} />
-            <p>Latitude: {position.lat}</p>
-            <p>Longitude: {position.lng}</p>
+        <div className='flex justify-center items-center min-h-screen'>
+            <MapComponent
+                onPositionChange={function (position: {
+                    lat: number;
+                    lng: number;
+                }): void {
+                    throw new Error('Function not implemented.');
+                }}
+            />
         </div>
     );
 };
 
-export default CreateTask;
+export default TaskCreatePage;
