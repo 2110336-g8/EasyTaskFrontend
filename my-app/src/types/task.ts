@@ -1,11 +1,15 @@
 export interface Task {
     _id: string;
     title: string;
-    category?: string;
+    category: string;
     description?: string;
     image?: string;
-    location?: string;
-    state: 'New' | 'In Progress' | 'Completed' | 'Cancel';
+    location?: {
+        name: string;
+        latitude: number;
+        longitude: number;
+    };
+    state: 'Open' | 'In Progress' | 'Completed' | 'Cancel';
     wages: number;
     startDate: Date;
     endDate: Date;
@@ -15,6 +19,8 @@ export interface Task {
         workerId: string;
         status: 'In Progress' | 'Completed' | 'Cancel';
     }>;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface AllTasksResponse {
@@ -25,10 +31,15 @@ export interface AllTasksResponse {
     tasks: Task[];
 }
 
+export interface GetCategoriesResponse {
+    success: boolean;
+    categories: string[];
+}
+
 export interface TaskCardProps {
     taskId: string;
     title: string;
-    category?: string;
+    category: string;
     image?: string;
     location?: string;
     wages: string;
@@ -40,7 +51,7 @@ export interface TaskCardProps {
 export interface ViewTaskProps {
     taskId: string;
     title: string;
-    category?: string;
+    category: string;
     image?: string;
     description?: string;
     location?: string;
@@ -49,3 +60,5 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
 }
+
+//*=================Create Task====================*//
