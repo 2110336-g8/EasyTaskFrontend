@@ -3,10 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import { getSelfUser } from "@/lib/getUser"
 import { User } from "@/types/user"
+import { instance } from "@/utils/axiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormInput, Pencil, Save, X } from "lucide-react";
+import { AxiosResponse } from "axios";
+import { Pencil, Save, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form";
@@ -20,28 +23,11 @@ interface PersonalData {
 
 export default function PersonalInfo() {
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user: User | null = await getSelfUser();
-            if (!user) {
-                return;
-            }
-            setFirstName(user.firstName);
-            setLastName(user.lastName);
-            setPhoneNumber(user.phoneNumber ?? '');
-        }
-        fetchUser();
-    }, [])
-
-    const [isEditing, setEditing] = useState(false)
-
-    useEffect(() => {
-        form.reset()
-    }, [isEditing])
+    const [isEditing, setEditing] = useState(false);
 
     const schema: ZodType<PersonalData> = z.object({
         firstName: z.string().max(64, { message: "First name cannot be longer than 64 characters" }),
@@ -51,8 +37,7 @@ export default function PersonalInfo() {
         data => [0, 12].includes(data.phoneNumber.length), {
         message: 'Please fill a valid phone number',
         path: ['phoneNumber']
-    }
-    )
+    })
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -63,27 +48,49 @@ export default function PersonalInfo() {
         },
     });
 
-    const router = useRouter();
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await getSelfUser();
+            if (!user) {
+                return;
+            }
+            setFirstName(user.firstName);
+            setLastName(user.lastName);
+            setPhoneNumber(user.phoneNumber ?? '');
+        }
+        fetchUser();
+    }, [])
+
+    useEffect(() => {
+        form.reset();
+    }, [isEditing])
 
     const submitData = async (values: z.infer<typeof schema>) => {
-        console.log("Submitting data")
         const data = form.getValues();
         const toUpdate = {
             firstName, lastName, phoneNumber
         }
         if (data.firstName.trim()) {
-            toUpdate.firstName = data.firstName.trim()
+            toUpdate.firstName = data.firstName.trim();
         }
         if (data.lastName.trim()) {
-            toUpdate.firstName = data.firstName.trim()
+            toUpdate.lastName = data.lastName.trim();
         }
         if (data.phoneNumber.trim()) {
-            toUpdate.firstName = data.phoneNumber.replace(/-/g, '')
+            toUpdate.phoneNumber = data.phoneNumber.replace(/-/g, '');
         }
-        {
-            /* CALL UPDATE API */
+        try {
+            const user = await getSelfUser();
+            await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            toast({
+                variant: 'destructive',
+                title: 'Uh oh! Something went wrong.',
+                description: `${(error as any).response.data.error}`,
+            });
         }
-        window.location.reload()
     }
 
     return (
