@@ -1,10 +1,10 @@
 "use client"
 
 import { clientStorage } from '@/utils/storageService';
-import LoginNavbar from './LoginNavbar';
-import LogoutNavbar from './LogoutNavbar';
+import LoginNavbar from './bar/LoginNavbar';
+import LogoutNavbar from './bar/LogoutNavbar';
 
-export default function Navbar() {
+export default function xNavbar() {
     const isLoggedIn = !!clientStorage.get().token;
 
     return (
