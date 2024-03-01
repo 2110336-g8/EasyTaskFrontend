@@ -1,6 +1,6 @@
 "use client"
 
-import NavBar from '@/components/homepage/navbar/navBar';
+import NavBar from '@/components/homepage/navbar/navbar';
 import Footer from '@/components/homepage/footer';
 import LogoutForm from "@/components/logout/logoutForm";
 

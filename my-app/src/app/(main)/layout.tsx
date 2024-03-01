@@ -1,4 +1,4 @@
-import NavBar from '@/components/homepage/navbar/navBar';
+import NavBar from '@/components/homepage/navbar/navbar';
 import '../globals.css';
 import Footer from '@/components/homepage/footer';
 import ProtectedRoute from '@/components/ProtectedRoute';
