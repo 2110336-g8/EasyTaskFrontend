@@ -4,7 +4,7 @@ import { clientStorage } from '@/utils/storageService';
 import LoginNavbar from './bar/LoginNavbar';
 import LogoutNavbar from './bar/LogoutNavbar';
 
-export default function xNavbar() {
+export default function Navbar() {
     const isLoggedIn = !!clientStorage.get().token;
 
     return (
