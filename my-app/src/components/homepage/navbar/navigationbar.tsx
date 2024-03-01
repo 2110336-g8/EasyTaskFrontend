@@ -1,3 +1,5 @@
+"use client"
+
 import { clientStorage } from '@/utils/storageService';
 import LoginNavbar from './bar/LoginNavbar';
 import LogoutNavbar from './bar/LogoutNavbar';
