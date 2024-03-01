@@ -7,6 +7,8 @@ import LogoutNavbar from './bar/LogoutNavbar';
 export default function Navbar() {
     const isLoggedIn = !!clientStorage.get().token;
 
+    console.log(isLoggedIn);
+
     return (
         <div>
             {!isLoggedIn ? (
