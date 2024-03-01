@@ -1,9 +1,15 @@
 import { clientStorage } from '@/utils/storageService';
 import LoginNavbar from './bar/LoginNavbar';
 import LogoutNavbar from './bar/LogoutNavbar';
+import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-    const isLoggedIn = !!clientStorage.get().token;
+
+    const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
+
+    useEffect(() => {
+        setIsLoggedIn(!!clientStorage.get().token);
+    }, [clientStorage]);
 
     console.log(isLoggedIn);
 
