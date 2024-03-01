@@ -1,6 +1,6 @@
 import '../globals.css';
 import Footer from '@/components/homepage/footer';
-import Navbar from '@/components/homepage/navbar/navbar';
+import Navbar from '@/components/homepage/navbar/navigationbar';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default async function MainLayout({
