@@ -1,4 +1,3 @@
-
 import '../globals.css';
 import Footer from '@/components/homepage/footer';
 import Navbar from '@/components/homepage/navbar/navbar';

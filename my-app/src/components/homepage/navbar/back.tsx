@@ -5,7 +5,7 @@ import {
     PersonIcon,
 } from '@radix-ui/react-icons';
 
-export default function NavBarbacked() {
+export default function Back() {
     return (
         <div className='fixed left-0 top-0 right-0 bg-primary-500 w-full h-[72px] z-50 flex items-center justify-center'>
             <div className='h-full w-full desktop:w-[1200px] desktop-l:w-[1328px] flex items-center justify-between'>
