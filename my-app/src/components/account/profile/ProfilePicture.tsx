@@ -185,7 +185,6 @@ export default function ProfilePicture() {
                                         className='h-[36px] px-[8px] gap-[8px] bg-slate-500'
                                     >
                                         <RefreshCcw className='size-[24px]'></RefreshCcw>
-                                        <p className='text-'>Reset</p>
                                     </Button>
                                 )}
                                 {

@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { CommandList } from '@/components/ui/command';
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
@@ -21,14 +21,9 @@ import {
     PopoverTrigger,
     PopoverContent,
 } from '@radix-ui/react-popover';
-import {
-    Command,
-    CommandInput,
-    CommandEmpty,
-    CommandGroup,
-    CommandItem,
-} from 'cmdk';
-import { Check, ChevronsUpDown, Pencil, Save, X } from 'lucide-react';
+import { Command, CommandGroup, CommandItem } from 'cmdk';
+import { px } from 'framer-motion';
+import { ChevronDown, Pencil, Save, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect, ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
@@ -212,52 +207,57 @@ export default function BankAccountInfo() {
                                                         {getSelectedBank(
                                                             field.value,
                                                         )}
-                                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                        <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                     </Button>
                                                 </PopoverTrigger>
-                                                <PopoverContent>
+                                                <PopoverContent className='bg-slate-50 w-[422px] px-[12px] py-[8px] rounded-[16px]'>
                                                     <Command>
-                                                        <CommandGroup>
-                                                            {banks.map(bank => (
-                                                                <div
-                                                                    key={parseInt(
-                                                                        bank.id,
-                                                                    )}
-                                                                    // value={
-                                                                    //     bank.id
-                                                                    // }
-                                                                    onSelect={value => {
-                                                                        // form.setValue(
-                                                                        //     'bankId',
-                                                                        //     value,
-                                                                        // );
-                                                                        setOpen(
-                                                                            false,
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <div className='flex flex-row gap-x-[16px]'>
-                                                                        <Image
-                                                                            src={
-                                                                                bank.url
+                                                        <CommandList className='max-h-[500px]'>
+                                                            <CommandGroup>
+                                                                {banks.map(
+                                                                    bank => (
+                                                                        <CommandItem
+                                                                            key={parseInt(
+                                                                                bank.id,
+                                                                            )}
+                                                                            value={
+                                                                                bank.id
                                                                             }
-                                                                            alt=''
-                                                                            width={
-                                                                                24
-                                                                            }
-                                                                            height={
-                                                                                24
-                                                                            }
-                                                                        />
-                                                                        <p>
-                                                                            {
-                                                                                bank.name
-                                                                            }
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </CommandGroup>
+                                                                            onSelect={value => {
+                                                                                form.setValue(
+                                                                                    'bankId',
+                                                                                    value,
+                                                                                );
+                                                                                setOpen(
+                                                                                    false,
+                                                                                );
+                                                                            }}
+                                                                            className='py-[8px]'
+                                                                        >
+                                                                            <div className='flex flex-row gap-x-[16px]'>
+                                                                                <Image
+                                                                                    src={
+                                                                                        bank.url
+                                                                                    }
+                                                                                    alt=''
+                                                                                    width={
+                                                                                        24
+                                                                                    }
+                                                                                    height={
+                                                                                        24
+                                                                                    }
+                                                                                />
+                                                                                <p>
+                                                                                    {
+                                                                                        bank.name
+                                                                                    }
+                                                                                </p>
+                                                                            </div>
+                                                                        </CommandItem>
+                                                                    ),
+                                                                )}
+                                                            </CommandGroup>
+                                                        </CommandList>
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
@@ -356,15 +356,23 @@ export default function BankAccountInfo() {
                     </Form>
                 ) : (
                     <div className='w-full grid grid-cols-3 gap-x-[16px] gap-y-[24px] pt-[12px] item-center'>
-                        <p>First Name</p>
-                        <p className='col-span-2 text-slate-500'>
-                            {banks.at(parseInt(bankId))?.name ?? ''}
-                        </p>
-                        <p>Last Name</p>
+                        <p>Bank Name</p>
+                        <div className='flex flex-row gap-x-[8px] col-span-2'>
+                            <Image
+                                src={banks.at(parseInt(bankId))?.url ?? ''}
+                                alt=''
+                                width={24}
+                                height={24}
+                            />
+                            <p className='text-slate-500'>
+                                {banks.at(parseInt(bankId))?.name ?? ''}
+                            </p>
+                        </div>
+                        <p>Account Name</p>
                         <p className='col-span-2 text-slate-500'>
                             {bankAccName}
                         </p>
-                        <p>Phone Number</p>
+                        <p>Account Number</p>
                         <p className='col-span-2 text-slate-500'>
                             {bankAccNo.replace(
                                 /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
