@@ -1,14 +1,18 @@
 'use client';
 
-import { TaskCardProps } from '@/types/task';
+import { AdsCardProps } from '@/types/task';
 import Link from 'next/link';
-import Image from 'next/image'
-import { CalendarDaysIcon, MapPinIcon, UsersIcon } from 'lucide-react';
+import {
+    ClockIcon,
+    InboxIcon,
+    MapPinIcon,
+} from 'lucide-react';
 
-export default function TaskCard(props: TaskCardProps) {
+export default function AdsCard(props: AdsCardProps) {
     return (
         <Link
-            href={'/task/' + props.taskId}
+            href=''
+            // href={'/task/' + props.taskId + '/detail'}
             className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>
@@ -25,8 +29,8 @@ export default function TaskCard(props: TaskCardProps) {
                     </h3>
                     <div className='flex flex-col gap-[4px]'>
                         <small className='w-full gap-[4px] flex items-center text-slate-500'>
-                            <CalendarDaysIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                            {props.startDate} - {props.endDate}
+                            <ClockIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
+                            Start {props.startDate}
                         </small>
                         {props.location ? (
                             <small className='w-full gap-[4px] flex items-center text-slate-500'>
@@ -34,10 +38,10 @@ export default function TaskCard(props: TaskCardProps) {
                                 {props.location}
                             </small>
                         ) : null}
-                        {props.workers ? (
+                        {props.applications ? (
                             <small className='w-full gap-[4px] flex items-center text-slate-500'>
-                                <UsersIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                Team up for {props.workers} people
+                                <InboxIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
+                                {props.applications} Applications
                             </small>
                         ) : null}
                     </div>
