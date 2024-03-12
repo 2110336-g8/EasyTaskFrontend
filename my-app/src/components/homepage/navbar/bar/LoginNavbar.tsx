@@ -26,7 +26,7 @@ export default function LoginNavbar() {
                             </a>
                         </li>
                         <li className="inline-flex items-end gap-4">
-                            <a className="flex items-end gap-1" href="/">
+                            <a className="flex items-end gap-1" href="/ads">
                                 <Image src="/navicons/megaphone.svg" alt="ads icon" width={32} height={32} className="brightness-normal transition duration-300"/>
                                 <span className="text-primary-500 font-inter font-semibold text-base leading-6 tracking-tighter">Your Ads</span>
                             </a>
