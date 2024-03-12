@@ -1,6 +1,6 @@
 'use client';
 
-import { WageRange } from '@/app/(main)/task/page';
+import { WageRange } from '@/app/(main)/(protected)/task/page';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { toast } from '../ui/use-toast';
 import { useEffect, useState } from 'react';
