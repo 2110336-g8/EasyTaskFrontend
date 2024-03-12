@@ -40,12 +40,18 @@ import {
 
 const formSchema = z.object({
     title: z.string(),
+    picture : z.string(),
+    description : z.string(),
+    category : z.string(),
+    dateRange : z.string(),
     wages: z.string(),
+    sizeOfTeam : z.string(),
+    location : z.string()
 });
 
 export default function CreateTaskForm() {
     const router = useRouter();
-
+    
     const {
         setError,
         formState: { errors },
@@ -121,27 +127,97 @@ export default function CreateTaskForm() {
                                     </div>
 
                                     <div className='grid w-full max-w-sm items-center gap-1.5'>
-                                        <div className='flex flex-row'>
+                                    <FormField
+                                            control={form.control}
+                                            name='picture'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className='text-black font-p text-p tracking-p'>
+                                                        <div className='flex flex-row'>
+                                                            <h4 className='font-sans'>
+                                                                Task Picture
+                                                            </h4>
+                                                            <h4 className='text-error-500'>
+                                                                *
+                                                            </h4>
+                                                        </div>
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            placeholder='Easy task'
+                                                            className='font-small text-p tracking-small'
+                                                            type='file'
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        {/* <div className='flex flex-row'>
                                             <h4>Task Picture</h4>
                                             <h4 className='text-error-500'>
                                                 *
                                             </h4>
                                         </div>
-                                        <Input id='picture' type='file' />
+                                        <Input id='picture' type='file' /> */}
                                     </div>
 
-                                    <h4>Description</h4>
-                                    <Textarea placeholder='Enter brief task description here...' />
+                                    <FormField
+                                            control={form.control}
+                                            name='picture'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className='text-black font-p text-p tracking-p'>
+                                                        <div className='flex flex-row'>
+                                                            <h4 className='font-sans'>
+                                                                Description
+                                                            </h4>
+                                                            <h4 className='text-error-500'>
+                                                                *
+                                                            </h4>
+                                                        </div>
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Textarea
+                                                            placeholder='Enter brief task description here...'
+                                                            className='font-small text-p tracking-small'
+                                                            // {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    {/* <h4>Description</h4>
+                                    <Textarea placeholder='Enter brief task description here...' /> */}
 
                                     <div className='flex'>
                                         <div className='w-1/3 flex flex-col'>
-                                            <div className='flex flex-row mb-5'>
-                                                <h4>Category</h4>
-                                                <h4 className='text-error-500'>
-                                                    *
-                                                </h4>
-                                            </div>
-                                            <Categories />
+                                            <FormField
+                                                control={form.control}
+                                                name='category'
+                                                render={({ field }) => (
+                                                    <FormItem className='flex flex-col'>
+                                                        <FormLabel className='text-black font-p text-p tracking-p'>
+                                                            <div className='flex flex-row'>
+                                                                <h4>
+                                                                    Category
+                                                                </h4>
+                                                                <h4 className='text-error-500'>
+                                                                    *
+                                                                </h4>
+                                                            </div>
+                                                        </FormLabel>
+                                                        <FormControl className='flex flex-row'>
+                                                            <div>
+                                                                <Categories />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
 
                                             <div className='flex flex-col space-y-1.5'>
                                                 <FormField
@@ -178,13 +254,37 @@ export default function CreateTaskForm() {
                                             </div>
                                         </div>
                                         <div className='w-2/3'>
-                                            <div className='flex flex-row'>
+                                            <FormField
+                                                control={form.control}
+                                                name='category'
+                                                render={({ field }) => (
+                                                    <FormItem className='flex flex-col'>
+                                                        <FormLabel className='text-black font-p text-p tracking-p'>
+                                                            <div className='flex flex-row'>
+                                                                <h4>
+                                                                    Date Range
+                                                                </h4>
+                                                                <h4 className='text-error-500'>
+                                                                    *
+                                                                </h4>
+                                                            </div>
+                                                        </FormLabel>
+                                                        <FormControl className='flex flex-row'>
+                                                            <div>
+                                                                <DateRange />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            {/* <div className='flex flex-row'>
                                                 <h4>Date Range</h4>
                                                 <h4 className='text-error-500'>
                                                     *
                                                 </h4>
                                             </div>
-                                            <DateRange />
+                                            <DateRange /> */}
                                         </div>
                                     </div>
                                     <div>
