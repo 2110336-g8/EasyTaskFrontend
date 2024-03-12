@@ -60,7 +60,27 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
 }
+//*=================Ads====================*//
 
+export interface AdsCardProps {
+    taskId: string;
+    title: string;
+    category: string;
+    image?: string;
+    location?: string;
+    wages: string;
+    startDate: string;
+    applications: string;
+}
+
+
+export interface GetUserAdsResponse {
+    count: number;
+    success: boolean;
+    // page: number;
+    // limit: number;
+    tasks: Task[];
+}
 //*=================Create Task====================*//
 
 export interface CreateTasksResponse {
