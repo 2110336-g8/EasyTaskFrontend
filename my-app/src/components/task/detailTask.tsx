@@ -1,10 +1,89 @@
 'use client';
 
+import { toast } from '../ui/use-toast';
+import { clientStorage } from '@/utils/storageService';
 import { Button } from '@/components/ui/button';
 import { ViewTaskProps } from '@/types/task';
 import { ArrowLeftIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function ViewTask(props: ViewTaskProps) {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
+    const [hasApplied, setHasApplied] = useState(false);
+
+    console.log(isLoggedIn)
+
+    async function applyTaskHandler() {
+        if (!isLoggedIn) {
+            toast({
+                variant: 'destructive',
+                title: 'Login Required',
+                description: 'You need to login first to apply for this task.',
+            });
+            return;
+        }
+
+        try {
+            const response = await fetch('http://api.easytask.vt.in.th/v1/tasks/apply', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${clientStorage.get().token}` 
+                },
+                body: JSON.stringify({ taskId: props.taskId }) 
+            });
+
+            if (response.ok) {
+                toast({
+                    variant: 'default',
+                    title: 'Task Applied',
+                    description: 'You have successfully applied for this task.',
+                });
+            } else {
+                const errorData = await response.json();
+                toast({
+                    variant: 'destructive',
+                    title: 'Application Error',
+                    description: errorData.message || 'An error occurred while applying for the task.',
+                });
+            }
+        } catch (error) {
+            console.error('Error applying for task:', error);
+            toast({
+                variant: 'destructive',
+                title: 'Application Error',
+                description: 'An error occurred while applying for the task. Please try again later.',
+            });
+        }
+    }
+
+    useEffect(() => {
+        async function checkAppliedStatus() {
+            try {
+                const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/check`, {
+                    headers: {
+                        'Authorization': `Bearer ${clientStorage.get().token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setHasApplied(data.hasApplied);
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error checking application status:', errorData.message);
+                }
+            } catch (error) {
+                console.error('Error checking application status:', error);
+            }
+        }
+
+        if (isLoggedIn) {
+            checkAppliedStatus();
+        }
+    }, [isLoggedIn, props.taskId]);
+
     return (
         <div className='flex justify-center items-center'>
             <div className='flex flex-col w-[640px] gap-[40px]'>
@@ -17,7 +96,9 @@ export default function ViewTask(props: ViewTaskProps) {
                     <h1 className='max-w-[500px] text-slate-900 text-balance break-words '>
                         {props.title}
                     </h1>
-                    <Button>Apply Now</Button>
+                    <Button onClick={applyTaskHandler} disabled={!isLoggedIn || hasApplied}>
+                        {!isLoggedIn ? "Please Login" : hasApplied ? "Applied": "Apply Now"}
+                    </Button>
                 </div>
                 <div className='w-full h-[360px] '>
                     <img
@@ -69,7 +150,9 @@ export default function ViewTask(props: ViewTaskProps) {
                             {/* change to map later */}
                         </div>
                     ) : null}
-                <Button className='w-full'>Apply Now</Button>
+                    <Button onClick={applyTaskHandler} disabled={!isLoggedIn || hasApplied} className="w-full">
+                        {!isLoggedIn ? "Please Login" : hasApplied ? "Applied": "Apply Now"}
+                    </Button>
             </div>
         </div>
     );
