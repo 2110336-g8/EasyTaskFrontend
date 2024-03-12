@@ -58,7 +58,7 @@ const formSchema = z.object({
 
         return true;
     }),
-    description: z.string(),
+    description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
         from: z.date(),
@@ -119,7 +119,7 @@ export default function CreateTaskForm() {
         try {
             const result = await createTask(
                 values.title,
-                values.description,
+                values.description ?? "",
                 values.dateRange.from,
                 values.dateRange.to,
                 values.sizeOfTeam,
@@ -139,10 +139,24 @@ export default function CreateTaskForm() {
             );
             if (result?.error) {
                 console.error('Create task failed:', result.error);
-                setError('invalidText', {
-                    type: 'manual',
-                    message: result.error,
-                });
+                if (result.error == "Task validation failed: category: Invalid category"){
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Invalid category',
+                    });
+                }
+                else if (result.error == "Task validation failed: title: Title is required"){
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Please fill the title',
+                    });    
+                }
+                else if (result.error == "Internal Server Error") {
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Internal Server Error',
+                    });
+                }
             } else {
                 console.log('success');
             }
@@ -165,11 +179,11 @@ export default function CreateTaskForm() {
         setPinnedLocation({ longitude: lng, latitude: lat });
     };
 
-    const [sliderValue, setSliderValue] = React.useState(11);
+    // const [sliderValue, setSliderValue] = React.useState(11);
 
-    const handleSliderChange = (value: number) => {
-        setSliderValue(value);
-    };
+    // const handleSliderChange = (value: number) => {
+    //     setSliderValue(value);
+    // };
 
     const [date, setDate] = React.useState<Date>();
 
@@ -261,9 +275,6 @@ export default function CreateTaskForm() {
                                                     <div className='flex flex-row'>
                                                         <h4 className='font-sans'>
                                                             Description
-                                                        </h4>
-                                                        <h4 className='text-error-500'>
-                                                            *
                                                         </h4>
                                                     </div>
                                                 </FormLabel>
