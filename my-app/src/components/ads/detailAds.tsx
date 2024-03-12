@@ -39,14 +39,16 @@ export default function ViewAds(props: ViewAdsProps) {
                                 className='rounded-lg w-full h-full object-cover'
                             />
                         </figure>
-                        <section className='flex flex-col gap-[16px]'>
-                            <h4 className='text-slate-900 justify-self-center font-medium'>
-                                Description
-                            </h4>
-                            <p className='text-slate-600'>
-                                {props.description}
-                            </p>
-                        </section>
+                        {props.description ? (
+                            <section className='flex flex-col gap-[16px]'>
+                                <h4 className='text-slate-900 justify-self-center font-medium'>
+                                    Description
+                                </h4>
+                                <p className='text-slate-600'>
+                                    {props.description || ''}
+                                </p>
+                            </section>
+                        ) : null}
                         <section className='flex flex-col gap-[16px]'>
                             <h4 className='text-slate-900 justify-self-center font-medium'>
                                 Location
@@ -165,7 +167,23 @@ export default function ViewAds(props: ViewAdsProps) {
                                 </h4>
                             </div>
 
-                            <div>{'[applicants here]'}</div>
+                            <div className='grid grid-cols-5 gap-4'>
+                                {props.applicants.map(worker => (
+                                    <figure
+                                        key={worker.workerId}
+                                        className='w-14 h-14'
+                                    >
+                                        <Image
+                                            width={56}
+                                            height={56}
+                                            sizes='(max-width: 56px) 100vw, 56px'
+                                            src={props.image || '/mocktask.png'}
+                                            alt=''
+                                            className='rounded-full object-cover'
+                                        />
+                                    </figure>
+                                ))}
+                            </div>
                         </div>
                     </aside>
                 </section>
