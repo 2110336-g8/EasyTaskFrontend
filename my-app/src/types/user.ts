@@ -6,6 +6,6 @@ export interface User {
     phoneNumber?: string;
     photoURL?: string;
     bankId?: string;
+    bankAccName?: string;
     bankAccNo?: string;
 }
-
