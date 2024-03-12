@@ -8,7 +8,7 @@ import { CalendarDaysIcon, MapPinIcon, UsersIcon } from 'lucide-react';
 export default function TaskCard(props: TaskCardProps) {
     return (
         <Link
-            href={'/task/' + props.taskId + '/detail'}
+            href={'/task/' + props.taskId}
             className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>

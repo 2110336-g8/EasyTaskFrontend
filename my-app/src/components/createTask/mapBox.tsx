@@ -49,6 +49,39 @@ const Map = ({
             onPinLocation(lng, lat);
         });
 
+        // Pin the current location by default
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    console.log(`Default location: ${lng}, ${lat}`);
+
+                    setLatitude(lat);
+                    setLongitude(lng);
+
+                    // Remove the previous marker if exists
+                    if (marker.current) {
+                        marker.current.remove();
+                    }
+
+                    // Create a new marker at the default location
+                    marker.current = new mapboxgl.Marker()
+                        .setLngLat([lng, lat])
+                        .addTo(map.current!);
+
+                    // Pan the map to the marked location
+                    map.current?.setCenter([lng, lat]);
+
+                    // Call onPinLocation directly
+                    onPinLocation(lng, lat);
+                },
+                error => {
+                    console.error('Error getting current location:', error);
+                },
+            );
+        }
+
         return () => {
             map.current?.remove();
         };
