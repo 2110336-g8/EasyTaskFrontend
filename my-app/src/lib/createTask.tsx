@@ -1,7 +1,7 @@
 import { CreateTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
-export async function otpVerification(
+export async function createTask(
     title: string,
     description: string,
     startDate: Date,
