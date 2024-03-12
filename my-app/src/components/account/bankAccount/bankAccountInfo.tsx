@@ -149,7 +149,7 @@ export default function BankAccountInfo() {
             className='w-full flex flex-col gap-y-[16px]'
         >
             <div className='w-full flex flex-row justify-between'>
-                <h3>Your Bank Account</h3>
+                <h2>Your Bank Account</h2>
                 {isEditing ? (
                     <div className='flex flex-row gap-x-[8px]'>
                         <Button
