@@ -1,6 +1,6 @@
-import NavBar from '@/components/homepage/navbar/navBar';
 import '../globals.css';
 import Footer from '@/components/homepage/footer';
+import Navbar from '@/components/homepage/navbar/navigationbar';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default async function MainLayout({
@@ -11,7 +11,7 @@ export default async function MainLayout({
     return (
         <ProtectedRoute>
             <div className='w-full min-h-full flex justify-center bg-inherit'>
-                <NavBar />
+                <Navbar />
                 <main className='m-h-screen w-full desktop:w-[1200px] desktop-l:w-[1328px] pt-[112px] mx-auto pb-[20px] bg-white flex flex-col gap-[40px]'>
                     {children}
                     <Footer />

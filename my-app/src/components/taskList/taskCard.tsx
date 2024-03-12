@@ -2,6 +2,7 @@
 
 import { TaskCardProps } from '@/types/task';
 import Link from 'next/link';
+import Image from 'next/image'
 import { CalendarDaysIcon, MapPinIcon, UsersIcon } from 'lucide-react';
 
 export default function TaskCard(props: TaskCardProps) {

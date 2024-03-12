@@ -1,24 +1,30 @@
 'use client';
 import React, { useState } from 'react';
-import MapComponent from '@/components/google/map';
+import Map from '@/components/createTask/mapBox';
 
-const CreateTask = () => {
-    const [position, setPosition] = useState({ lat: 0, lng: 0 });
+const ParentComponent = () => {
+    const [pinnedLocation, setPinnedLocation] = useState<{
+        latitude: number | null;
+        longitude: number | null;
+    }>({ latitude: null, longitude: null });
 
-    const handlePositionChange = (newPosition: {
-        lat: number;
-        lng: number;
-    }) => {
-        setPosition(newPosition);
+    const handlePinLocation = (lng: number, lat: number) => {
+        setPinnedLocation({ longitude: lng, latitude: lat });
     };
 
     return (
         <div>
-            <MapComponent onPositionChange={handlePositionChange} />
-            <p>Latitude: {position.lat}</p>
-            <p>Longitude: {position.lng}</p>
+            <Map onPinLocation={handlePinLocation} />
+            {pinnedLocation.latitude !== null &&
+                pinnedLocation.longitude !== null && (
+                    <div>
+                        <p>Pinned Location:</p>
+                        <p>Latitude: {pinnedLocation.latitude}</p>
+                        <p>Longitude: {pinnedLocation.longitude}</p>
+                    </div>
+                )}
         </div>
     );
 };
 
-export default CreateTask;
+export default ParentComponent;
