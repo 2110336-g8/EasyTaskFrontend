@@ -29,7 +29,14 @@ import { toast } from '../ui/use-toast';
 import { Textarea } from '../ui/textarea';
 import { Categories } from './category';
 import { DateRange } from './dateRange';
+import { Slider } from "@/components/ui/slider"
+// import { SliderWorker } from './sliderWorker';
 import MapComponent from '../google/map';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
 
 
 const formSchema = z.object({
@@ -66,6 +73,15 @@ export default function CreateTaskForm() {
         setPosition(newPosition);
     };
 
+    const [sliderValue, setSliderValue] = React.useState(11);
+
+    const handleSliderChange = (value: number) => {
+        setSliderValue(value);
+    };
+
+    const [date, setDate] = React.useState<Date>()
+
+
     return (
         <div className='flex flex-col h-screen font-sans ml-20'>
             <h1 className='w-[1000px] h-[80px]'>Create Job Advertisement</h1>
@@ -73,9 +89,9 @@ export default function CreateTaskForm() {
             <div className='flex flex-row justify-end'>
                 <p className='text-error-500'>*</p><p>Require Data</p>
             </div>
-            <Card className='w-[1000px] p-10'>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Card className='w-[1000px] p-10'>
                         <CardContent>
                             <div className='grid w-full items-center gap-4'>
                                 <div className='flex flex-col space-y-1.5'>
@@ -86,7 +102,7 @@ export default function CreateTaskForm() {
                                             <FormItem>
                                                 <FormLabel className='text-black font-p text-p tracking-p'>
                                                     <div className='flex flex-row'>
-                                                        <h4>Title</h4>
+                                                        <h4 className='font-sans'>Title</h4>
                                                         <h4 className='text-error-500'>*</h4>    
                                                     </div>
                                                 </FormLabel>
@@ -129,7 +145,7 @@ export default function CreateTaskForm() {
                                                 render={({ field }) => (
                                                     <FormItem className='flex flex-col'>
                                                         <FormLabel className='text-black font-p text-p tracking-p'>
-                                                            <div className='flex flex-row'>
+                                                            <div className='flex flex-row mt-2'>
                                                                 <h4>Wages</h4>
                                                                 <h4 className='text-error-500'>*</h4>    
                                                             </div>
@@ -159,7 +175,13 @@ export default function CreateTaskForm() {
                                         <DateRange />
                                     </div>
                                 </div>
-
+                                <div>
+                                    <div className='flex flex-row mt-2'>
+                                        <h4>Size of Team</h4>
+                                        <h4 className='text-error-500'>*</h4>    
+                                    </div>
+                                    <Slider defaultValue={[5]} max={20} step={1} className='mt-2'/>
+                                </div>
                                 <div>
                                     <MapComponent onPositionChange={handlePositionChange} />
                                     <p>Latitude: {position.lat}</p>
@@ -171,22 +193,22 @@ export default function CreateTaskForm() {
                             </div>
                         </CardContent>
 
-
-                        <CardFooter className='grid w-full items-center gap-3'>
-                            {errors.invalidText ? (
-                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
-                            ) : (
-                                <FormMessage>
-                                    <br></br>
-                                </FormMessage>
-                            )}
-                            <Button className='w-full bg-primary-900 text-p font-extra-bold tracking-p text-white'>
-                                Login
-                            </Button>
-                        </CardFooter>
-                    </form>
-                </Form>
             </Card>
+            <div>
+            {errors.invalidText ? (
+                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
+                ) : (
+                    <FormMessage>
+                    <br></br>
+                </FormMessage>
+            )}
+            <div className='flex flex-row mb-5'>
+                <Button className='w-full bg-white mr-3 text-p font-extra-bold tracking-p text-primary-500 border border-primary-500 hover:text-white'>Preview</Button>
+                <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>Publish Now</Button>
+            </div>
+            </div>
+            </form>
+        </Form>
             </div>
         </div>
     );

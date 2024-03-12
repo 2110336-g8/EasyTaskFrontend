@@ -9,10 +9,11 @@ import SearchBar from '@/components/ui/searchbar';
 import { toast } from '@/components/ui/use-toast';
 import FilterTaskList from '@/components/taskList/filter';
 
-type WageRange = [number | null, number | null];
+export type WageRange = [number | null, number | null];
 
 export default function TaskList() {
     const limit = 8;
+    const [searchName, setSearchName] = useState<string | null>(null);
     const [taskList, setTaskList] = useState<TaskCardProps[]>([]);
     const [page, setPage] = useState<number>(1);
     const [totalPageCount, setTotalPageCount] = useState<number>(1);
@@ -59,11 +60,14 @@ export default function TaskList() {
     useEffect(() => {
         const fetchData = async () => {
             console.log('page', page);
+            console.log('searchName', searchName);
             console.log('categoryFilters', categoryFilters);
             console.log('isIndividual', isIndividual);
+            console.log('wageRangeFilters', wageRangeFilters);
             getAllTasks({
                 page,
                 limit,
+                ...(searchName !== null && { name: searchName }),
                 ...(categoryFilters.size > 0 && {
                     categoryFilters: Array.from(categoryFilters),
                 }),
@@ -103,11 +107,11 @@ export default function TaskList() {
                 });
         };
         fetchData();
-    }, [page, categoryFilters, isIndividual]);
+    }, [page, searchName, categoryFilters, isIndividual, wageRangeFilters]);
 
     return (
         <main className='flex flex-col gap-[40px] items-center '>
-            <SearchBar />
+            <SearchBar updateSearchName = {setSearchName} />
             <FilterTaskList
                 updateCategoryFilters={updateCategoryFilters}
                 updateIndividualFilter={updateIndividualFilter}
