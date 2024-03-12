@@ -12,7 +12,7 @@ export default function TaskCard(props: TaskCardProps) {
             className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>
-                <Image
+                <img
                     className='w-full h-full object-cover'
                     src={props.image || '/mocktask.png'}
                     alt={''}
