@@ -1,7 +1,7 @@
 import { CreateTasksResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
-export async function otpVerification(
+export async function createTask(
     title: string,
     description: string,
     startDate: Date,
@@ -36,7 +36,10 @@ export async function otpVerification(
             return result;
         })
         .catch(error => {
-            if (error.response && error.response.status === 204) {
+            if (error.response && error.response.status === 400) {
+                console.log(error.response.data);
+                return error.response.data;
+            } else if (error.response && error.response.status === 500) {
                 console.log(error.response.data);
                 return error.response.data;
             }

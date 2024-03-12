@@ -37,16 +37,36 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
+import { addDays } from 'date-fns';
+import { createTask } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z.string(),
-    description: z.string(),
+    picture: z.string().refine(value => {
+        // List of accepted image file extensions
+        const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+
+        // Extract file extension
+        const fileExtension = value.split('.').pop()?.toLowerCase();
+
+        // Check if the file extension is undefined or not in the accepted list
+        if (!fileExtension || !acceptedExtensions.includes(fileExtension)) {
+            throw new Error(
+                'Please upload an image file (jpg, jpeg, png, gif, bmp)',
+            );
+        }
+
+        return true;
+    }),
+    description: z.string().optional(),
     category: z.string(),
-    dateRange: z.string(),
-    wages: z.string(),
-    sizeOfTeam: z.string(),
-    location: z.string(),
+    dateRange: z.object({
+        from: z.date(),
+        to: z.date(),
+    }),
+    wages: z.number(),
+    sizeOfTeam: z.number(),
+    locationName: z.string(),
 });
 
 export default function CreateTaskForm() {
@@ -61,11 +81,94 @@ export default function CreateTaskForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: '',
-            wages: '',
+            picture: '',
+            description: '',
+            category: 'General',
+            dateRange: {
+                // Set default value for dateRange
+                from: new Date(2024, 2, 20),
+                to: addDays(new Date(2024, 2, 21), 20),
+            },
+            wages: 20000,
+            sizeOfTeam: 5,
+            locationName: '',
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {};
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log(
+            values.title,
+            values.description,
+            values.dateRange.from,
+            values.dateRange.to,
+            values.sizeOfTeam,
+            values.wages,
+            values.category,
+            {
+                name: values.locationName,
+                latitude:
+                    pinnedLocation.latitude !== null
+                        ? pinnedLocation.latitude
+                        : 0,
+                longitude:
+                    pinnedLocation.longitude !== null
+                        ? pinnedLocation.longitude
+                        : 0,
+            },
+        );
+        try {
+            const result = await createTask(
+                values.title,
+                values.description ?? "",
+                values.dateRange.from,
+                values.dateRange.to,
+                values.sizeOfTeam,
+                values.wages,
+                'General',
+                {
+                    name: values.locationName,
+                    latitude:
+                        pinnedLocation.latitude !== null
+                            ? pinnedLocation.latitude
+                            : 0,
+                    longitude:
+                        pinnedLocation.longitude !== null
+                            ? pinnedLocation.longitude
+                            : 0,
+                },
+            );
+            if (result?.error) {
+                console.error('Create task failed:', result.error);
+                if (result.error == "Task validation failed: category: Invalid category"){
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Invalid category',
+                    });
+                }
+                else if (result.error == "Task validation failed: title: Title is required"){
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Please fill the title',
+                    });    
+                }
+                else if (result.error == "Internal Server Error") {
+                    setError('invalidText', {
+                        type: 'manual',
+                        message: 'Internal Server Error',
+                    });
+                }
+            } else {
+                console.log('success');
+            }
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Uh oh! Something went wrong.',
+                description: 'There was a problem with your request.',
+            });
+            console.error('Unexpected error during authentication:', error);
+        }
+    };
 
     const [pinnedLocation, setPinnedLocation] = useState<{
         latitude: number | null;
@@ -76,11 +179,11 @@ export default function CreateTaskForm() {
         setPinnedLocation({ longitude: lng, latitude: lat });
     };
 
-    const [sliderValue, setSliderValue] = React.useState(11);
+    // const [sliderValue, setSliderValue] = React.useState(11);
 
-    const handleSliderChange = (value: number) => {
-        setSliderValue(value);
-    };
+    // const handleSliderChange = (value: number) => {
+    //     setSliderValue(value);
+    // };
 
     const [date, setDate] = React.useState<Date>();
 
@@ -173,16 +276,13 @@ export default function CreateTaskForm() {
                                                         <h4 className='font-sans'>
                                                             Description
                                                         </h4>
-                                                        <h4 className='text-error-500'>
-                                                            *
-                                                        </h4>
                                                     </div>
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Textarea
                                                         placeholder='Enter brief task description here...'
                                                         className='font-small text-p tracking-small'
-                                                        // {...field}
+                                                        {...field}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -289,33 +389,33 @@ export default function CreateTaskForm() {
                                     </div>
                                     <div>
                                         <FormField
-                                                control={form.control}
-                                                name='sizeOfTeam'
-                                                render={({ field }) => (
-                                                    <FormItem className='flex flex-col'>
-                                                        <FormLabel className='text-black font-p text-p tracking-p'>
-                                                            <div className='flex flex-row mt-2'>
-                                                                <h4>
-                                                                    Size of Team
-                                                                </h4>
-                                                                <h4 className='text-error-500'>
-                                                                    *
-                                                                </h4>
-                                                            </div>
-                                                        </FormLabel>
-                                                        <FormControl className='flex flex-row'>
-                                                            <div>
-                                                                <Input
-                                                                    placeholder='5'
-                                                                    className='font-small text-p tracking-small w-2/7'
-                                                                    {...field}
-                                                                />
-                                                            </div>
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
+                                            control={form.control}
+                                            name='sizeOfTeam'
+                                            render={({ field }) => (
+                                                <FormItem className='flex flex-col'>
+                                                    <FormLabel className='text-black font-p text-p tracking-p'>
+                                                        <div className='flex flex-row mt-2'>
+                                                            <h4>
+                                                                Size of Team
+                                                            </h4>
+                                                            <h4 className='text-error-500'>
+                                                                *
+                                                            </h4>
+                                                        </div>
+                                                    </FormLabel>
+                                                    <FormControl className='flex flex-row'>
+                                                        <div>
+                                                            <Input
+                                                                placeholder='5'
+                                                                className='font-small text-p tracking-small w-2/7'
+                                                                {...field}
+                                                            />
+                                                        </div>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                         {/* <div className='flex flex-row mt-2'>
                                             <h4>Size of Team</h4>
                                             <h4 className='text-error-500'>
@@ -330,28 +430,37 @@ export default function CreateTaskForm() {
                                         /> */}
                                     </div>
                                     <div>
+                                        <FormField
+                                            control={form.control}
+                                            name='locationName'
+                                            render={({ field }) => (
+                                                <FormItem className='flex flex-col'>
+                                                    <FormLabel className='text-black font-p text-p tracking-p'>
+                                                        <div className='flex flex-row mt-2'>
+                                                            <h4>Location</h4>
+                                                            <h4 className='text-error-500'>
+                                                                *
+                                                            </h4>
+                                                        </div>
+                                                    </FormLabel>
+                                                    <FormControl className='flex flex-row'>
+                                                        <div>
+                                                            <Input
+                                                                placeholder='Enter brief location description'
+                                                                className='font-small text-p tracking-small'
+                                                                {...field}
+                                                            />
+                                                        </div>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                    <div>
                                         <Map
                                             onPinLocation={handlePinLocation}
                                         />
-                                        {pinnedLocation.latitude !== null &&
-                                            pinnedLocation.longitude !==
-                                                null && (
-                                                <div>
-                                                    <p>Pinned Location:</p>
-                                                    <p>
-                                                        Latitude:{' '}
-                                                        {
-                                                            pinnedLocation.latitude
-                                                        }
-                                                    </p>
-                                                    <p>
-                                                        Longitude:{' '}
-                                                        {
-                                                            pinnedLocation.longitude
-                                                        }
-                                                    </p>
-                                                </div>
-                                            )}
                                     </div>
                                 </div>
                             </CardContent>
