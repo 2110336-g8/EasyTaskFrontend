@@ -72,6 +72,12 @@ const formSchema = z.object({
 export default function CreateTaskForm() {
     const router = useRouter();
 
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const handleCategoryToggle = (category: React.SetStateAction<string>) => {
+        setSelectedCategory(category);
+    };
+
     const {
         setError,
         formState: { errors },
@@ -83,7 +89,7 @@ export default function CreateTaskForm() {
             title: '',
             picture: '',
             description: '',
-            category: 'General',
+            category: '',
             dateRange: {
                 // Set default value for dateRange
                 from: new Date(2024, 2, 20),
@@ -103,7 +109,7 @@ export default function CreateTaskForm() {
             values.dateRange.to,
             values.sizeOfTeam,
             values.wages,
-            values.category,
+            selectedCategory,
             {
                 name: values.locationName,
                 latitude:
@@ -119,12 +125,12 @@ export default function CreateTaskForm() {
         try {
             const result = await createTask(
                 values.title,
-                values.description ?? "",
+                values.description ?? '',
                 values.dateRange.from,
                 values.dateRange.to,
                 values.sizeOfTeam,
                 values.wages,
-                'General',
+                selectedCategory,
                 {
                     name: values.locationName,
                     latitude:
@@ -139,19 +145,23 @@ export default function CreateTaskForm() {
             );
             if (result?.error) {
                 console.error('Create task failed:', result.error);
-                if (result.error == "Task validation failed: category: Invalid category"){
+                if (
+                    result.error ==
+                    'Task validation failed: category: Invalid category'
+                ) {
                     setError('invalidText', {
                         type: 'manual',
                         message: 'Invalid category',
                     });
-                }
-                else if (result.error == "Task validation failed: title: Title is required"){
+                } else if (
+                    result.error ==
+                    'Task validation failed: title: Title is required'
+                ) {
                     setError('invalidText', {
                         type: 'manual',
                         message: 'Please fill the title',
-                    });    
-                }
-                else if (result.error == "Internal Server Error") {
+                    });
+                } else if (result.error == 'Internal Server Error') {
                     setError('invalidText', {
                         type: 'manual',
                         message: 'Internal Server Error',
@@ -311,7 +321,14 @@ export default function CreateTaskForm() {
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
                                                             <div>
-                                                                <Categories />
+                                                                <Categories
+                                                                    selectedCategory={
+                                                                        selectedCategory
+                                                                    }
+                                                                    handleCategoryToggle={
+                                                                        handleCategoryToggle
+                                                                    }
+                                                                />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
