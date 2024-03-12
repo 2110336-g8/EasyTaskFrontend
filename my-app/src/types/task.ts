@@ -62,3 +62,37 @@ export interface ViewTaskProps {
 }
 
 //*=================Create Task====================*//
+
+export interface CreateTasksResponse {
+    task?: {
+        title: string;
+        category: string;
+        description?: string;
+        location?: {
+            name: string;
+            latitude: number;
+            longitude: number;
+        };
+        state: 'Open' | 'In Progress' | 'Completed' | 'Cancel';
+        wages: number;
+        workers: number; //
+        startDate: Date;
+        endDate: Date;
+        customerId: string;
+        _id: string;
+        imageKeys?: string[];
+        applicants: Array<{
+            workerId: string;
+            status: 'In Progress' | 'Completed' | 'Cancel';
+        }>;
+        hiredWorkers: Array<{
+            workerId: string;
+            status: 'In Progress' | 'Completed' | 'Cancel';
+        }>;
+        createdAt: Date;
+        updatedAt: Date;
+        __v: number
+    }
+    success?: string;
+    error?:string
+}

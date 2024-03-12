@@ -32,10 +32,18 @@ const ToggleGroup = React.forwardRef<
 
 ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName
 
+interface ToggleGroupItemProps {
+  value: string;
+  onClick: () => void;
+  "aria-label": string;
+  active: boolean; // Add active prop
+}
+
 const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>
+    VariantProps<typeof toggleVariants> &
+    ToggleGroupItemProps
 >(({ className, children, variant, size, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext)
 
