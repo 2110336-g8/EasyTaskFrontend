@@ -36,7 +36,10 @@ export async function createTask(
             return result;
         })
         .catch(error => {
-            if (error.response && error.response.status === 204) {
+            if (error.response && error.response.status === 400) {
+                console.log(error.response.data);
+                return error.response.data;
+            } else if (error.response && error.response.status === 500) {
                 console.log(error.response.data);
                 return error.response.data;
             }
