@@ -40,18 +40,18 @@ import {
 
 const formSchema = z.object({
     title: z.string(),
-    picture : z.string(),
-    description : z.string(),
-    category : z.string(),
-    dateRange : z.string(),
+    picture: z.string(),
+    description: z.string(),
+    category: z.string(),
+    dateRange: z.string(),
     wages: z.string(),
-    sizeOfTeam : z.string(),
-    location : z.string()
+    sizeOfTeam: z.string(),
+    location: z.string(),
 });
 
 export default function CreateTaskForm() {
     const router = useRouter();
-    
+
     const {
         setError,
         formState: { errors },
@@ -127,7 +127,7 @@ export default function CreateTaskForm() {
                                     </div>
 
                                     <div className='grid w-full max-w-sm items-center gap-1.5'>
-                                    <FormField
+                                        <FormField
                                             control={form.control}
                                             name='picture'
                                             render={({ field }) => (
@@ -164,31 +164,31 @@ export default function CreateTaskForm() {
                                     </div>
 
                                     <FormField
-                                            control={form.control}
-                                            name='picture'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel className='text-black font-p text-p tracking-p'>
-                                                        <div className='flex flex-row'>
-                                                            <h4 className='font-sans'>
-                                                                Description
-                                                            </h4>
-                                                            <h4 className='text-error-500'>
-                                                                *
-                                                            </h4>
-                                                        </div>
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Textarea
-                                                            placeholder='Enter brief task description here...'
-                                                            className='font-small text-p tracking-small'
-                                                            // {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                        control={form.control}
+                                        name='description'
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className='text-black font-p text-p tracking-p'>
+                                                    <div className='flex flex-row'>
+                                                        <h4 className='font-sans'>
+                                                            Description
+                                                        </h4>
+                                                        <h4 className='text-error-500'>
+                                                            *
+                                                        </h4>
+                                                    </div>
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Textarea
+                                                        placeholder='Enter brief task description here...'
+                                                        className='font-small text-p tracking-small'
+                                                        // {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                     {/* <h4>Description</h4>
                                     <Textarea placeholder='Enter brief task description here...' /> */}
 
@@ -242,7 +242,7 @@ export default function CreateTaskForm() {
                                                                         className='font-small text-p tracking-small'
                                                                         {...field}
                                                                     />
-                                                                    <p className='my-2'>
+                                                                    <p className='mt-2 ml-2'>
                                                                         Baht/Person
                                                                     </p>
                                                                 </div>
@@ -256,7 +256,7 @@ export default function CreateTaskForm() {
                                         <div className='w-2/3'>
                                             <FormField
                                                 control={form.control}
-                                                name='category'
+                                                name='dateRange'
                                                 render={({ field }) => (
                                                     <FormItem className='flex flex-col'>
                                                         <FormLabel className='text-black font-p text-p tracking-p'>
@@ -270,7 +270,7 @@ export default function CreateTaskForm() {
                                                             </div>
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
-                                                            <div>
+                                                            <div className='font-small text-p tracking-small'>
                                                                 <DateRange />
                                                             </div>
                                                         </FormControl>
@@ -288,7 +288,35 @@ export default function CreateTaskForm() {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className='flex flex-row mt-2'>
+                                        <FormField
+                                                control={form.control}
+                                                name='sizeOfTeam'
+                                                render={({ field }) => (
+                                                    <FormItem className='flex flex-col'>
+                                                        <FormLabel className='text-black font-p text-p tracking-p'>
+                                                            <div className='flex flex-row mt-2'>
+                                                                <h4>
+                                                                    Size of Team
+                                                                </h4>
+                                                                <h4 className='text-error-500'>
+                                                                    *
+                                                                </h4>
+                                                            </div>
+                                                        </FormLabel>
+                                                        <FormControl className='flex flex-row'>
+                                                            <div>
+                                                                <Input
+                                                                    placeholder='5'
+                                                                    className='font-small text-p tracking-small w-2/7'
+                                                                    {...field}
+                                                                />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        {/* <div className='flex flex-row mt-2'>
                                             <h4>Size of Team</h4>
                                             <h4 className='text-error-500'>
                                                 *
@@ -299,7 +327,7 @@ export default function CreateTaskForm() {
                                             max={20}
                                             step={1}
                                             className='mt-2'
-                                        />
+                                        /> */}
                                     </div>
                                     <div>
                                         <Map
