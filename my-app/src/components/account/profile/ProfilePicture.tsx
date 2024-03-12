@@ -71,10 +71,14 @@ export default function ProfilePicture() {
             if (!user) {
                 return;
             }
-            const res = await instance.get(
-                `v1/users/${user._id}/profile-image`,
-            );
-            setCurrentImageURL(res.data ?? '');
+            try {
+                const res = await instance.get(
+                    `v1/users/${user._id}/profile-image`,
+                );
+                setCurrentImageURL(res.data);
+            } catch (error) {
+                setCurrentImageURL('');
+            }
         };
         fetchUser();
     }, []);

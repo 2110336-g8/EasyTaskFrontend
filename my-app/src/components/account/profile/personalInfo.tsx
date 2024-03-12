@@ -11,12 +11,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { getSelfUser } from '@/lib/getUser';
-import { User } from '@/types/user';
 import { instance } from '@/utils/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosResponse } from 'axios';
 import { Pencil, Save, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
