@@ -242,7 +242,7 @@ export default function CreateTaskForm() {
                                                                         className='font-small text-p tracking-small'
                                                                         {...field}
                                                                     />
-                                                                    <p className='my-2'>
+                                                                    <p className='mt-2 ml-2'>
                                                                         Baht/Person
                                                                     </p>
                                                                 </div>
@@ -270,7 +270,7 @@ export default function CreateTaskForm() {
                                                             </div>
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
-                                                            <div>
+                                                            <div className='font-small text-p tracking-small'>
                                                                 <DateRange />
                                                             </div>
                                                         </FormControl>
@@ -288,7 +288,35 @@ export default function CreateTaskForm() {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className='flex flex-row mt-2'>
+                                        <FormField
+                                                control={form.control}
+                                                name='sizeOfTeam'
+                                                render={({ field }) => (
+                                                    <FormItem className='flex flex-col'>
+                                                        <FormLabel className='text-black font-p text-p tracking-p'>
+                                                            <div className='flex flex-row mt-2'>
+                                                                <h4>
+                                                                    Size of Team
+                                                                </h4>
+                                                                <h4 className='text-error-500'>
+                                                                    *
+                                                                </h4>
+                                                            </div>
+                                                        </FormLabel>
+                                                        <FormControl className='flex flex-row'>
+                                                            <div>
+                                                                <Input
+                                                                    placeholder='5'
+                                                                    className='font-small text-p tracking-small w-2/7'
+                                                                    {...field}
+                                                                />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        {/* <div className='flex flex-row mt-2'>
                                             <h4>Size of Team</h4>
                                             <h4 className='text-error-500'>
                                                 *
@@ -299,7 +327,7 @@ export default function CreateTaskForm() {
                                             max={20}
                                             step={1}
                                             className='mt-2'
-                                        />
+                                        /> */}
                                     </div>
                                     <div>
                                         <Map
