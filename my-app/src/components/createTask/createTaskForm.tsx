@@ -43,17 +43,16 @@ import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z
-        .instanceof(FileList)
-        .refine(file => file?.length == 1, 'Picture is required.')
-        .refine(file => {
-            const fileType = file?.item(0)?.type;
-            return fileType && /(jpg|jpeg|png)$/i.test(fileType);
-        }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
-        .refine(file => {
-            const firstFile = file?.item(0);
-            return firstFile && firstFile.size <= 20 * 1024 * 1024;
-        }, 'File size exceeds 20MB limit'),
+    picture: z.instanceof(FileList),
+    // .refine(file => file?.length == 1, 'Picture is required.')
+    // .refine(file => {
+    //     const fileType = file?.item(0)?.type;
+    //     return fileType && /(jpg|jpeg|png)$/i.test(fileType);
+    // }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
+    // .refine(file => {
+    //     const firstFile = file?.item(0);
+    //     return firstFile && firstFile.size <= 20 * 1024 * 1024;
+    // }, 'File size exceeds 20MB limit'),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
@@ -109,6 +108,8 @@ export default function CreateTaskForm() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const fileType = values.picture?.item(0)?.type;
+        const firstFile = values.picture?.item(0);
         if (
             !(date && date.from && date.to) ||
             !values.picture ||
@@ -120,6 +121,18 @@ export default function CreateTaskForm() {
             setError('invalidText', {
                 type: 'manual',
                 message: 'Please complete the required fill(s).',
+            });
+            return;
+        } else if (fileType && /(jpg|jpeg|png)$/i.test(fileType) !== true) {
+            setError('invalidText', {
+                type: 'manual',
+                message: 'Invalid image file type.',
+            });
+            return;
+        } else if (firstFile && firstFile.size > 20 * 1024 * 1024) {
+            setError('invalidText', {
+                type: 'manual',
+                message: 'Image size exceeds the limit.(maximum 20 MB)',
             });
             return;
         }
@@ -293,15 +306,20 @@ export default function CreateTaskForm() {
                                                     </FormLabel>
                                                     <FormControl>
                                                         <div className='flex flex-row gap-2 items-center'>
-                                                        <Input
-                                                            className='font-small text-p tracking-small'
-                                                            type='file'
-                                                            {...form.register(
-                                                                'picture',
-                                                            )}
-                                                        />
-                                                        <div className='flex flex-none text-slate-500'> <p>JPG/ JPEG/ PNG only</p> </div>
-                                                        
+                                                            <Input
+                                                                className='w-[400px] font-small text-p tracking-small'
+                                                                type='file'
+                                                                {...form.register(
+                                                                    'picture',
+                                                                )}
+                                                            />
+                                                            <div className='flex flex-none text-slate-500'>
+                                                                {' '}
+                                                                <p>
+                                                                    JPG/ JPEG/
+                                                                    PNG only
+                                                                </p>{' '}
+                                                            </div>
                                                         </div>
                                                     </FormControl>
                                                     <FormMessage className='text-[16px]' />
@@ -376,8 +394,6 @@ export default function CreateTaskForm() {
                                                     </FormItem>
                                                 )}
                                             />
-
-                                    
                                         </div>
                                         <div className='w-1/2'>
                                             <FormField
@@ -422,118 +438,119 @@ export default function CreateTaskForm() {
                                     <div className='flex'>
                                         <div className='w-1/2 flex flex-col'>
                                             <div className='flex flex-col space-y-1.5'>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name='wages'
-                                                            render={({ field }) => (
-                                                                <FormItem className='flex flex-col'>
-                                                                    <FormLabel className='text-black font-p text-p tracking-p'>
-                                                                        <div className='flex flex-row mt-2'>
-                                                                            <h4>
-                                                                                Wages
-                                                                            </h4>
-                                                                            <h4 className='text-error-500'>
-                                                                                *
-                                                                            </h4>
-                                                                        </div>
-                                                                    </FormLabel>
-                                                                    <FormControl className='flex flex-row'>
-                                                                        <div>
-                                                                            <Input
-                                                                                placeholder='20,000'
-                                                                                className='font-small text-p tracking-small'
-                                                                                {...field}
-                                                                                type='text'
-                                                                                onChange={e => {
-                                                                                    const value =
-                                                                                        parseFloat(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value,
-                                                                                        );
-                                                                                    if (
-                                                                                        !isNaN(
-                                                                                            value,
-                                                                                        )
-                                                                                    ) {
-                                                                                        field.onChange(
-                                                                                            value,
-                                                                                        ); // If the value is a valid number, update the field value
-                                                                                    } else {
-                                                                                        field.onChange(
-                                                                                            '',
-                                                                                        ); // If the value is not a valid number, clear the field value
-                                                                                    }
-                                                                                }}
-                                                                            />
-                                                                            <p className='mt-2 ml-2 mr-[80px]'>
-                                                                                Baht/Person
-                                                                            </p>
-                                                                        </div>
-                                                                    </FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                </div>
+                                                <FormField
+                                                    control={form.control}
+                                                    name='wages'
+                                                    render={({ field }) => (
+                                                        <FormItem className='flex flex-col'>
+                                                            <FormLabel className='text-black font-p text-p tracking-p'>
+                                                                <div className='flex flex-row mt-2'>
+                                                                    <h4>
+                                                                        Wages
+                                                                    </h4>
+                                                                    <h4 className='text-error-500'>
+                                                                        *
+                                                                    </h4>
+                                                                </div>
+                                                            </FormLabel>
+                                                            <FormControl className='flex flex-row'>
+                                                                <div>
+                                                                    <Input
+                                                                        placeholder='20,000'
+                                                                        className='font-small text-p tracking-small'
+                                                                        {...field}
+                                                                        type='text'
+                                                                        onChange={e => {
+                                                                            const value =
+                                                                                parseFloat(
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                                );
+                                                                            if (
+                                                                                !isNaN(
+                                                                                    value,
+                                                                                )
+                                                                            ) {
+                                                                                field.onChange(
+                                                                                    value,
+                                                                                ); // If the value is a valid number, update the field value
+                                                                            } else {
+                                                                                field.onChange(
+                                                                                    '',
+                                                                                ); // If the value is not a valid number, clear the field value
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <p className='mt-2 ml-2 mr-[80px]'>
+                                                                        Baht/Person
+                                                                    </p>
+                                                                </div>
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
                                         </div>
 
                                         <div className='w-1/2 flex flex-col'>
-                                        <div>
-                                        <FormField
-                                            control={form.control}
-                                            name='sizeOfTeam'
-                                            render={({ field }) => (
-                                                <FormItem className='flex flex-col'>
-                                                    <FormLabel className='text-black font-p text-p tracking-p'>
-                                                        <div className='flex flex-row mt-2'>
-                                                            <h4>
-                                                                Size of Team
-                                                            </h4>
-                                                            <h4 className='text-error-500'>
-                                                                *
-                                                            </h4>
-                                                        </div>
-                                                    </FormLabel>
-                                                    <FormControl className='flex flex-row'>
-                                                        <div>
-                                                            <Input
-                                                                placeholder='5'
-                                                                className='font-small text-p tracking-small w-2/7'
-                                                                {...field}
-                                                                type='text'
-                                                                onChange={e => {
-                                                                    const value =
-                                                                        parseFloat(
-                                                                            e
-                                                                                .target
-                                                                                .value,
-                                                                        );
-                                                                    if (
-                                                                        !isNaN(
-                                                                            value,
-                                                                        )
-                                                                    ) {
-                                                                        field.onChange(
-                                                                            value,
-                                                                        ); // If the value is a valid number, update the field value
-                                                                    } else {
-                                                                        field.onChange(
-                                                                            '',
-                                                                        ); // If the value is not a valid number, clear the field value
-                                                                    }
-                                                                }}
-                                                            />
-                                                            <p className='mt-2 ml-2'>
-                                                                Person(s)
-                                                            </p>
-                                                        </div>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        {/* <div className='flex flex-row mt-2'>
+                                            <div>
+                                                <FormField
+                                                    control={form.control}
+                                                    name='sizeOfTeam'
+                                                    render={({ field }) => (
+                                                        <FormItem className='flex flex-col'>
+                                                            <FormLabel className='text-black font-p text-p tracking-p'>
+                                                                <div className='flex flex-row mt-2'>
+                                                                    <h4>
+                                                                        Size of
+                                                                        Team
+                                                                    </h4>
+                                                                    <h4 className='text-error-500'>
+                                                                        *
+                                                                    </h4>
+                                                                </div>
+                                                            </FormLabel>
+                                                            <FormControl className='flex flex-row'>
+                                                                <div>
+                                                                    <Input
+                                                                        placeholder='5'
+                                                                        className='font-small text-p tracking-small w-2/7'
+                                                                        {...field}
+                                                                        type='text'
+                                                                        onChange={e => {
+                                                                            const value =
+                                                                                parseFloat(
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                                );
+                                                                            if (
+                                                                                !isNaN(
+                                                                                    value,
+                                                                                )
+                                                                            ) {
+                                                                                field.onChange(
+                                                                                    value,
+                                                                                ); // If the value is a valid number, update the field value
+                                                                            } else {
+                                                                                field.onChange(
+                                                                                    '',
+                                                                                ); // If the value is not a valid number, clear the field value
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <p className='mt-2 ml-2'>
+                                                                        Person(s)
+                                                                    </p>
+                                                                </div>
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                {/* <div className='flex flex-row mt-2'>
                                             <h4>Size of Team</h4>
                                             <h4 className='text-error-500'>
                                                 *
@@ -545,11 +562,10 @@ export default function CreateTaskForm() {
                                             step={1}
                                             className='mt-2'
                                         /> */}
-                                    </div>
+                                            </div>
                                         </div>
-                                        
                                     </div>
-                                    
+
                                     <div>
                                         <FormField
                                             control={form.control}
