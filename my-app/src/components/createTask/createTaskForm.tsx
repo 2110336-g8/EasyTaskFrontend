@@ -292,6 +292,7 @@ export default function CreateTaskForm() {
                                                         </div>
                                                     </FormLabel>
                                                     <FormControl>
+                                                        <div className='flex flex-row gap-2 items-center'>
                                                         <Input
                                                             className='font-small text-p tracking-small'
                                                             type='file'
@@ -299,6 +300,9 @@ export default function CreateTaskForm() {
                                                                 'picture',
                                                             )}
                                                         />
+                                                        <div className='flex flex-none text-slate-500'> <p>JPG/ JPEG/ PNG only</p> </div>
+                                                        
+                                                        </div>
                                                     </FormControl>
                                                     <FormMessage className='text-[16px]' />
                                                 </FormItem>
