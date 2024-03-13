@@ -63,12 +63,12 @@ export default function AdsList() {
     const [adsClosedList, setAdsClosedList] = useState<AdsCardProps[]>([]);
 
     useEffect(() => {
-        // const userId: string | null = clientStorage.get().user._id;
-        // if (!userId) {
-        //     router.push('/login');
-        // }
+        const userId: string | null = clientStorage.get().user._id;
+        if (!userId) {
+            router.push('/login');
+        }
         // console.log(userId);
-        const userId: string | null = '65eff56288030343046799b0';
+        // const userId: string | null = '65eff56288030343046799b0';
         const fetchAdsList = async () => {
             getUserAds({
                 userId,
