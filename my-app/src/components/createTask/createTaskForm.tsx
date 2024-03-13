@@ -22,13 +22,14 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { userLogIn } from '@/lib/userLogIn';
 import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 import { Textarea } from '../ui/textarea';
 import { Categories } from './category';
-import { DateRange } from './dateRange';
+import { DateRangePicker } from './dateRange';
+import { DateRange } from 'react-day-picker';
 import { Slider } from '@/components/ui/slider';
 // import { SliderWorker } from './sliderWorker';
 import Map from './mapBox';
@@ -37,7 +38,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { addDays } from 'date-fns';
+import { addDays, differenceInCalendarDays } from 'date-fns';
 import { createTask } from '@/lib/createTask';
 
 const formSchema = z.object({
@@ -57,8 +58,24 @@ const formSchema = z.object({
 export default function CreateTaskForm() {
     const router = useRouter();
 
+    const defaultDate: DateRange = {
+        from: new Date(),
+        to: addDays(new Date(), 1),
+      };
     const [selectedCategory, setSelectedCategory] = useState('');
-
+    const [date, setDate] = useState<DateRange | undefined>(defaultDate);
+    const [days, setDays] = useState(0);
+    useEffect(()=> {
+        if (date && date.from && date.to){
+            const dayCount = differenceInCalendarDays(
+                date.to,
+                date.from
+            )
+            setDays(dayCount);
+        }
+    },[date])
+      
+    //   const [date, setDate] = useState<DateRange>(defaultDate);
     const handleCategoryToggle = (category: React.SetStateAction<string>) => {
         setSelectedCategory(category);
     };
@@ -77,8 +94,8 @@ export default function CreateTaskForm() {
             category: '',
             dateRange: {
                 // Set default value for dateRange
-                from: new Date(2024, 2, 20),
-                to: addDays(new Date(2024, 2, 21), 20),
+                from: new Date(),
+                to: addDays(new Date(), 1),
             },
             locationName: '',
         },
@@ -91,7 +108,7 @@ export default function CreateTaskForm() {
                 message: 'Please upload an image.',
             });
             return;
-        } else {
+        } else if (values.picture) {
             // List of accepted image file extensions
             const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
 
@@ -110,12 +127,21 @@ export default function CreateTaskForm() {
                 });
                 return;
             }
+        } else if (!(date && date.from && date.to)){
+            setError('invalidText', {
+                type: 'manual',
+                message:
+                    'Please complete the fill.',
+            });
+            return;
         }
+
+        
         console.log(
             values.title,
             values.description,
-            values.dateRange.from,
-            values.dateRange.to,
+            date?.from,
+            date?.to,
             values.sizeOfTeam,
             values.wages,
             selectedCategory,
@@ -135,8 +161,8 @@ export default function CreateTaskForm() {
             const result = await createTask(
                 values.title,
                 values.description ?? '',
-                values.dateRange.from,
-                values.dateRange.to,
+                date?.from ,
+                date?.to,
                 values.sizeOfTeam,
                 values.wages,
                 selectedCategory,
@@ -187,6 +213,7 @@ export default function CreateTaskForm() {
             });
             console.error('Unexpected error during creating ads:', error);
         }
+    
     };
 
     const [pinnedLocation, setPinnedLocation] = useState<{
@@ -204,7 +231,6 @@ export default function CreateTaskForm() {
     //     setSliderValue(value);
     // };
 
-    const [date, setDate] = React.useState<Date>();
 
     return (
         <div className='flex flex-col h-screen font-sans ml-20'>
@@ -419,7 +445,7 @@ export default function CreateTaskForm() {
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
                                                             <div className='font-small text-p tracking-small'>
-                                                                <DateRange />
+                                                                <DateRangePicker date={date} setDate={setDate}/>
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
