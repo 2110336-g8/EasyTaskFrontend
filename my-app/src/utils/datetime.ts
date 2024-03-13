@@ -45,6 +45,10 @@ export function dateNow(): Date {
     return new Date();
 }
 
+export function dateFromString(dateString: string): Date {
+    return new Date(dateString);
+}
+
 export function dateToString(date: Date, fmt: string = 'DD MMM YYYY'): string {
     return dayjs(date).format(fmt);
 }

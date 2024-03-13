@@ -1,9 +1,19 @@
-import React from 'react';
-import ViewAds from '@/components/ads/detailAds';
-import { Worker, Task, ViewAdsProps } from '@/types/task';
-import { undefined } from 'zod';
+'use client';
 
-export default async function AdsDetailPage() {
+import React, { useEffect } from 'react';
+import ViewAds from '@/components/ads/detailAds';
+import { Worker, Task, ViewAdsProps, TaskDetailResponse } from '@/types/task';
+import { undefined } from 'zod';
+import { getTaskDetail } from '@/lib/getTaskDetail';
+import { otpVerification } from '@/lib/OTPVerification';
+import Error from 'next/error';
+import { dateFromString } from '@/utils/datetime';
+
+export default function AdsDetailPage({
+    params,
+}: {
+    params: { adsId: string };
+}) {
     const mockTaskRaw: Task = {
         _id: '123456789',
         image: '/cyberpunk.png',
@@ -32,18 +42,6 @@ export default async function AdsDetailPage() {
         createdAt: new Date('2021-11-30'),
         updatedAt: new Date('2021-11-30'),
     };
-
-    // const mockAds: ViewAdsProps = {
-    //     applications: '',
-    //     category: mockTaskRaw.category,
-    //     image: mockTaskRaw.image,
-    //     location: 'location',
-    //     startDate: dayjs(mockTaskRaw.startDate).format('DD MMM YYYY'),
-    //     endDate: dayjs(mockTaskRaw.startDate).format('DD MMM YYYY'),
-    //     taskId: mockTaskRaw._id,
-    //     title: mockTaskRaw.title,
-    //     wages: mockTaskRaw.wages.toString(),
-    // };
 
     const mockWorkers: Array<Worker> = [
         {
@@ -74,6 +72,41 @@ export default async function AdsDetailPage() {
         applicants: mockWorkers,
         createdAt: mockTaskRaw.createdAt,
     };
+
+    let task: any = {};
+
+    useEffect(() => {
+        console.log(task);
+    });
+
+    getTaskDetail(params.adsId)
+        .then(taskDetail => {
+            task = taskDetail.task;
+            const props: ViewAdsProps = {
+                taskId: task._id,
+                title: task.title,
+                description: task.description,
+                image: 'no-image', // todo: What is imageKeys?
+                category: task.category,
+                wages: task.wages,
+                workers: task.workers,
+                location: task.location,
+                startDate: dateFromString(task.startDate),
+                endDate: dateFromString(task.endDate),
+                applicants: mockWorkers,
+                createdAt: dateFromString(task.createdAt),
+            };
+            return (
+                <div>
+                    <ViewAds {...props} />
+                </div>
+            );
+        })
+        .catch(error => {
+            return <div>Error!</div>;
+        });
+
+    console.log(task);
 
     return (
         <div>

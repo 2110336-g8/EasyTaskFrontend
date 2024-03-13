@@ -17,7 +17,7 @@ const mockList: AdsCardProps[] = [
         title: 'someTitle',
         category: 'someCategory',
         location: 'someLocation',
-        wages: '5,000,00',
+        wages: '5,000,000',
         startDate: 'someStartDate',
         applications: '1,000',
     },
@@ -59,10 +59,10 @@ export default function AdsList() {
 
     useEffect(() => {
         const userId: string | null = clientStorage.get().user._id;
-        if (!userId){
-            router.push("/login")
+        if (!userId) {
+            router.push('/login');
         }
-        console.log(userId)
+        console.log(userId);
         const fetchAdsList = async () => {
             // getUserAds({
             //     userId,

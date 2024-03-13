@@ -2,17 +2,12 @@
 
 import { AdsCardProps } from '@/types/task';
 import Link from 'next/link';
-import {
-    ClockIcon,
-    InboxIcon,
-    MapPinIcon,
-} from 'lucide-react';
+import { ClockIcon, InboxIcon, MapPinIcon } from 'lucide-react';
 
 export default function AdsCard(props: AdsCardProps) {
     return (
         <Link
-            href=''
-            // href={'/task/' + props.taskId + '/detail'}
+            href={'/ads/' + props.taskId}
             className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>

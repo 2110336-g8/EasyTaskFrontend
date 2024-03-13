@@ -38,6 +38,27 @@ export interface AllTasksResponse {
     tasks: Task[];
 }
 
+export interface TaskDetailResponse {
+    task: {
+        status: TaskStateOptions;
+        _id: string;
+        title: string;
+        category: string;
+        description: string;
+        location: GeographicLocation;
+        state: TaskStateOptions;
+        wages: number;
+        workers: number;
+        startDate: string;
+        endDate: string;
+        customerId: string;
+        imageKeys: string[];
+        createdAt: string;
+        updatedAt: string;
+        __v: number;
+    };
+}
+
 export interface GetCategoriesResponse {
     success: boolean;
     categories: string[];

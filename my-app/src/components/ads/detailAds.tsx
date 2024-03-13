@@ -6,8 +6,9 @@ import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import FullWidthBar from '@/components/ui/hbar';
 import Map from '@/components/createTask/mapBox';
-import React from 'react';
+import React, { useState } from 'react';
 import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
+import { clientStorage } from '@/utils/storageService';
 
 export default function ViewAds(props: ViewAdsProps) {
     return (
