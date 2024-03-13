@@ -24,7 +24,10 @@ export default function ChangePasssword() {
     const schema: ZodType<ChangePasswordData> = z
         .object({
             currentPassword: z.string().min(1, 'Please complete the fill'),
-            newPassword: z.string().min(1, 'Please complete the fill'),
+            newPassword: z
+                .string()
+                .min(1, 'Please complete the fill')
+                .min(8, 'Password must be long at least 8 characters'),
             confirmNewPassword: z.string().min(1, 'Please complete the fill'),
         })
         .refine(data => data.newPassword === data.confirmNewPassword, {
