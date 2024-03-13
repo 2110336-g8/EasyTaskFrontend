@@ -1,12 +1,21 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { toast } from '../ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
 import { Button } from '@/components/ui/button';
-import { ViewTaskProps, Task } from '@/types/task';
+import { Task, ViewTaskProps } from '@/types/task';
 import { ArrowLeftIcon } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import Map from '@/components/createTask/mapBox';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+
+const api = axios.create({
+    baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
 export default function ViewTask(props: ViewTaskProps) {
-
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
     const [taskDetails, setTaskDetails] = useState<Task | null>(null);
@@ -22,16 +31,13 @@ export default function ViewTask(props: ViewTaskProps) {
         }
 
         try {
-            const response = await fetch('http://api.easytask.vt.in.th/v1/tasks/apply', {
-                method: 'POST',
+            const response = await api.post(`${props.taskId}/apply`, null, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${clientStorage.get().token}` 
-                },
-                body: JSON.stringify({ taskId: props.taskId }) 
+                }
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 toast({
                     variant: 'default',
                     title: 'Task Applied',
@@ -39,11 +45,11 @@ export default function ViewTask(props: ViewTaskProps) {
                 });
                 setHasApplied(true);
             } else {
-                const errorData = await response.json();
+                const errorData = response.data;
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description: errorData.message || 'An error occurred while applying for the task.',
+                    description: errorData.error || 'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -59,47 +65,29 @@ export default function ViewTask(props: ViewTaskProps) {
     useEffect(() => {
         async function fetchTaskDetails() {
             try {
-                const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${clientStorage.get().token}`
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setTaskDetails(data);
+                const response = await api.get(`${props.taskId}`);
+                if (response.status === 200) {
+                    const taskData = response.data;
+                    setTaskDetails(taskData);
                 } else {
-                    const errorData = await response.json();
-                    console.error('Error fetching task details:', errorData.message);
+                    toast({
+                        variant: 'destructive',
+                        title: 'Error Fetching Task',
+                        description: 'Failed to fetch task details.',
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching task details:', error);
-            }
-        }
-
-        async function checkAppliedStatus() {
-            try {
-                const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/check`, {
-                    headers: {
-                        'Authorization': `Bearer ${clientStorage.get().token}`
-                    }
+                toast({
+                    variant: 'destructive',
+                    title: 'Error Fetching Task',
+                    description: 'An error occurred while fetching task details.',
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setHasApplied(data.hasApplied);
-                } else {
-                    const errorData = await response.json();
-                    console.error('Error checking application status:', errorData.message);
-                }
-            } catch (error) {
-                console.error('Error checking application status:', error);
             }
         }
 
         if (isLoggedIn) {
             fetchTaskDetails();
-            checkAppliedStatus();
         }
     }, [isLoggedIn, props.taskId]);
 
@@ -160,7 +148,7 @@ export default function ViewTask(props: ViewTaskProps) {
                             <div className='flex flex-col gap-[8px]'>
                                 <h4 className='text-slate-900'>Duration</h4>
                                 <p className='text-slate-600'>
-                                    {taskDetails.startDate} - {taskDetails.endDate}
+                                    {taskDetails.startDate.toLocaleDateString()} - {taskDetails.endDate.toLocaleDateString()}
                                 </p>
                             </div>
                         </div>

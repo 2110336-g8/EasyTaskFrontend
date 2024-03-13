@@ -8,9 +8,9 @@ export async function setupProfile(
     lastName: string,
     password: string,
     phoneNumber: string,
-    bankId: string,
-    bankAccName: string,
-    bankAccNo: string,
+    bankId?: string,
+    bankAccName?: string,
+    bankAccNo?: string,
 ): Promise<ProfileResponse> {
     return instance
         .post('/v1/auth/register', {

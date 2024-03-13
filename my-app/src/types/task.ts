@@ -1,5 +1,12 @@
+import { User } from './user';
+
 export type WorkerStatusOptions = 'In Progress' | 'Completed' | 'Cancel';
-export type TaskStateOptions = 'Open' | 'In Progress' | 'Completed' | 'Cancel';
+export type ApplicantStatusOptions =
+    | 'Pending'
+    | 'Accepted'
+    | 'Rejected'
+    | 'Cancel';
+export type TaskStateOptions = 'Open' | 'In Progress' | 'Completed' | 'Closed';
 
 export interface GeographicLocation {
     name: string;
@@ -8,8 +15,17 @@ export interface GeographicLocation {
 }
 
 export interface Worker {
-    workerId: string;
+    createdAt: Date;
     status: WorkerStatusOptions;
+    userId: string;
+    _id: string;
+}
+
+export interface Applicant {
+    createdAt: Date;
+    status: ApplicantStatusOptions;
+    userId: string;
+    _id: string;
 }
 
 export interface Task {
@@ -19,15 +35,20 @@ export interface Task {
     description?: string;
     image?: string;
     location?: GeographicLocation;
-    state: TaskStateOptions;
+    status: TaskStateOptions;
     wages: number;
     startDate: Date;
     endDate: Date;
-    workers: number; //
-    customerId: string;
-    hiredWorkers: Array<Worker>;
+    workers: number;
+    customerId: User;
+    applicants: Applicant[];
+    hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface TaskKV {
+    [id: string]: Task;
 }
 
 export interface AllTasksResponse {
@@ -36,6 +57,10 @@ export interface AllTasksResponse {
     page: number;
     limit: number;
     tasks: Task[];
+}
+
+export interface TaskDetailResponse {
+    task: Task;
 }
 
 export interface GetCategoriesResponse {
@@ -61,11 +86,17 @@ export interface ViewTaskProps {
     category: string;
     image?: string;
     description?: string;
-    location?: string;
+    location?: GeographicLocation;
     wages: string;
     startDate: string;
     endDate: string;
     workers: string;
+    posted: string;
+    customer: {
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+    };
 }
 
 //*=================Ads====================*//
@@ -93,7 +124,7 @@ export interface ViewAdsProps {
     startDate: Date;
     endDate: Date;
     createdAt: Date;
-    applicants: Array<Worker>;
+    applicants: Array<Applicant>;
 }
 
 export interface GetUserAdsResponse {
@@ -128,4 +159,8 @@ export interface CreateTasksResponse {
     };
     success?: string;
     error?: string;
+}
+
+export interface UploadTaskImageResponse {
+    message?: string;
 }

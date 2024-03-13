@@ -31,12 +31,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from '../ui/use-toast';
 
-import {
-    Dispatch,
-    SetStateAction,
-    useEffect,
-    useState,
-} from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { SignupContext } from '@/context/signupInfoContext';
 import React from 'react';
 import { setupProfile } from '@/lib/setupProfile';
@@ -165,9 +160,6 @@ export default function BankAccountForm({ setAuthType }: props) {
                 signupInfo.lastName,
                 signupInfo.password,
                 signupInfo.phoneNumber,
-                '',
-                '',
-                '',
             );
             if (result?.error) {
                 console.error('Registration failed:', result.details);
@@ -211,13 +203,15 @@ export default function BankAccountForm({ setAuthType }: props) {
     return (
         <div className='flex flex-col items-center justify-center h-screen font-sans'>
             <img
-                        src='/logoEasyTask.jpg'
-                        alt='Image'
-                        className='image object-cover w-[303px] m-[20px]'
-                />
+                src='/logoEasyTask.jpg'
+                alt='Image'
+                className='image object-cover w-[303px] m-[20px]'
+            />
             <Card className='w-[640px] h-[600px] p-10 m-[20px]'>
                 <CardHeader className='text-center m-[20px]'>
-                    <CardTitle className='font-h1 text-h1 tracking-h1'>Bank account</CardTitle>
+                    <CardTitle className='font-h1 text-h1 tracking-h1'>
+                        Bank account
+                    </CardTitle>
                     <CardDescription className='font-p text-p tracking-p text-slate-400'>
                         You will receive work wages cia this bank account
                     </CardDescription>
@@ -380,8 +374,9 @@ export default function BankAccountForm({ setAuthType }: props) {
                                     <br></br>
                                 </FormMessage>
                             )}
-                            <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>Done</Button>
-                            
+                            <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>
+                                Done
+                            </Button>
                         </CardFooter>
                     </form>
                 </Form>

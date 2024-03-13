@@ -22,15 +22,20 @@ export default function AdsToggleList({
 
     return (
         <div className='w-full flex flex-col gap-[20px]'>
-            <div className='flex w-full gap-[8px]'>
-                <button onClick={() => setIsShow(!isShow)}>
+            <div
+                className='group flex w-full gap-[8px] cursor-pointer'
+                onClick={() => setIsShow(!isShow)}
+            >
+                <button>
                     {isShow ? (
-                        <ChevronDownIcon className='stroke-slate-500 stroke-2 w-[28px] h-[28px]' />
+                        <ChevronDownIcon className='stroke-slate-500 stroke-2 w-[28px] h-[28px] group-hover:stroke-primary-500' />
                     ) : (
-                        <ChevronRightIcon className='stroke-slate-500 stroke-2 w-[28px] h-[28px]' />
+                        <ChevronRightIcon className='stroke-slate-500 stroke-2 w-[28px] h-[28px] group-hover:stroke-primary-500' />
                     )}
                 </button>
-                <h4 className='text-slate-500'>{names[type]}</h4>
+                <h4 className='text-slate-500 group-hover:text-primary-500 group-hover:font-medium'>
+                    {names[type]}
+                </h4>
             </div>
             {isShow ? (
                 adsList.length > 0 ? (
