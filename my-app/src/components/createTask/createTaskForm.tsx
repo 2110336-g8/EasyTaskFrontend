@@ -239,7 +239,7 @@ export default function CreateTaskForm() {
             <div>
                 <div className='flex flex-row justify-end'>
                     <p className='text-error-500'>*</p>
-                    <p>Require Data</p>
+                    <p>Required Data</p>
                 </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
