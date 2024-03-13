@@ -503,6 +503,9 @@ export default function CreateTaskForm() {
                                                                     }
                                                                 }}
                                                             />
+                                                            <p className='mt-2 ml-2'>
+                                                                Person(s)
+                                                            </p>
                                                         </div>
                                                     </FormControl>
                                                     <FormMessage />
