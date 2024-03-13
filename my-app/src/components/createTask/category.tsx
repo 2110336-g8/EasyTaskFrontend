@@ -15,9 +15,9 @@ export function Categories({
             <ToggleGroup
                 size={'sm'}
                 type='single'
-                className='gap-2 mt-2 justify-start flex-col'
+                className='gap-3 mt-2 justify-start flex-col'
             >
-                <div className='justify-start flex space-x-2'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
                         value='General'
                         onClick={() => handleCategoryToggle('General')}
@@ -44,7 +44,7 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='justify-start flex space-x-2'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
                         value='Translation'
                         onClick={() => handleCategoryToggle('Translation')}
@@ -63,7 +63,7 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='gap-2 justify-start flex space-x-2'>
+                <div className='gap-2 justify-start flex space-x-3'>
                     <ToggleGroupItem
                         value='Programming and Tech'
                         onClick={() =>
@@ -76,7 +76,7 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='justify-start flex space-x-2'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
                         value='Images and Sound'
                         onClick={() => handleCategoryToggle('Images and Sound')}

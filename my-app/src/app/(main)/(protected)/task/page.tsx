@@ -33,6 +33,7 @@ export default function TaskList() {
             newFilters.add(value);
         }
         setCategoryFilters(newFilters);
+        setPage(1);
     };
 
     const updateWageRangeFilters = (value: WageRange) => {
@@ -43,6 +44,7 @@ export default function TaskList() {
             newFilters.add(value);
         }
         setWageRangeFilters(newFilters);
+        setPage(1);
     };
 
     const updateIndividualFilter = (newIndiv: boolean) => {
@@ -55,6 +57,7 @@ export default function TaskList() {
                 setIndividual(newIndiv);
             }
         }
+        setPage(1);
     };
 
     useEffect(() => {
