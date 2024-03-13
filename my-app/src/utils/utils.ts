@@ -1,4 +1,4 @@
-import { User } from "@/types/user";
+import { User } from '@/types/user';
 
 export function isString(value: any): value is string {
     return typeof value === 'string';
@@ -23,7 +23,11 @@ export function isUser(object: any): object is User {
     );
 }
 
-export const range = (start:number, end:number) => {
+export const range = (start: number, end: number) => {
     let length = end - start + 1;
     return Array.from({ length }, (_, idx) => idx + start);
 };
+
+function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

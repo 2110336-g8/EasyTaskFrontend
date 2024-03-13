@@ -164,7 +164,8 @@ export default function ViewAds(props: ViewAdsProps) {
 
                             <div>
                                 <h4 className='text-slate-900 justify-self-center font-medium'>
-                                    Candidate Applications
+                                    Candidate Applications (
+                                    {props.applicants.length})
                                 </h4>
                             </div>
 

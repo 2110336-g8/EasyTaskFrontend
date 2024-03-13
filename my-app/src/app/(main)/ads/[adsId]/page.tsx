@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ViewAds from '@/components/ads/detailAds';
-import { Worker, Task, ViewAdsProps, TaskDetailResponse } from '@/types/task';
+import { Worker, Task, ViewAdsProps, AdsDetailResponse } from '@/types/task';
 import { undefined } from 'zod';
-import { getTaskDetail } from '@/lib/getTaskDetail';
+import { getAllAdsFromUser } from '@/lib/getAllAds';
 import { otpVerification } from '@/lib/OTPVerification';
 import Error from 'next/error';
 import { dateFromString } from '@/utils/datetime';
+import { clientStorage } from '@/utils/storageService';
+import { useRouter } from 'next/navigation';
 
 export default function AdsDetailPage({
     params,
@@ -43,7 +45,7 @@ export default function AdsDetailPage({
         updatedAt: new Date('2021-11-30'),
     };
 
-    const mockWorkers: Array<Worker> = [
+    const mockApplicants: Array<Worker> = [
         {
             status: 'In Progress',
             workerId: '1234567890',
@@ -55,6 +57,26 @@ export default function AdsDetailPage({
         {
             status: 'In Progress',
             workerId: '1234567892',
+        },
+        {
+            status: 'In Progress',
+            workerId: '1234567893',
+        },
+        {
+            status: 'In Progress',
+            workerId: '1234567894',
+        },
+        {
+            status: 'In Progress',
+            workerId: '1234567895',
+        },
+        {
+            status: 'In Progress',
+            workerId: '1234567896',
+        },
+        {
+            status: 'In Progress',
+            workerId: '1234567897',
         },
     ];
 
@@ -69,48 +91,54 @@ export default function AdsDetailPage({
         location: mockTaskRaw.location,
         startDate: mockTaskRaw.startDate,
         endDate: mockTaskRaw.endDate,
-        applicants: mockWorkers,
+        applicants: mockApplicants,
         createdAt: mockTaskRaw.createdAt,
     };
 
-    let task: any = {};
+    const [data, setData] = useState<ViewAdsProps | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+    const router = useRouter();
 
     useEffect(() => {
-        console.log(task);
-    });
+        const userId: string | null = clientStorage.get().user._id;
+        if (!userId) {
+            router.push('/login');
+        }
 
-    getTaskDetail(params.adsId)
-        .then(taskDetail => {
-            task = taskDetail.task;
-            const props: ViewAdsProps = {
-                taskId: task._id,
-                title: task.title,
-                description: task.description,
-                image: 'no-image', // todo: What is imageKeys?
-                category: task.category,
-                wages: task.wages,
-                workers: task.workers,
-                location: task.location,
-                startDate: dateFromString(task.startDate),
-                endDate: dateFromString(task.endDate),
-                applicants: mockWorkers,
-                createdAt: dateFromString(task.createdAt),
-            };
-            return (
-                <div>
-                    <ViewAds {...props} />
-                </div>
-            );
-        })
-        .catch(error => {
-            return <div>Error!</div>;
-        });
+        getAllAdsFromUser(params.adsId)
+            .then(taskResponse => {
+                const task = taskResponse[params.adsId];
+                const props: ViewAdsProps = {
+                    taskId: task._id,
+                    title: task.title,
+                    description: task.description,
+                    image: mockTaskRaw.image, // todo: What is imageKeys?
+                    category: task.category,
+                    wages: task.wages,
+                    workers: task.workers,
+                    location: task.location,
+                    startDate: dateFromString(task.startDate),
+                    endDate: dateFromString(task.endDate),
+                    applicants: task.applicants.map(worker => {
+                        worker.status;
+                        worker.userId;
+                        // createdA dateFromString()
+                    }),
+                    createdAt: dateFromString(task.createdAt),
+                };
+                setData(props);
+                setIsLoading(false);
+            })
+            .catch(e => {
+                setError(e.message);
+                setIsLoading(false);
+            });
+    }, []);
 
-    console.log(task);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-    return (
-        <div>
-            <ViewAds {...mockAds} />
-        </div>
-    );
+    return <div>{data ? <ViewAds {...data} /> : <h1>{error}</h1>}</div>;
 }
