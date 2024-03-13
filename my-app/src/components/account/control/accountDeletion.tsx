@@ -19,8 +19,11 @@ import {
     Form,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReactNode } from 'react';
+import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ZodType, z } from 'zod';
 
@@ -30,7 +33,7 @@ interface DeleteAccountData {
 
 export default function AccountDeletion() {
     const schema: ZodType<DeleteAccountData> = z.object({
-        password: z.string().min(1, 'Please enter the password'),
+        password: z.string(),
     });
 
     const form = useForm<z.infer<typeof schema>>({
@@ -40,12 +43,39 @@ export default function AccountDeletion() {
         },
     });
 
-    const submitData = async (values: z.infer<typeof schema>) => {};
+    const submitData = async (values: z.infer<typeof schema>) => {
+        try {
+            const userId = clientStorage.get().user._id;
+            if (!userId) {
+                throw Error('Current user not found');
+            }
+            await instance.delete(`v1/users/${userId}`, {
+                data: { password: form.getValues('password') },
+            });
+            clientStorage.remove();
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            if ((error as any).response.data.error == 'Unauthorized') {
+                form.setError('password', {
+                    type: 'custom',
+                    message: 'Wrong password',
+                });
+                return;
+            }
+            toast({
+                variant: 'destructive',
+                title: 'Uh oh! Something went wrong.',
+                description: `${(error as any).response.data.error}`,
+            });
+        }
+    };
 
     return (
         <form
             onSubmit={form.handleSubmit(submitData)}
             className='w-full flex flex-col gap-y-[16px]'
+            id='my-form'
         >
             <h2>Account Deletion</h2>
             <p className='text-slate-500'>
@@ -53,7 +83,12 @@ export default function AccountDeletion() {
             </p>
             <Dialog>
                 <DialogTrigger type='button' className='w-[168px]'>
-                    <Button variant='destructive' className='w-full' size='sm'>
+                    <Button
+                        variant='destructive'
+                        className='w-full'
+                        size='sm'
+                        type='button'
+                    >
                         Delete Account
                     </Button>
                 </DialogTrigger>
@@ -84,15 +119,25 @@ export default function AccountDeletion() {
                                     </FormItem>
                                 )}
                             />
+                            {form.formState.errors.password && (
+                                <p className='text-error-500'>
+                                    {form.formState.errors.password.message}
+                                </p>
+                            )}
                         </div>
                     </Form>
                     <DialogFooter className='flex flex-row justify-end gap-[8px]'>
                         <DialogClose asChild>
-                            <Button variant='secondary' size='sm'>
+                            <Button variant='secondary' size='sm' type='button'>
                                 Cancel
                             </Button>
                         </DialogClose>
-                        <Button variant='destructive' size='sm'>
+                        <Button
+                            variant='destructive'
+                            size='sm'
+                            type='submit'
+                            form='my-form'
+                        >
                             Delete Account
                         </Button>
                     </DialogFooter>
