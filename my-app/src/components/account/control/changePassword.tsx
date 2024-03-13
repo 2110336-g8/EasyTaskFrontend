@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { ZodType, z } from 'zod';
 
@@ -22,11 +23,9 @@ interface ChangePasswordData {
 export default function ChangePasssword() {
     const schema: ZodType<ChangePasswordData> = z
         .object({
-            currentPassword: z.string(),
-            newPassword: z
-                .string()
-                .min(8, 'Password must be long at least 8 characters'),
-            confirmNewPassword: z.string(),
+            currentPassword: z.string().min(1, 'Please complete the fill'),
+            newPassword: z.string().min(1, 'Please complete the fill'),
+            confirmNewPassword: z.string().min(1, 'Please complete the fill'),
         })
         .refine(data => data.newPassword === data.confirmNewPassword, {
             message: 'Password confirmation does not match',
@@ -43,6 +42,29 @@ export default function ChangePasssword() {
     });
 
     const submitData = async (values: z.infer<typeof schema>) => {};
+
+    const getError = (): ReactNode => {
+        const errors = form.formState.errors;
+        console.log(errors);
+        if (errors.currentPassword) {
+            return (
+                <p className='text-error-500'>
+                    {errors.currentPassword.message}
+                </p>
+            );
+        } else if (errors.newPassword) {
+            return (
+                <p className='text-error-500'>{errors.newPassword.message}</p>
+            );
+        } else if (errors.confirmNewPassword) {
+            return (
+                <p className='text-error-500'>
+                    {errors.confirmNewPassword.message}
+                </p>
+            );
+        }
+        return <></>;
+    };
 
     return (
         <form
@@ -67,11 +89,6 @@ export default function ChangePasssword() {
                             </FormItem>
                         )}
                     />
-                    {form.formState.errors.currentPassword && (
-                        <p className='text-error-500'>
-                            {form.formState.errors.currentPassword.message}
-                        </p>
-                    )}
                     <FormField
                         control={form.control}
                         name='newPassword'
@@ -87,14 +104,9 @@ export default function ChangePasssword() {
                             </FormItem>
                         )}
                     />
-                    {form.formState.errors.newPassword && (
-                        <p className='text-error-500'>
-                            {form.formState.errors.newPassword.message}
-                        </p>
-                    )}
                     <FormField
                         control={form.control}
-                        name='newPassword'
+                        name='confirmNewPassword'
                         render={({ field }) => (
                             <FormItem className='w-full grid grid-cols-3 gap-[16px] items-center'>
                                 <FormLabel>Confirm New Password</FormLabel>
@@ -107,16 +119,15 @@ export default function ChangePasssword() {
                             </FormItem>
                         )}
                     />
-                    {form.formState.errors.confirmNewPassword && (
-                        <p className='text-error-500'>
-                            {form.formState.errors.confirmNewPassword.message}
-                        </p>
-                    )}
                 </div>
             </Form>
-            <Button className='w-[168px] text-button font-button text-slate-50 bg-primary-500'>
+            <Button
+                type='submit'
+                className='w-[168px] text-slate-50 bg-primary-500'
+            >
                 Update password
             </Button>
+            {getError()}
         </form>
     );
 }
