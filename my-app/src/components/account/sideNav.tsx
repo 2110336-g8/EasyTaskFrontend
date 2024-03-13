@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function SideNav() {
     return (
-        <div className='w-[320px] px-[16px] py-[8px] gap-y-[8px]'>
+        <div className='hidden tablet:block w-[360px] px-[16px] py-[8px] gap-y-[8px]'>
             <Link
                 href='profile'
                 className='flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200'

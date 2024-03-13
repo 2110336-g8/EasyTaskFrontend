@@ -93,7 +93,6 @@ export default function PersonalInfo() {
             await instance.patch(`v1/users/${user?._id}`, toUpdate);
             window.location.reload();
         } catch (error) {
-            console.log(error);
             toast({
                 variant: 'destructive',
                 title: 'Uh oh! Something went wrong.',

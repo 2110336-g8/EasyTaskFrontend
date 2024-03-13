@@ -54,7 +54,7 @@ export default function BankAccountInfo() {
             }),
             bankAccNo: z.string(),
         })
-        .refine(data => [0, 12].includes(data.bankAccNo.length), {
+        .refine(data => [0, 13].includes(data.bankAccNo.length), {
             message: 'Please fill a valid bank account number',
             path: ['bankAccNo'],
         });
@@ -76,10 +76,6 @@ export default function BankAccountInfo() {
         fetchBanks();
     }, []);
 
-    // useEffect(() => {
-    //     console.log(`bank change to ${banks}`);
-    // }, [banks]);
-
     useEffect(() => {
         const fetchUser = async () => {
             const user = await getSelfUser();
@@ -88,7 +84,7 @@ export default function BankAccountInfo() {
             }
             setBankId(user.bankId ?? '');
             setBankAccName(user.bankAccName ?? '');
-            setbankAccNo(user.phoneNumber ?? '');
+            setbankAccNo(user.bankAccNo ?? '');
         };
         fetchUser();
     }, []);
@@ -114,11 +110,11 @@ export default function BankAccountInfo() {
             toUpdate.bankAccNo = data.bankAccNo.replace(/-/g, '');
         }
         try {
+            console.log(toUpdate);
             const user = await getSelfUser();
             await instance.patch(`v1/users/${user?._id}`, toUpdate);
             window.location.reload();
         } catch (error) {
-            console.log(error);
             toast({
                 variant: 'destructive',
                 title: 'Uh oh! Something went wrong.',
@@ -210,9 +206,9 @@ export default function BankAccountInfo() {
                                                         <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                     </Button>
                                                 </PopoverTrigger>
-                                                <PopoverContent className='bg-slate-50 w-[422px] px-[12px] py-[8px] rounded-[16px]'>
+                                                <PopoverContent className='bg-slate-50 desktop:w-[422px] tablet:w-[47vw] w-[64vw] rounded-[16px] z-50'>
                                                     <Command>
-                                                        <CommandList className='max-h-[500px]'>
+                                                        <CommandList className='max-h-[50vh] p-[8px]'>
                                                             <CommandGroup>
                                                                 {banks.map(
                                                                     bank => (
@@ -329,9 +325,15 @@ export default function BankAccountInfo() {
                                                     // Apply the desired format
                                                     const formattedValue =
                                                         rawValue.replace(
-                                                            /^(\d{0,3})(\d{0,3})(\d{0,4})$/,
-                                                            (_, p1, p2, p3) =>
-                                                                [p1, p2, p3]
+                                                            /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
+                                                            (
+                                                                _,
+                                                                p1,
+                                                                p2,
+                                                                p3,
+                                                                p4,
+                                                            ) =>
+                                                                [p1, p2, p3, p4]
                                                                     .filter(
                                                                         Boolean,
                                                                     )
