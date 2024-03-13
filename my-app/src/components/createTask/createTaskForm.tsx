@@ -43,25 +43,15 @@ import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z
-        .instanceof(FileList)
-        .refine(picture => picture?.length == 1, 'File is required.')
-        .refine(picture => {
-            const fileType = picture?.item(0)?.type;
-            return fileType && /(jpg|jpeg|png)$/i.test(fileType);
-        }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
-        .refine(picture => {
-            const firstFile = picture?.item(0);
-            return firstFile && firstFile.size <= 5 * 1024 * 1024;
-        }, 'File size exceeds 5MB limit'),
+    picture: z.instanceof(FileList),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     }),
-    wages: z.number(),
-    sizeOfTeam: z.number(),
+    wages: z.number().optional(),
+    sizeOfTeam: z.number().optional(),
     locationName: z.string(),
 });
 
@@ -109,16 +99,17 @@ export default function CreateTaskForm() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        if (!values.picture) {
+        if (
+            !(date && date.from && date.to) ||
+            !values.picture ||
+            selectedCategory == '' ||
+            values.wages == undefined ||
+            values.sizeOfTeam !== undefined ||
+            values.locationName == ''
+        ) {
             setError('invalidText', {
                 type: 'manual',
-                message: 'Please upload an image.',
-            });
-            return;
-        } else if (!(date && date.from && date.to)) {
-            setError('invalidText', {
-                type: 'manual',
-                message: 'Please complete the fill.',
+                message: 'Please complete the required fill(s).',
             });
             return;
         }
@@ -149,8 +140,8 @@ export default function CreateTaskForm() {
                 values.description ?? '',
                 date?.from,
                 date?.to,
-                values.sizeOfTeam,
-                values.wages,
+                values.sizeOfTeam ?? 0,
+                values.wages ?? 0,
                 selectedCategory,
                 {
                     name: values.locationName,
@@ -201,6 +192,7 @@ export default function CreateTaskForm() {
                         'Task image uploaded successfully'
                     ) {
                         console.log('image upload success');
+                        router.push('/ads')
                     } else {
                         console.log(imageUploadRes);
                     }
@@ -232,7 +224,7 @@ export default function CreateTaskForm() {
     // };
 
     return (
-        <div className='flex flex-col h-screen font-sans ml-20'>
+        <div className='flex flex-col font-sans ml-20'>
             <h1 className='w-[1000px] h-[80px]'>Create Job Advertisement</h1>
             <div>
                 <div className='flex flex-row justify-end'>
@@ -575,9 +567,9 @@ export default function CreateTaskForm() {
                                 </FormMessage>
                             )}
                             <div className='flex flex-row mb-5'>
-                                <Button className='w-full bg-white mr-3 text-p font-extra-bold tracking-p text-primary-500 border border-primary-500 hover:text-white'>
+                                {/* <Button className='w-full bg-white mr-3 text-p font-extra-bold tracking-p text-primary-500 border border-primary-500 hover:text-white'>
                                     Preview
-                                </Button>
+                                </Button> */}
                                 <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>
                                     Publish Now
                                 </Button>
