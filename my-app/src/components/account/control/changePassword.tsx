@@ -68,7 +68,6 @@ export default function ChangePasssword() {
             });
             form.reset();
         } catch (error) {
-            console.log((error as any).response.data.error);
             if ((error as any).response.data.error == 'Unauthorized') {
                 form.setError('currentPassword', {
                     type: 'custom',
@@ -86,7 +85,6 @@ export default function ChangePasssword() {
 
     const getError = (): ReactNode => {
         const errors = form.formState.errors;
-        console.log(errors);
         if (errors.currentPassword) {
             return (
                 <p className='text-error-500'>

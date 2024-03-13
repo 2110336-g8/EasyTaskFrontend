@@ -363,27 +363,35 @@ export default function BankAccountInfo() {
                     <div className='w-full grid grid-cols-3 gap-x-[16px] gap-y-[24px] pt-[12px] item-center'>
                         <p>Bank Name</p>
                         <div className='flex flex-row gap-x-[8px] col-span-2'>
-                            <Image
-                                src={banks.at(parseInt(bankId))?.url ?? ''}
-                                alt=''
-                                width={24}
-                                height={24}
-                            />
+                            {bankId != '' && (
+                                <Image
+                                    src={banks.at(parseInt(bankId))?.url ?? ''}
+                                    alt=''
+                                    width={24}
+                                    height={24}
+                                />
+                            )}
                             <p className='text-slate-500'>
-                                {banks.at(parseInt(bankId))?.name ?? ''}
+                                {bankId === ''
+                                    ? '-'
+                                    : banks.at(parseInt(bankId))?.name ?? '-'}
                             </p>
                         </div>
                         <p>Account Name</p>
                         <p className='col-span-2 text-slate-500'>
-                            {bankAccName}
+                            {bankAccName === '' ? '-' : bankAccName}
                         </p>
                         <p>Account Number</p>
                         <p className='col-span-2 text-slate-500'>
-                            {bankAccNo.replace(
-                                /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
-                                (_, p1, p2, p3, p4) =>
-                                    [p1, p2, p3, p4].filter(Boolean).join('-'),
-                            )}
+                            {bankAccNo === ''
+                                ? '-'
+                                : bankAccNo.replace(
+                                      /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
+                                      (_, p1, p2, p3, p4) =>
+                                          [p1, p2, p3, p4]
+                                              .filter(Boolean)
+                                              .join('-'),
+                                  )}
                         </p>
                     </div>
                 )}
