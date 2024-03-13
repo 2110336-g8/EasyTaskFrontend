@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { ViewTaskProps } from '@/types/task';
 import { ArrowLeftIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import Map from '@/components/createTask/mapBox';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import MapReadOnly from '../map/mapBoxReadOnly';
 
 export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
@@ -123,9 +123,13 @@ export default function ViewTask(props: ViewTaskProps) {
                                     {props.location.name}
                                 </p>
                                 <div>
-                                    {/* todo: Make a new read-only with preset pin map component */}
-                                    <Map onPinLocation={() => {}} />
-                                </div>{' '}
+                                    <MapReadOnly
+                                        coord={{
+                                            lat: props.location.latitude,
+                                            lng: props.location.longitude,
+                                        }}
+                                    />
+                                </div>
                             </div>
                         ) : null}
                     </div>
@@ -171,19 +175,21 @@ export default function ViewTask(props: ViewTaskProps) {
                         <div className='border-t h-0 border-slate-300'></div>
                         <div className='flex flex-col gap-[16px]'>
                             <h4>About the Client</h4>
-                            <div className='flex flex-row gap-[16px]'>
+                            <div className='flex flex-row items-center gap-[16px]'>
                                 <Avatar
                                     style={{ width: '56px', height: '56px' }}
                                 >
                                     <AvatarImage
-                                        src='https://github.com/shadcn.png'
+                                        src={props.customer.image}
                                         alt='@shadcn'
                                     />
                                     <AvatarFallback>?</AvatarFallback>
                                 </Avatar>
                                 <div className='flex flex-col gap-[4px]'>
-                                    <p>John Doe</p>
-                                    <p>098-765-4321</p>
+                                    <p>{props.customer.name}</p>
+                                    {props.customer.phoneNumber ? (
+                                        <p>{props.customer.phoneNumber}</p>
+                                    ) : null}
                                 </div>
                             </div>
                         </div>
