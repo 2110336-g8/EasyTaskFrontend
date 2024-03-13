@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import { numberWithCommas } from '@/utils/utils';
+import MapReadOnly from '@/components/map/mapBoxReadOnly';
 
 export default function ViewAds(props: ViewAdsProps) {
     return (
@@ -60,7 +61,12 @@ export default function ViewAds(props: ViewAdsProps) {
                             </p>
                             <div>
                                 {/* todo: Make a new read-only with preset pin map component */}
-                                <Map onPinLocation={() => {}} />
+                                <MapReadOnly
+                                    coord={{
+                                        lat: props.location?.latitude,
+                                        lng: props.location?.longitude,
+                                    }}
+                                />
                             </div>
                         </section>
                     </article>
