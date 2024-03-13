@@ -41,7 +41,7 @@ export default function LoginNavbar() {
                 </div>
                 <ul className='flex items-center space-x-4'>
                     <li className="inline-flex items-end gap-4">
-                        <a className="flex items-end gap-1" href="/inbox">
+                        <a className="flex items-end gap-1" href="/account">
                             <Image src="/navicons/frame.svg" alt="account icon" width={32} height={32} className="brightness-normal transition duration-300"/>
                             <span className="text-primary-500 font-inter font-semibold text-base leading-6 tracking-tighter">Account</span>
                         </a>
