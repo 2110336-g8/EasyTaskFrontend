@@ -4,7 +4,7 @@ import { WageRange } from '@/app/(main)/task/page';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { toast } from '../ui/use-toast';
 import { useEffect, useState } from 'react';
-import { getCategories} from '@/lib/getAllTasks';
+import { getCategories } from '@/lib/getAllTasks';
 import { GetCategoriesResponse } from '@/types/task';
 
 const mockWageRange: WageRange[] = [
@@ -60,36 +60,47 @@ export default function FilterTaskList({
 
     return (
         <div className='flex flex-col gap-[16px]'>
-            <ToggleGroup type='multiple'>
+            <ToggleGroup size={'sm'} type='multiple'>
                 {categories.map((category, index) => (
                     <ToggleGroupItem
                         onClick={() => updateCategoryFilters(category)}
                         value={category}
                         key={index}
+                        className='mr-2'
+                        aria-label='Toggle bold'
+                        active={false}
                     >
-                        <p className='text-slate-400'>{category}</p>
+                        {category}
                     </ToggleGroupItem>
                 ))}
             </ToggleGroup>
 
-            <div className='inline-flex gap-[24px] text-slate-500'>
-                <ToggleGroup type='single'>
+            <div className='inline-flex gap-[24px]'>
+                <ToggleGroup size={'sm'} type='single'>
                     Work as
                     <ToggleGroupItem
                         onClick={() => updateIndividualFilter(true)}
                         value='Individual'
+                        key={'Individual'}
+                        className='mr-2'
+                        aria-label='Toggle bold'
+                        active={false}
                     >
-                        <p className='text-slate-400'>Individual</p>
+                        Individual
                     </ToggleGroupItem>
                     /
                     <ToggleGroupItem
                         onClick={() => updateIndividualFilter(false)}
                         value='Team'
+                        key={'Team'}
+                        className='mr-2'
+                        aria-label='Toggle bold'
+                        active={false}
                     >
-                        <p className='text-slate-400'>Team</p>
+                        Team
                     </ToggleGroupItem>
                 </ToggleGroup>
-                <ToggleGroup type='multiple'>
+                <ToggleGroup size={'sm'} type='multiple'>
                     Wages
                     {mockWageRange.map((range, index) => {
                         const formattedRange = formatWageRange(range);
@@ -98,11 +109,12 @@ export default function FilterTaskList({
                             <ToggleGroupItem
                                 onClick={() => updateWageRangeFilters(range)}
                                 value={formattedRange}
-                                key={key}
+                                key={'index'}
+                                className='mr-2'
+                                aria-label='Toggle bold'
+                                active={false}
                             >
-                                <p className='text-slate-400'>
-                                    {formattedRange}
-                                </p>
+                                {formattedRange}
                             </ToggleGroupItem>
                         );
                     })}
