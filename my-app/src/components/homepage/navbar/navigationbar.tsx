@@ -11,9 +11,9 @@ export default function Navbar() {
 
     useEffect(() => {
         setIsLoggedIn(!!clientStorage.get().token);
-    }, [clientStorage]);
+    }, []);
 
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
 
     return (
         <div>

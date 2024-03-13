@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { CalendarDaysIcon, MapPinIcon, UsersIcon } from 'lucide-react';
 
 export default function TaskCard(props: TaskCardProps) {
+    
     return (
         <Link
             href={'/task/' + props.taskId}
