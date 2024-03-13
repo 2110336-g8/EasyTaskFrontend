@@ -152,3 +152,7 @@ export interface CreateTasksResponse {
     success?: string;
     error?: string;
 }
+
+export interface UploadTaskImageResponse {
+    message?: string;
+}
