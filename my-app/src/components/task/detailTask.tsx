@@ -13,7 +13,6 @@ export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
-
     async function applyTaskHandler() {
         if (!isLoggedIn) {
             toast({
@@ -23,7 +22,7 @@ export default function ViewTask(props: ViewTaskProps) {
             });
             return;
         }
-
+    
         try {
             const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`, {
                 method: 'POST',
@@ -32,14 +31,15 @@ export default function ViewTask(props: ViewTaskProps) {
                     'Authorization': `Bearer ${clientStorage.get().token}` 
                 }
             });
-
+    
             if (response.ok) {
+                const result = await response.json();
                 toast({
                     variant: 'default',
                     title: 'Task Applied',
                     description: 'You have successfully applied for this task.',
                 });
-                setHasApplied(true); // Update state to reflect application status
+                setHasApplied(true);
             } else {
                 const errorData = await response.json();
                 toast({
@@ -57,37 +57,6 @@ export default function ViewTask(props: ViewTaskProps) {
                     'An error occurred while applying for the task. Please try again later.',
             });
         }
-    }
-
-    useEffect(() => {
-        async function checkAppliedStatus() {
-            try {
-                const response = await fetch(
-                    `http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/check`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${clientStorage.get().token}`,
-                        },
-                    },
-                );
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setHasApplied(data.hasApplied);
-                } else {
-                    const errorData = await response.json();
-                    console.error('Error checking application status:', errorData.error);
-                }
-            } catch (error) {
-                console.error('Error checking application status:', error);
-            }
-        }
-
-        if (isLoggedIn) {
-            checkAppliedStatus();
-        }
-    }, [isLoggedIn, props.taskId]);
-    
 
     return (
         <div className='flex justify-center items-center'>
