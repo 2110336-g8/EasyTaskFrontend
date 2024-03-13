@@ -245,7 +245,7 @@ export default function CreateTaskForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <Card className='w-[1000px] p-10'>
                             <CardContent>
-                                <div className='grid w-full items-center gap-4'>
+                                <div className='grid w-full items-center gap-10'>
                                     <div className='flex flex-col space-y-1.5'>
                                         <FormField
                                             control={form.control}
@@ -292,6 +292,7 @@ export default function CreateTaskForm() {
                                                         </div>
                                                     </FormLabel>
                                                     <FormControl>
+                                                        <div className='flex flex-row gap-2 items-center'>
                                                         <Input
                                                             className='font-small text-p tracking-small'
                                                             type='file'
@@ -299,6 +300,9 @@ export default function CreateTaskForm() {
                                                                 'picture',
                                                             )}
                                                         />
+                                                        <div className='flex flex-none text-slate-500'> <p>JPG/ JPEG/ PNG only</p> </div>
+                                                        
+                                                        </div>
                                                     </FormControl>
                                                     <FormMessage className='text-[16px]' />
                                                 </FormItem>
@@ -340,7 +344,7 @@ export default function CreateTaskForm() {
                                     <Textarea placeholder='Enter brief task description here...' /> */}
 
                                     <div className='flex'>
-                                        <div className='w-1/3 flex flex-col'>
+                                        <div className='w-1/2 flex flex-col'>
                                             <FormField
                                                 control={form.control}
                                                 name='category'
@@ -373,63 +377,9 @@ export default function CreateTaskForm() {
                                                 )}
                                             />
 
-                                            <div className='flex flex-col space-y-1.5'>
-                                                <FormField
-                                                    control={form.control}
-                                                    name='wages'
-                                                    render={({ field }) => (
-                                                        <FormItem className='flex flex-col'>
-                                                            <FormLabel className='text-black font-p text-p tracking-p'>
-                                                                <div className='flex flex-row mt-2'>
-                                                                    <h4>
-                                                                        Wages
-                                                                    </h4>
-                                                                    <h4 className='text-error-500'>
-                                                                        *
-                                                                    </h4>
-                                                                </div>
-                                                            </FormLabel>
-                                                            <FormControl className='flex flex-row'>
-                                                                <div>
-                                                                    <Input
-                                                                        placeholder='20,000'
-                                                                        className='font-small text-p tracking-small'
-                                                                        {...field}
-                                                                        type='text'
-                                                                        onChange={e => {
-                                                                            const value =
-                                                                                parseFloat(
-                                                                                    e
-                                                                                        .target
-                                                                                        .value,
-                                                                                );
-                                                                            if (
-                                                                                !isNaN(
-                                                                                    value,
-                                                                                )
-                                                                            ) {
-                                                                                field.onChange(
-                                                                                    value,
-                                                                                ); // If the value is a valid number, update the field value
-                                                                            } else {
-                                                                                field.onChange(
-                                                                                    '',
-                                                                                ); // If the value is not a valid number, clear the field value
-                                                                            }
-                                                                        }}
-                                                                    />
-                                                                    <p className='mt-2 ml-2'>
-                                                                        Baht/Person
-                                                                    </p>
-                                                                </div>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
+                                    
                                         </div>
-                                        <div className='w-2/3'>
+                                        <div className='w-1/2'>
                                             <FormField
                                                 control={form.control}
                                                 name='dateRange'
@@ -468,7 +418,68 @@ export default function CreateTaskForm() {
                                             <DateRange /> */}
                                         </div>
                                     </div>
-                                    <div>
+
+                                    <div className='flex'>
+                                        <div className='w-1/2 flex flex-col'>
+                                            <div className='flex flex-col space-y-1.5'>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name='wages'
+                                                            render={({ field }) => (
+                                                                <FormItem className='flex flex-col'>
+                                                                    <FormLabel className='text-black font-p text-p tracking-p'>
+                                                                        <div className='flex flex-row mt-2'>
+                                                                            <h4>
+                                                                                Wages
+                                                                            </h4>
+                                                                            <h4 className='text-error-500'>
+                                                                                *
+                                                                            </h4>
+                                                                        </div>
+                                                                    </FormLabel>
+                                                                    <FormControl className='flex flex-row'>
+                                                                        <div>
+                                                                            <Input
+                                                                                placeholder='20,000'
+                                                                                className='font-small text-p tracking-small'
+                                                                                {...field}
+                                                                                type='text'
+                                                                                onChange={e => {
+                                                                                    const value =
+                                                                                        parseFloat(
+                                                                                            e
+                                                                                                .target
+                                                                                                .value,
+                                                                                        );
+                                                                                    if (
+                                                                                        !isNaN(
+                                                                                            value,
+                                                                                        )
+                                                                                    ) {
+                                                                                        field.onChange(
+                                                                                            value,
+                                                                                        ); // If the value is a valid number, update the field value
+                                                                                    } else {
+                                                                                        field.onChange(
+                                                                                            '',
+                                                                                        ); // If the value is not a valid number, clear the field value
+                                                                                    }
+                                                                                }}
+                                                                            />
+                                                                            <p className='mt-2 ml-2 mr-[80px]'>
+                                                                                Baht/Person
+                                                                            </p>
+                                                                        </div>
+                                                                    </FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                </div>
+                                        </div>
+
+                                        <div className='w-1/2 flex flex-col'>
+                                        <div>
                                         <FormField
                                             control={form.control}
                                             name='sizeOfTeam'
@@ -535,6 +546,10 @@ export default function CreateTaskForm() {
                                             className='mt-2'
                                         /> */}
                                     </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
                                     <div>
                                         <FormField
                                             control={form.control}
