@@ -1,20 +1,18 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ViewAds from '@/components/ads/detailAds';
-import { Worker, Task, ViewAdsProps, TaskDetailResponse } from '@/types/task';
-import { undefined } from 'zod';
-import { getTaskDetail } from '@/lib/getTaskDetail';
-import { otpVerification } from '@/lib/OTPVerification';
-import Error from 'next/error';
-import { dateFromString } from '@/utils/datetime';
+import { ViewAdsProps, TaskKV, Applicant } from '@/types/task';
+import { clientStorage } from '@/utils/storageService';
+import { useRouter } from 'next/navigation';
+import { getUserAds } from '@/lib/getUserAds';
 
 export default function AdsDetailPage({
     params,
 }: {
     params: { adsId: string };
 }) {
-    const mockTaskRaw: Task = {
+    const mockTaskRaw = {
         _id: '123456789',
         image: '/cyberpunk.png',
         title: 'Design task card with very long project name',
@@ -36,27 +34,12 @@ export default function AdsDetailPage({
         workers: 3,
         wages: 2000,
         category: 'Graphics',
-        state: 'Open',
-        customerId: '1234567890',
         hiredWorkers: [],
         createdAt: new Date('2021-11-30'),
         updatedAt: new Date('2021-11-30'),
     };
 
-    const mockWorkers: Array<Worker> = [
-        {
-            status: 'In Progress',
-            workerId: '1234567890',
-        },
-        {
-            status: 'In Progress',
-            workerId: '1234567891',
-        },
-        {
-            status: 'In Progress',
-            workerId: '1234567892',
-        },
-    ];
+    const mockApplicants: Array<Applicant> = [];
 
     const mockAds: ViewAdsProps = {
         taskId: mockTaskRaw._id,
@@ -69,48 +52,57 @@ export default function AdsDetailPage({
         location: mockTaskRaw.location,
         startDate: mockTaskRaw.startDate,
         endDate: mockTaskRaw.endDate,
-        applicants: mockWorkers,
+        applicants: mockApplicants,
         createdAt: mockTaskRaw.createdAt,
     };
 
-    let task: any = {};
+    const [data, setData] = useState<ViewAdsProps | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+    const router = useRouter();
 
     useEffect(() => {
-        console.log(task);
-    });
+        const userId: string | null = clientStorage.get().user._id;
+        // const userId: string | null = '65eff56288030343046799b0';
+        if (!userId) {
+            router.push('/login');
+        }
 
-    getTaskDetail(params.adsId)
-        .then(taskDetail => {
-            task = taskDetail.task;
-            const props: ViewAdsProps = {
-                taskId: task._id,
-                title: task.title,
-                description: task.description,
-                image: 'no-image', // todo: What is imageKeys?
-                category: task.category,
-                wages: task.wages,
-                workers: task.workers,
-                location: task.location,
-                startDate: dateFromString(task.startDate),
-                endDate: dateFromString(task.endDate),
-                applicants: mockWorkers,
-                createdAt: dateFromString(task.createdAt),
-            };
-            return (
-                <div>
-                    <ViewAds {...props} />
-                </div>
-            );
-        })
-        .catch(error => {
-            return <div>Error!</div>;
-        });
+        getUserAds({ userId })
+            .then(taskResponse => {
+                let taskKV: TaskKV = {};
+                for (const task of taskResponse.tasks) {
+                    taskKV[task._id] = task;
+                }
 
-    console.log(task);
+                const task = taskKV[params.adsId];
 
-    return (
-        <div>
-            <ViewAds {...mockAds} />
-        </div>
-    );
+                const props: ViewAdsProps = {
+                    taskId: task._id,
+                    title: task.title,
+                    description: task.description,
+                    image: mockTaskRaw.image, // todo: What is imageKeys?
+                    category: task.category,
+                    wages: task.wages,
+                    workers: task.workers,
+                    location: task.location,
+                    startDate: task.startDate,
+                    endDate: task.endDate,
+                    applicants: task.applicants,
+                    createdAt: task.createdAt,
+                };
+                setData(props);
+                setIsLoading(false);
+            })
+            .catch(e => {
+                setError('Unable to get details of this ad!');
+                setIsLoading(false);
+            });
+    }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    return <div>{data ? <ViewAds {...data} /> : <h1>{error}</h1>}</div>;
 }

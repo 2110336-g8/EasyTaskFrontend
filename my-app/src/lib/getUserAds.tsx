@@ -7,7 +7,7 @@ export const getUserAds = async function ({
     userId: string;
 }): Promise<GetUserAdsResponse> {
     return instance
-        .post('/v1/task/???', { userId })
+        .get(`/v1/tasks/adsOf/${userId}`)
         .then(response => {
             return response.data as GetUserAdsResponse;
         })
@@ -15,7 +15,6 @@ export const getUserAds = async function ({
             if (error.response && error.response.status === 401) {
                 //Unauthorized
                 return error.response.data as GetUserAdsResponse;
-
             }
             return Promise.reject('Can not fetch user ads');
         });

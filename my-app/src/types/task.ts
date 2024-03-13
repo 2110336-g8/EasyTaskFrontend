@@ -15,13 +15,17 @@ export interface GeographicLocation {
 }
 
 export interface Worker {
-    worker: User;
+    createdAt: Date;
     status: WorkerStatusOptions;
+    userId: string;
+    _id: string;
 }
 
 export interface Applicant {
-    applicant: User;
+    createdAt: Date;
     status: ApplicantStatusOptions;
+    userId: string;
+    _id: string;
 }
 
 export interface Task {
@@ -41,6 +45,10 @@ export interface Task {
     hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface TaskKV {
+    [id: string]: Task;
 }
 
 export interface AllTasksResponse {
@@ -116,7 +124,7 @@ export interface ViewAdsProps {
     startDate: Date;
     endDate: Date;
     createdAt: Date;
-    applicants: Array<Worker>;
+    applicants: Array<Applicant>;
 }
 
 export interface GetUserAdsResponse {

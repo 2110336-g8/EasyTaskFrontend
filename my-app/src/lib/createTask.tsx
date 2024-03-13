@@ -4,8 +4,8 @@ import { instance } from '@/utils/axiosInstance';
 export async function createTask(
     title: string,
     description: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: Date | undefined,
+    endDate: Date | undefined,
     workers: number,
     wages: number,
     category: string,
