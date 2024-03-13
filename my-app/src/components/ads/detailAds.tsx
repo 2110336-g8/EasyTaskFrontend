@@ -9,6 +9,8 @@ import Map from '@/components/createTask/mapBox';
 import React, { useState } from 'react';
 import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
+import { numberWithCommas } from '@/utils/utils';
+import MapReadOnly from '@/components/map/mapBoxReadOnly';
 
 export default function ViewAds(props: ViewAdsProps) {
     return (
@@ -59,7 +61,12 @@ export default function ViewAds(props: ViewAdsProps) {
                             </p>
                             <div>
                                 {/* todo: Make a new read-only with preset pin map component */}
-                                <Map onPinLocation={() => {}} />
+                                <MapReadOnly
+                                    coord={{
+                                        lat: props.location?.latitude,
+                                        lng: props.location?.longitude,
+                                    }}
+                                />
                             </div>
                         </section>
                     </article>
@@ -104,7 +111,8 @@ export default function ViewAds(props: ViewAdsProps) {
                                     </div>
                                     <div className='flex flex-2 w-2/3 items-center justify-self-start'>
                                         <p className='text-slate-700 justify-self-start'>
-                                            ฿{props.wages} / person
+                                            ฿{numberWithCommas(props.wages)} /
+                                            person
                                         </p>
                                     </div>
                                 </div>
@@ -164,14 +172,15 @@ export default function ViewAds(props: ViewAdsProps) {
 
                             <div>
                                 <h4 className='text-slate-900 justify-self-center font-medium'>
-                                    Candidate Applications
+                                    Candidate Applications (
+                                    {props.applicants.length})
                                 </h4>
                             </div>
 
                             <div className='grid grid-cols-5 gap-4'>
-                                {props.applicants.map(worker => (
+                                {props.applicants.map(applicant => (
                                     <figure
-                                        key={worker.workerId}
+                                        key={applicant._id}
                                         className='w-14 h-14'
                                     >
                                         <Image
