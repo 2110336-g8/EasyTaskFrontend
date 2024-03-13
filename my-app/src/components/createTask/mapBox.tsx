@@ -132,6 +132,7 @@ const Map = ({
                 }}
             />
             <button
+                type='button' // Add this line to specify the button type
                 onClick={handlePinCurrentLocation}
                 style={{
                     position: 'absolute',
