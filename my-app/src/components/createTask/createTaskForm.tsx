@@ -42,22 +42,7 @@ import { createTask } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z.string().refine(value => {
-        // List of accepted image file extensions
-        const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
-
-        // Extract file extension
-        const fileExtension = value.split('.').pop()?.toLowerCase();
-
-        // Check if the file extension is undefined or not in the accepted list
-        if (!fileExtension || !acceptedExtensions.includes(fileExtension)) {
-            throw new Error(
-                'Please upload an image file (jpg, jpeg, png, gif, bmp)',
-            );
-        }
-
-        return true;
-    }),
+    picture: z.string(),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
@@ -95,13 +80,37 @@ export default function CreateTaskForm() {
                 from: new Date(2024, 2, 20),
                 to: addDays(new Date(2024, 2, 21), 20),
             },
-            wages: 20000,
-            sizeOfTeam: 5,
             locationName: '',
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        if (!values.picture) {
+            setError('invalidText', {
+                type: 'manual',
+                message: 'Please upload an image.',
+            });
+            return;
+        } else {
+            // List of accepted image file extensions
+            const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+
+            // Extract file extension
+            const fileExtension = values.picture
+                .split('.')
+                .pop()
+                ?.toLowerCase();
+
+            // Check if the file extension is undefined or not in the accepted list
+            if (!fileExtension || !acceptedExtensions.includes(fileExtension)) {
+                setError('invalidText', {
+                    type: 'manual',
+                    message:
+                        'Please upload the correct form of an image (jpg/jpeg/png/gif/bmp).',
+                });
+                return;
+            }
+        }
         console.log(
             values.title,
             values.description,
@@ -176,7 +185,7 @@ export default function CreateTaskForm() {
                 title: 'Uh oh! Something went wrong.',
                 description: 'There was a problem with your request.',
             });
-            console.error('Unexpected error during authentication:', error);
+            console.error('Unexpected error during creating ads:', error);
         }
     };
 
@@ -358,6 +367,28 @@ export default function CreateTaskForm() {
                                                                         placeholder='20,000'
                                                                         className='font-small text-p tracking-small'
                                                                         {...field}
+                                                                        type='text'
+                                                                        onChange={e => {
+                                                                            const value =
+                                                                                parseFloat(
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                                );
+                                                                            if (
+                                                                                !isNaN(
+                                                                                    value,
+                                                                                )
+                                                                            ) {
+                                                                                field.onChange(
+                                                                                    value,
+                                                                                ); // If the value is a valid number, update the field value
+                                                                            } else {
+                                                                                field.onChange(
+                                                                                    '',
+                                                                                ); // If the value is not a valid number, clear the field value
+                                                                            }
+                                                                        }}
                                                                     />
                                                                     <p className='mt-2 ml-2'>
                                                                         Baht/Person
@@ -426,6 +457,28 @@ export default function CreateTaskForm() {
                                                                 placeholder='5'
                                                                 className='font-small text-p tracking-small w-2/7'
                                                                 {...field}
+                                                                type='text'
+                                                                onChange={e => {
+                                                                    const value =
+                                                                        parseFloat(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        );
+                                                                    if (
+                                                                        !isNaN(
+                                                                            value,
+                                                                        )
+                                                                    ) {
+                                                                        field.onChange(
+                                                                            value,
+                                                                        ); // If the value is a valid number, update the field value
+                                                                    } else {
+                                                                        field.onChange(
+                                                                            '',
+                                                                        ); // If the value is not a valid number, clear the field value
+                                                                    }
+                                                                }}
                                                             />
                                                         </div>
                                                     </FormControl>
