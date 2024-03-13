@@ -20,6 +20,11 @@ export enum TaskStateOptions {
     CLOSED = 'Closed',
 }
 
+export interface TaskImage{
+    seq?:string;
+    imageUrl:string;
+}
+
 export interface GeographicLocation {
     name: string;
     latitude: number;
@@ -45,7 +50,7 @@ export interface Task {
     title: string;
     category: string;
     description?: string;
-    image?: string;
+    imageUrls?: TaskImage[];
     location?: GeographicLocation;
     status: TaskStateOptions;
     wages: number;
@@ -84,7 +89,7 @@ export interface TaskCardProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrl?: TaskImage;
     location?: string;
     wages: string;
     startDate: string;
@@ -96,7 +101,7 @@ export interface ViewTaskProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrls?: TaskImage[];
     description?: string;
     location?: GeographicLocation;
     wages: string;

@@ -79,7 +79,7 @@ export default function TaskDetailPage({
                         taskId: task._id,
                         title: task.title,
                         category: task.category,
-                        image: task.image,
+                        imageUrls: task.imageUrls,
                         description: task.description,
                         location: task.location,
                         wages: task.wages.toLocaleString(),

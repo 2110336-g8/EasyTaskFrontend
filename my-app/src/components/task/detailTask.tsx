@@ -106,7 +106,7 @@ export default function ViewTask(props: ViewTaskProps) {
                 <div className='w-full flex flex-row justify-between gap-[40px]'>
                     <div className='flex flex-col w-[640px] gap-[24px]'>
                         <img
-                            src={props.image || '/mocktask.png'}
+                            src={props.imageUrls?.[0]?.imageUrl || '/mocktask.png'}
                             alt=''
                             className='rounded-lg w-full h-full object-cover'
                         />

@@ -15,7 +15,7 @@ export default function TaskCard(props: TaskCardProps) {
             <div className='w-full h-[180px]'>
                 <img
                     className='w-full h-full object-cover'
-                    src={props.image || '/mocktask.png'}
+                    src={props.imageUrl?.imageUrl || '/mocktask.png'}
                     alt={''}
                 />
             </div>
