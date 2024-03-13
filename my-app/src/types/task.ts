@@ -1,5 +1,12 @@
+import { User } from './user';
+
 export type WorkerStatusOptions = 'In Progress' | 'Completed' | 'Cancel';
-export type TaskStateOptions = 'Open' | 'In Progress' | 'Completed' | 'Cancel';
+export type ApplicantStatusOptions =
+    | 'Pending'
+    | 'Accepted'
+    | 'Rejected'
+    | 'Cancel';
+export type TaskStateOptions = 'Open' | 'In Progress' | 'Completed' | 'Closed';
 
 export interface GeographicLocation {
     name: string;
@@ -8,8 +15,13 @@ export interface GeographicLocation {
 }
 
 export interface Worker {
-    workerId: string;
+    worker: User;
     status: WorkerStatusOptions;
+}
+
+export interface Applicant {
+    applicant: User;
+    status: ApplicantStatusOptions;
 }
 
 export interface Task {
@@ -19,13 +31,14 @@ export interface Task {
     description?: string;
     image?: string;
     location?: GeographicLocation;
-    state: TaskStateOptions;
+    status: TaskStateOptions;
     wages: number;
     startDate: Date;
     endDate: Date;
-    workers: number; //
-    customerId: string;
-    hiredWorkers: Array<Worker>;
+    workers: number;
+    customerId: User;
+    applicants: Applicant[];
+    hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -39,24 +52,7 @@ export interface AllTasksResponse {
 }
 
 export interface TaskDetailResponse {
-    task: {
-        status: TaskStateOptions;
-        _id: string;
-        title: string;
-        category: string;
-        description: string;
-        location: GeographicLocation;
-        state: TaskStateOptions;
-        wages: number;
-        workers: number;
-        startDate: string;
-        endDate: string;
-        customerId: string;
-        imageKeys: string[];
-        createdAt: string;
-        updatedAt: string;
-        __v: number;
-    };
+    task: Task;
 }
 
 export interface GetCategoriesResponse {
@@ -82,11 +78,17 @@ export interface ViewTaskProps {
     category: string;
     image?: string;
     description?: string;
-    location?: string;
+    location?: GeographicLocation;
     wages: string;
     startDate: string;
     endDate: string;
     workers: string;
+    posted: string;
+    customer: {
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+    };
 }
 
 //*=================Ads====================*//
