@@ -167,7 +167,7 @@ export default function Profile() {
 
     return (
         <div className='flex flex-col pb-10'>
-            <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-600 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
+            <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
                 <Avatar className='z-10 -mb-16 w-60 h-60 rounded-full aspect-square max-md:mb-2.5 max-md:ml-1'>
                     <AvatarImage
                         src='https://github.com/shadcn.png'
@@ -196,17 +196,17 @@ export default function Profile() {
             <div className='mx-20 mt-4 text-base leading-6 text-slate-900 max-md:mr-2.5 max-md:max-w-full'>
                 {data.description}
             </div>
-            <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
+                <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
                 <Button
                     variant='outline'
-                    className='grow justify-center px-4 py-3 border-primary-500 bg-primary-500 hover:bg-primary-500 text-white hover:text-slate-300'
+                    className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
                     asChild
                 >
                     <Link href='/phone'>{data.tel}</Link>
                 </Button>
                 <Button
                     variant='outline'
-                    className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-primary-500 text-primary-500 hover:text-primary-500'
+                    className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-border-black bg-white text-black hover:text-gray-600'
                     asChild
                 >
                     <Link href='/account'>Edit Profile</Link>
