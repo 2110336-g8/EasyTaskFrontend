@@ -7,16 +7,13 @@ import { useState, useEffect } from 'react';
 
 export default function Navbar() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
         setIsLoggedIn(!!clientStorage.get().token);
     }, []);
 
-    // console.log(isLoggedIn);
-
     return (
-        <div>
+        <div key="main-navbar">
             {isLoggedIn ? (
                 <LoginNavbar />
             ) : (
