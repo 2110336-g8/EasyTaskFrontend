@@ -115,13 +115,15 @@ export default function PersonalInfo() {
                             onClick={() => {
                                 setEditing(false);
                             }}
-                            className='size-[36px] p-0 bg-slate-500'
+                            className='size-[36px] p-0'
+                            variant='gray'
                         >
                             <X className='size-[24px]'></X>
                         </Button>
                         <Button
                             type='submit'
-                            className='size-[36px] p-0 bg-primary-500'
+                            className='size-[36px] p-0'
+                            variant='default'
                         >
                             <Save className='size-[24px]'></Save>
                         </Button>
@@ -133,7 +135,8 @@ export default function PersonalInfo() {
                             onClick={() => {
                                 setEditing(true);
                             }}
-                            className='size-[36px] p-0 bg-primary-500'
+                            className='size-[36px] p-0'
+                            variant='default'
                         >
                             <Pencil className='size-[24px]'></Pencil>
                         </Button>

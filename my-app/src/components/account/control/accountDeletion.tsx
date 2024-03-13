@@ -59,7 +59,9 @@ export default function AccountDeletion() {
                 </DialogTrigger>
                 <DialogContent className='rounded-[8px]  border-slate-300'>
                     <DialogHeader className='flex flex-col text-left'>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle className='text-h3'>
+                            Are you absolutely sure?
+                        </DialogTitle>
                     </DialogHeader>
                     <DialogDescription className='text-error-500'>
                         After this action your account will be permanently

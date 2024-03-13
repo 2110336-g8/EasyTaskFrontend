@@ -8,13 +8,23 @@ import {
     FormItem,
     FormLabel,
 } from '@/components/ui/form';
+import {
+    DialogHeader,
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+    DialogClose,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { getSelfUser } from '@/lib/getUser';
 import { User } from '@/types/user';
 import { instance, instanceBinary } from '@/utils/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil, RefreshCcw, Save, X } from 'lucide-react';
+import { Pencil, RefreshCcw, Save, Trash, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -117,6 +127,23 @@ export default function ProfilePicture() {
         }
     };
 
+    const deletePicture = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        try {
+            const user = await getSelfUser();
+            if (!user) {
+                return;
+            }
+            await instance.delete(`/v1/users/${user._id}/profile-image`);
+            window.location.reload();
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Uh oh! Something went wrong.',
+                description: `${(error as any).response.data.error}`,
+            });
+        }
+    };
+
     return (
         <form
             onSubmit={form.handleSubmit(submitData)}
@@ -131,13 +158,15 @@ export default function ProfilePicture() {
                             onClick={() => {
                                 setEditing(false);
                             }}
-                            className='size-[36px] p-0 bg-slate-500'
+                            className='size-[36px] p-0'
+                            variant='gray'
                         >
                             <X className='size-[24px]'></X>
                         </Button>
                         <Button
                             type='submit'
-                            className='size-[36px] p-0 bg-primary-500'
+                            className='size-[36px] p-0'
+                            variant='default'
                         >
                             <Save className='size-[24px]'></Save>
                         </Button>
@@ -149,7 +178,8 @@ export default function ProfilePicture() {
                             onClick={() => {
                                 setEditing(true);
                             }}
-                            className='size-[36px] p-0 bg-primary-500'
+                            className='size-[36px] p-0'
+                            variant='default'
                         >
                             <Pencil className='size-[24px]'></Pencil>
                         </Button>
@@ -182,18 +212,52 @@ export default function ProfilePicture() {
                                             form.reset();
                                             setPreview('');
                                         }}
-                                        className='h-[36px] px-[8px] gap-[8px] bg-slate-500'
+                                        className='h-[36px] px-[8px] gap-[8px]'
+                                        variant='gray'
                                     >
                                         <RefreshCcw className='size-[24px]'></RefreshCcw>
                                     </Button>
                                 )}
-                                {
-                                    // preview == '' && currentimageURL != '' &&
-                                    // <Button type="button" className="h-[36px] px-[8px] gap-[8px] bg-slate-500">
-                                    //     <Trash className="size-[24px]"></Trash>
-                                    //     <p className="text-">Delete</p>
-                                    // </Button>
-                                }
+                                {preview == '' && currentimageURL != '' && (
+                                    <Dialog>
+                                        <DialogTrigger>
+                                            <Button
+                                                type='button'
+                                                className='h-[36px] px-[8px] gap-[8px]'
+                                                variant='gray'
+                                            >
+                                                <Trash className='size-[24px]'></Trash>
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className='rounded-[8px]  border-slate-300'>
+                                            <DialogHeader className='flex flex-col text-left'>
+                                                <DialogTitle className='text-h3'>
+                                                    Are you sure to delete
+                                                    profile image?
+                                                </DialogTitle>
+                                            </DialogHeader>
+                                            <DialogDescription className='text-error-500'>
+                                                This action cannot be undone.
+                                                This will permanently delete
+                                                your profile image information
+                                                from our servers.
+                                            </DialogDescription>
+                                            <DialogFooter className='flex flex-row justify-end gap-[8px]'>
+                                                <DialogClose asChild>
+                                                    <Button variant='secondary'>
+                                                        Cancel
+                                                    </Button>
+                                                </DialogClose>
+                                                <Button
+                                                    variant='destructive'
+                                                    onClick={deletePicture}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                )}
                                 <FormField
                                     control={form.control}
                                     name='file'
