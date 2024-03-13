@@ -43,7 +43,17 @@ import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z.instanceof(FileList),
+    picture: z
+        .instanceof(FileList)
+        .refine(file => file?.length == 1, 'Picture is required.')
+        .refine(file => {
+            const fileType = file?.item(0)?.type;
+            return fileType && /(jpg|jpeg|png)$/i.test(fileType);
+        }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
+        .refine(file => {
+            const firstFile = file?.item(0);
+            return firstFile && firstFile.size <= 20 * 1024 * 1024;
+        }, 'File size exceeds 20MB limit'),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
@@ -290,7 +300,7 @@ export default function CreateTaskForm() {
                                                             )}
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className='text-[16px]' />
                                                 </FormItem>
                                             )}
                                         />
