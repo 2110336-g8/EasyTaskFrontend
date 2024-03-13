@@ -1,12 +1,24 @@
 import { User } from './user';
 
-export type WorkerStatusOptions = 'In Progress' | 'Completed' | 'Cancel';
-export type ApplicantStatusOptions =
-    | 'Pending'
-    | 'Accepted'
-    | 'Rejected'
-    | 'Cancel';
-export type TaskStateOptions = 'Open' | 'In Progress' | 'Completed' | 'Closed';
+export enum WorkerStatusOptions {
+    INPROGRESS = 'In Progress',
+    COMPLETED = 'Completed',
+    CANCELED = 'Cancel',
+}
+
+export enum ApplicantStatusOptions {
+    PENDING = 'Pending',
+    ACCEPTED = 'Accepted',
+    REJECTED = 'Rejected',
+    CANCELED = 'Cancel',
+}
+
+export enum TaskStateOptions {
+    OPEN = 'Open',
+    INPROGRESS = 'In Progress',
+    COMPLETED = 'Completed',
+    CLOSED = 'Closed',
+}
 
 export interface GeographicLocation {
     name: string;
@@ -110,6 +122,7 @@ export interface AdsCardProps {
     wages: string;
     startDate: string;
     applications: string;
+    status: string;
 }
 
 export interface ViewAdsProps {
@@ -159,4 +172,8 @@ export interface CreateTasksResponse {
     };
     success?: string;
     error?: string;
+}
+
+export interface UploadTaskImageResponse {
+    message?: string;
 }

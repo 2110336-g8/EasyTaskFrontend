@@ -12,7 +12,7 @@ export default async function MainLayout({
         <ProtectedRoute>
             <div className='w-full min-h-full flex justify-center bg-inherit'>
                 <Navbar />
-                <main className='h-full w-full desktop:w-[1200px] desktop-l:w-[1328px] pt-[40px] mx-auto mt-[72px] mb-[20px] bg-white flex flex-col gap-[40px]'>
+                <main className='m-h-screen w-full desktop:w-[1200px] desktop-l:w-[1328px] pt-[112px] mx-auto pb-[20px] bg-white flex flex-col gap-[40px]'>
                     {children}
                     <Footer />
                 </main>

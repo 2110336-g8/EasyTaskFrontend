@@ -22,13 +22,14 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { userLogIn } from '@/lib/userLogIn';
 import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 import { Textarea } from '../ui/textarea';
 import { Categories } from './category';
-import { DateRange } from './dateRange';
+import { DateRangePicker } from './dateRange';
+import { DateRange } from 'react-day-picker';
 import { Slider } from '@/components/ui/slider';
 // import { SliderWorker } from './sliderWorker';
 import Map from './mapBox';
@@ -37,28 +38,51 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { addDays } from 'date-fns';
-import { createTask } from '@/lib/createTask';
+import { addDays, differenceInCalendarDays } from 'date-fns';
+import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z.string(),
+    picture: z
+        .instanceof(FileList)
+        .refine(file => file?.length == 1, 'Picture is required.')
+        .refine(file => {
+            const fileType = file?.item(0)?.type;
+            return fileType && /(jpg|jpeg|png)$/i.test(fileType);
+        }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
+        .refine(file => {
+            const firstFile = file?.item(0);
+            return firstFile && firstFile.size <= 20 * 1024 * 1024;
+        }, 'File size exceeds 20MB limit'),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     }),
-    wages: z.number(),
-    sizeOfTeam: z.number(),
+    wages: z.number().optional(),
+    sizeOfTeam: z.number().optional(),
     locationName: z.string(),
 });
 
 export default function CreateTaskForm() {
     const router = useRouter();
 
+    const defaultDate: DateRange = {
+        from: new Date(),
+        to: addDays(new Date(), 1),
+    };
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [date, setDate] = useState<DateRange | undefined>(defaultDate);
+    const [days, setDays] = useState(0);
+    useEffect(() => {
+        if (date && date.from && date.to) {
+            const dayCount = differenceInCalendarDays(date.to, date.from);
+            setDays(dayCount);
+        }
+    }, [date]);
 
+    //   const [date, setDate] = useState<DateRange>(defaultDate);
     const handleCategoryToggle = (category: React.SetStateAction<string>) => {
         setSelectedCategory(category);
     };
@@ -72,50 +96,39 @@ export default function CreateTaskForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: '',
-            picture: '',
+            picture: undefined,
             description: '',
             category: '',
             dateRange: {
                 // Set default value for dateRange
-                from: new Date(2024, 2, 20),
-                to: addDays(new Date(2024, 2, 21), 20),
+                from: new Date(),
+                to: addDays(new Date(), 1),
             },
             locationName: '',
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        if (!values.picture) {
+        if (
+            !(date && date.from && date.to) ||
+            !values.picture ||
+            selectedCategory == '' ||
+            values.wages == undefined ||
+            values.sizeOfTeam == undefined ||
+            values.locationName == ''
+        ) {
             setError('invalidText', {
                 type: 'manual',
-                message: 'Please upload an image.',
+                message: 'Please complete the required fill(s).',
             });
             return;
-        } else {
-            // List of accepted image file extensions
-            const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
-
-            // Extract file extension
-            const fileExtension = values.picture
-                .split('.')
-                .pop()
-                ?.toLowerCase();
-
-            // Check if the file extension is undefined or not in the accepted list
-            if (!fileExtension || !acceptedExtensions.includes(fileExtension)) {
-                setError('invalidText', {
-                    type: 'manual',
-                    message:
-                        'Please upload the correct form of an image (jpg/jpeg/png/gif/bmp).',
-                });
-                return;
-            }
         }
+
         console.log(
             values.title,
             values.description,
-            values.dateRange.from,
-            values.dateRange.to,
+            date?.from,
+            date?.to,
             values.sizeOfTeam,
             values.wages,
             selectedCategory,
@@ -135,10 +148,10 @@ export default function CreateTaskForm() {
             const result = await createTask(
                 values.title,
                 values.description ?? '',
-                values.dateRange.from,
-                values.dateRange.to,
-                values.sizeOfTeam,
-                values.wages,
+                date?.from,
+                date?.to,
+                values.sizeOfTeam ?? 0,
+                values.wages ?? 0,
                 selectedCategory,
                 {
                     name: values.locationName,
@@ -177,7 +190,23 @@ export default function CreateTaskForm() {
                     });
                 }
             } else {
-                console.log('success');
+                if (result.task) {
+                    console.log(result.task);
+                    const imageUploadRes = await uploadTaskImage(
+                        result.task._id,
+                        0,
+                        values.picture,
+                    );
+                    if (
+                        imageUploadRes.message ==
+                        'Task image uploaded successfully'
+                    ) {
+                        console.log('image upload success');
+                        router.push('/ads');
+                    } else {
+                        console.log(imageUploadRes);
+                    }
+                }
             }
         } catch (error) {
             toast({
@@ -204,10 +233,8 @@ export default function CreateTaskForm() {
     //     setSliderValue(value);
     // };
 
-    const [date, setDate] = React.useState<Date>();
-
     return (
-        <div className='flex flex-col h-screen font-sans ml-20'>
+        <div className='flex flex-col font-sans ml-20'>
             <h1 className='w-[1000px] h-[80px]'>Create Job Advertisement</h1>
             <div>
                 <div className='flex flex-row justify-end'>
@@ -266,13 +293,14 @@ export default function CreateTaskForm() {
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder='Easy task'
                                                             className='font-small text-p tracking-small'
                                                             type='file'
-                                                            {...field}
+                                                            {...form.register(
+                                                                'picture',
+                                                            )}
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className='text-[16px]' />
                                                 </FormItem>
                                             )}
                                         />
@@ -419,7 +447,12 @@ export default function CreateTaskForm() {
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
                                                             <div className='font-small text-p tracking-small'>
-                                                                <DateRange />
+                                                                <DateRangePicker
+                                                                    date={date}
+                                                                    setDate={
+                                                                        setDate
+                                                                    }
+                                                                />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -480,6 +513,9 @@ export default function CreateTaskForm() {
                                                                     }
                                                                 }}
                                                             />
+                                                            <p className='mt-2 ml-2'>
+                                                                Person(s)
+                                                            </p>
                                                         </div>
                                                     </FormControl>
                                                     <FormMessage />
@@ -536,17 +572,17 @@ export default function CreateTaskForm() {
                             </CardContent>
                         </Card>
                         <div>
-                            {errors.invalidText ? (
-                                <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
-                            ) : (
-                                <FormMessage>
-                                    <br></br>
-                                </FormMessage>
-                            )}
-                            <div className='flex flex-row mb-5'>
-                                <Button className='w-full bg-white mr-3 text-p font-extra-bold tracking-p text-primary-500 border border-primary-500 hover:text-white'>
+                            <div className=' mb-5 mt-5'>
+                                {/* <Button className='w-full bg-white mr-3 text-p font-extra-bold tracking-p text-primary-500 border border-primary-500 hover:text-white'>
                                     Preview
-                                </Button>
+                                </Button> */}
+                                {errors.invalidText ? (
+                                    <FormMessage className='text-error-500 text-[16px] mb-2'>{`${errors.invalidText.message}`}</FormMessage>
+                                ) : (
+                                    <FormMessage className='text-error-500 text-[16px] mb-2'>
+                                        <br></br>
+                                    </FormMessage>
+                                )}
                                 <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>
                                     Publish Now
                                 </Button>

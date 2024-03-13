@@ -111,7 +111,7 @@ export default function TaskList() {
 
     return (
         <main className='flex flex-col gap-[40px] items-center '>
-            <SearchBar updateSearchName = {setSearchName} />
+            <SearchBar updateSearchName={setSearchName} />
             <FilterTaskList
                 updateCategoryFilters={updateCategoryFilters}
                 updateIndividualFilter={updateIndividualFilter}
@@ -122,7 +122,7 @@ export default function TaskList() {
                     <h4 className='text-slate-500 mb-[24px]'>
                         Recently posted
                     </h4>
-                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-full w-fit gap-x-[16px] gap-y-[24px] justify-between'>
+                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
                         {taskList.map((task, index) => (
                             <TaskCard key={index} {...task} />
                         ))}

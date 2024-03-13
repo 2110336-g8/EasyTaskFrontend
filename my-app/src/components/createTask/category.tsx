@@ -17,8 +17,9 @@ export function Categories({
                 type='single'
                 className='gap-2 mt-2 justify-start flex-col'
             >
-                <div className='gap-2 justify-start'>
+                <div className='justify-start'>
                     <ToggleGroupItem
+                        className='mr-2'
                         value='General'
                         onClick={() => handleCategoryToggle('General')}
                         aria-label='Toggle bold'
@@ -27,10 +28,11 @@ export function Categories({
                         General
                     </ToggleGroupItem>
                     <ToggleGroupItem
-                        value='Graphic'
-                        onClick={() => handleCategoryToggle('Graphic')}
+                        className='mr-2'
+                        value='Graphic Design'
+                        onClick={() => handleCategoryToggle('Graphic Design')}
                         aria-label='Toggle bold'
-                        active={selectedCategory === 'Graphic'}
+                        active={selectedCategory === 'Graphic Design'}
                     >
                         Graphic
                     </ToggleGroupItem>
@@ -44,8 +46,9 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='gap-2 justify-start'>
+                <div className='justify-start'>
                     <ToggleGroupItem
+                        className='mr-2'
                         value='Translation'
                         onClick={() => handleCategoryToggle('Translation')}
                         aria-label='Toggle bold'
@@ -76,8 +79,9 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='gap-2 justify-start'>
+                <div className='justify-start'>
                     <ToggleGroupItem
+                        className='mr-2 justify-start'
                         value='Images and Sound'
                         onClick={() => handleCategoryToggle('Images and Sound')}
                         aria-label='Toggle bold'
