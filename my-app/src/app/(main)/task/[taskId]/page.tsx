@@ -110,5 +110,5 @@ export default function TaskDetailPage({
         fetchData();
     }, []);
 
-    return <div>{task ? <ViewTask {...task} /> : <h1>{error}</h1>}</div>;
+    return <div>{task ? <ViewTask {...task} /> : null}</div>;
 }
