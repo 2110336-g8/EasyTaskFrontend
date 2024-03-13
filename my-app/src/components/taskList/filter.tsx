@@ -1,11 +1,11 @@
 'use client';
 
-import { WageRange } from '@/app/(main)/task/page';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { toast } from '../ui/use-toast';
 import { useEffect, useState } from 'react';
 import { getCategories } from '@/lib/getAllTasks';
 import { GetCategoriesResponse } from '@/types/task';
+import { WageRange } from '@/app/(main)/(protected)/task/page';
 
 const mockWageRange: WageRange[] = [
     [0, 1000],
@@ -66,7 +66,7 @@ export default function FilterTaskList({
                         onClick={() => updateCategoryFilters(category)}
                         value={category}
                         key={index}
-                        className='mr-2'
+                        className=''
                         aria-label='Toggle bold'
                         active={false}
                     >
@@ -75,49 +75,56 @@ export default function FilterTaskList({
                 ))}
             </ToggleGroup>
 
-            <div className='inline-flex gap-[24px]'>
+            <div className='inline-flex items-center gap-[24px]'>
                 <ToggleGroup size={'sm'} type='single'>
-                    Work as
-                    <ToggleGroupItem
-                        onClick={() => updateIndividualFilter(true)}
-                        value='Individual'
-                        key={'Individual'}
-                        className='mr-2'
-                        aria-label='Toggle bold'
-                        active={false}
-                    >
-                        Individual
-                    </ToggleGroupItem>
-                    /
-                    <ToggleGroupItem
-                        onClick={() => updateIndividualFilter(false)}
-                        value='Team'
-                        key={'Team'}
-                        className='mr-2'
-                        aria-label='Toggle bold'
-                        active={false}
-                    >
-                        Team
-                    </ToggleGroupItem>
+                    <div className='flex items-center gap-[8px]'>
+                        <div>Work as</div>
+                        <ToggleGroupItem
+                            onClick={() => updateIndividualFilter(true)}
+                            value='Individual'
+                            key={'Individual'}
+                            className=''
+                            aria-label='Toggle bold'
+                            active={false}
+                        >
+                            Individual
+                        </ToggleGroupItem>
+                        <div>/</div>
+                        <ToggleGroupItem
+                            onClick={() => updateIndividualFilter(false)}
+                            value='Team'
+                            key={'Team'}
+                            className=''
+                            aria-label='Toggle bold'
+                            active={false}
+                        >
+                            Team
+                        </ToggleGroupItem>
+                    </div>
                 </ToggleGroup>
+
                 <ToggleGroup size={'sm'} type='multiple'>
-                    Wages
-                    {mockWageRange.map((range, index) => {
-                        const formattedRange = formatWageRange(range);
-                        const key = `range-${index}`;
-                        return (
-                            <ToggleGroupItem
-                                onClick={() => updateWageRangeFilters(range)}
-                                value={formattedRange}
-                                key={'index'}
-                                className='mr-2'
-                                aria-label='Toggle bold'
-                                active={false}
-                            >
-                                {formattedRange}
-                            </ToggleGroupItem>
-                        );
-                    })}
+                    <div className='flex items-center gap-[8px]'>
+                        <div>Wages</div>
+                        {mockWageRange.map((range, index) => {
+                            const formattedRange = formatWageRange(range);
+                            const key = `range-${index}`;
+                            return (
+                                <ToggleGroupItem
+                                    onClick={() =>
+                                        updateWageRangeFilters(range)
+                                    }
+                                    value={formattedRange}
+                                    key={'index'}
+                                    className=''
+                                    aria-label='Toggle bold'
+                                    active={false}
+                                >
+                                    {formattedRange}
+                                </ToggleGroupItem>
+                            );
+                        })}
+                    </div>
                 </ToggleGroup>
             </div>
         </div>
