@@ -18,7 +18,7 @@ export function Categories({
                 className='gap-2 mt-2 justify-start flex-col'
             >
                 <div className='justify-start'>
-                    <ToggleGroupItem 
+                    <ToggleGroupItem
                         className='mr-2'
                         value='General'
                         onClick={() => handleCategoryToggle('General')}
@@ -29,10 +29,10 @@ export function Categories({
                     </ToggleGroupItem>
                     <ToggleGroupItem
                         className='mr-2'
-                        value='Graphic'
-                        onClick={() => handleCategoryToggle('Graphic')}
+                        value='Graphic Design'
+                        onClick={() => handleCategoryToggle('Graphic Design')}
                         aria-label='Toggle bold'
-                        active={selectedCategory === 'Graphic'}
+                        active={selectedCategory === 'Graphic Design'}
                     >
                         Graphic
                     </ToggleGroupItem>
