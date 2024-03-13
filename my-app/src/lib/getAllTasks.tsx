@@ -32,7 +32,7 @@ export const getAllTasks = async function ({
             return response.data as AllTasksResponse;
         })
         .catch(error => {
-            if (error.response && error.response.status === 500) {
+            if (error.response && error.response.status === 401) {
                 // Unauthorized
                 return error.response.data as AllTasksResponse;
             }

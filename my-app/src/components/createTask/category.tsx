@@ -1,48 +1,124 @@
-import { Bold, Italic, Underline } from "lucide-react"
+import { useState } from 'react';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+interface CategoriesProps {
+    selectedCategory: string;
+    handleCategoryToggle: (category: string) => void;
+}
 
-export function Categories() {
-  return (
-    <div>
-        <ToggleGroup size={"sm"} type="multiple" className="gap-2 mt-2 justify-start">
-        <ToggleGroupItem value="general" aria-label="Toggle bold">
-            General
+export function Categories({
+    selectedCategory,
+    handleCategoryToggle,
+}: CategoriesProps) {
+    return (
+        <div>
+            <ToggleGroup
+                size={'sm'}
+                type='single'
+                className='gap-2 mt-2 justify-start flex-col'
+            >
+                <div className='gap-2 justify-start'>
+                    <ToggleGroupItem
+                        value='General'
+                        onClick={() => handleCategoryToggle('General')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'General'}
+                    >
+                        General
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value='Graphic'
+                        onClick={() => handleCategoryToggle('Graphic')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Graphic'}
+                    >
+                        Graphic
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value='Marketing'
+                        onClick={() => handleCategoryToggle('Marketing')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Marketing'}
+                    >
+                        Marketing
+                    </ToggleGroupItem>
+                </div>
+
+                <div className='gap-2 justify-start'>
+                    <ToggleGroupItem
+                        value='Translation'
+                        onClick={() => handleCategoryToggle('Translation')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Translation'}
+                    >
+                        Translation
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value='Consultant'
+                        onClick={() => handleCategoryToggle('Consultant')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Consultant'}
+                    >
+                        Consultant
+                    </ToggleGroupItem>
+                </div>
+
+                <div className='gap-2 justify-start'>
+                    <ToggleGroupItem
+                        value='Programming and Tech'
+                        onClick={() =>
+                            handleCategoryToggle('Programming and Tech')
+                        }
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Programming and Tech'}
+                    >
+                        Programming and Tech
+                    </ToggleGroupItem>
+                </div>
+
+                <div className='gap-2 justify-start'>
+                    <ToggleGroupItem
+                        value='Images and Sound'
+                        onClick={() => handleCategoryToggle('Images and Sound')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Images and Sound'}
+                    >
+                        Images and Sound
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value='Management'
+                        onClick={() => handleCategoryToggle('Management')}
+                        aria-label='Toggle bold'
+                        active={selectedCategory === 'Management'}
+                    >
+                        Management
+                    </ToggleGroupItem>
+                </div>
+            </ToggleGroup>
+
+            {/* <ToggleGroup size={"sm"} type="single" className="gap-2 mt-2 justify-start">
+        <ToggleGroupItem value="translation" onClick={handleTranslationToggle} aria-label="Toggle bold" active={translationSelected}>
+          Translation
         </ToggleGroupItem>
-        <ToggleGroupItem value="graphic" aria-label="Toggle bold">
-            Graphic
+        <ToggleGroupItem value="consultant" onClick={handleConsultantToggle} aria-label="Toggle bold" active={consultantSelected}>
+          Consultant
         </ToggleGroupItem>
-        <ToggleGroupItem value="marketing" aria-label="Toggle bold">
-            Marketing
+      </ToggleGroup>
+
+      <ToggleGroup size={"sm"} type="single" className="gap-2 mt-2 justify-start">
+        <ToggleGroupItem value="programmingAndTech" onClick={handleProgrammingAndTechToggle} aria-label="Toggle bold" active={programmingAndTechSelected}>
+          Programming and Tech
         </ToggleGroupItem>
-        </ToggleGroup>
+      </ToggleGroup> */}
 
-        <ToggleGroup size={"sm"} type="multiple" className="gap-2 mt-2 justify-start">
-            <ToggleGroupItem value="translation" aria-label="Toggle bold">
-                Translation
-            </ToggleGroupItem>
-            <ToggleGroupItem value="consultant" aria-label="Toggle bold">
-                Consultant
-            </ToggleGroupItem>
-        </ToggleGroup>
-
-        <ToggleGroup size={"sm"} type="multiple" className="gap-2 mt-2 justify-start">
-            <ToggleGroupItem value="programmingAndTech" aria-label="Toggle bold">
-                Programming and Tech
-            </ToggleGroupItem>
-        </ToggleGroup>
-
-        <ToggleGroup size={"sm"} type="multiple" className="gap-2 mt-2 justify-start">
-            <ToggleGroupItem value="imagesAndSound" aria-label="Toggle bold">
-                Images and Sound
-            </ToggleGroupItem>
-            <ToggleGroupItem value="management" aria-label="Toggle bold">
-                Management
-            </ToggleGroupItem>
-        </ToggleGroup>
-    </div>
-  )
+            {/* <ToggleGroup size={"sm"} type="single" className="gap-2 mt-2 justify-start">
+        <ToggleGroupItem value="imagesAndSound" onClick={handleImagesAndSoundToggle} aria-label="Toggle bold" active={imagesAndSoundSelected}>
+          Images and Sound
+        </ToggleGroupItem>
+        <ToggleGroupItem value="management" onClick={handleManagementToggle} aria-label="Toggle bold" active={managementSelected}>
+          Management
+        </ToggleGroupItem>
+      </ToggleGroup> */}
+        </div>
+    );
 }
