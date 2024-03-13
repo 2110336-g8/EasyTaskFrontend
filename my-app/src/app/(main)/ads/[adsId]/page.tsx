@@ -62,8 +62,8 @@ export default function AdsDetailPage({
     const router = useRouter();
 
     useEffect(() => {
-        // const userId: string | null = clientStorage.get().user._id;
-        const userId: string | null = '65eff56288030343046799b0';
+        const userId: string | null = clientStorage.get().user._id;
+        // const userId: string | null = '65eff56288030343046799b0';
         if (!userId) {
             router.push('/login');
         }
