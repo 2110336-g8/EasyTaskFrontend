@@ -13,6 +13,7 @@ export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
+
     async function applyTaskHandler() {
         if (!isLoggedIn) {
             toast({
@@ -86,6 +87,7 @@ export default function ViewTask(props: ViewTaskProps) {
             checkAppliedStatus();
         }
     }, [isLoggedIn, props.taskId]);
+    
 
     return (
         <div className='flex justify-center items-center'>
