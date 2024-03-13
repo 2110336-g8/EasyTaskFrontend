@@ -43,25 +43,15 @@ import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z
-        .instanceof(FileList)
-        .refine(picture => picture?.length == 1, 'File is required.')
-        .refine(picture => {
-            const fileType = picture?.item(0)?.type;
-            return fileType && /(jpg|jpeg|png)$/i.test(fileType);
-        }, 'Invalid file type. Only JPG, JPEG, and PNG files are allowed.')
-        .refine(picture => {
-            const firstFile = picture?.item(0);
-            return firstFile && firstFile.size <= 5 * 1024 * 1024;
-        }, 'File size exceeds 5MB limit'),
+    picture: z.instanceof(FileList),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     }),
-    wages: z.number(),
-    sizeOfTeam: z.number(),
+    wages: z.number().optional(),
+    sizeOfTeam: z.number().optional(),
     locationName: z.string(),
 });
 
@@ -109,16 +99,17 @@ export default function CreateTaskForm() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        if (!values.picture) {
+        if (
+            !(date && date.from && date.to) ||
+            !values.picture ||
+            selectedCategory == '' ||
+            values.wages == undefined ||
+            values.sizeOfTeam !== undefined ||
+            values.locationName == ''
+        ) {
             setError('invalidText', {
                 type: 'manual',
-                message: 'Please upload an image.',
-            });
-            return;
-        } else if (!(date && date.from && date.to)) {
-            setError('invalidText', {
-                type: 'manual',
-                message: 'Please complete the fill.',
+                message: 'Please complete the required fill(s).',
             });
             return;
         }
@@ -149,8 +140,8 @@ export default function CreateTaskForm() {
                 values.description ?? '',
                 date?.from,
                 date?.to,
-                values.sizeOfTeam,
-                values.wages,
+                values.sizeOfTeam ?? 0,
+                values.wages ?? 0,
                 selectedCategory,
                 {
                     name: values.locationName,
