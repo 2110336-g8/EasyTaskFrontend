@@ -12,8 +12,6 @@ export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
-    console.log(isLoggedIn)
-
     async function applyTaskHandler() {
         if (!isLoggedIn) {
             toast({
@@ -25,13 +23,12 @@ export default function ViewTask(props: ViewTaskProps) {
         }
 
         try {
-            const response = await fetch('http://api.easytask.vt.in.th/v1/tasks/apply', {
+            const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${clientStorage.get().token}` 
-                },
-                body: JSON.stringify({ taskId: props.taskId }) 
+                }
             });
 
             if (response.ok) {
@@ -40,12 +37,13 @@ export default function ViewTask(props: ViewTaskProps) {
                     title: 'Task Applied',
                     description: 'You have successfully applied for this task.',
                 });
+                setHasApplied(true); // Update state to reflect application status
             } else {
                 const errorData = await response.json();
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description: errorData.message || 'An error occurred while applying for the task.',
+                    description: errorData.error || 'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -72,7 +70,7 @@ export default function ViewTask(props: ViewTaskProps) {
                     setHasApplied(data.hasApplied);
                 } else {
                     const errorData = await response.json();
-                    console.error('Error checking application status:', errorData.message);
+                    console.error('Error checking application status:', errorData.error);
                 }
             } catch (error) {
                 console.error('Error checking application status:', error);
