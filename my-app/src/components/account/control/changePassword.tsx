@@ -9,6 +9,9 @@ import {
     Form,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import { getSelfUser } from '@/lib/getUser';
+import { instance } from '@/utils/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
@@ -44,7 +47,42 @@ export default function ChangePasssword() {
         },
     });
 
-    const submitData = async (values: z.infer<typeof schema>) => {};
+    const submitData = async (values: z.infer<typeof schema>) => {
+        try {
+            const user = await getSelfUser();
+            if (!user) {
+                throw Error('Current User Not Found');
+            }
+            const passwords = {
+                currentPassword: form.getValues('currentPassword'),
+                newPassword: form.getValues('newPassword'),
+            };
+            await instance.patch(
+                `v1/users/${user._id}/change-password`,
+                passwords,
+            );
+            toast({
+                variant: 'default',
+                title: 'User data updated!',
+                description: 'Your password has been updated',
+            });
+            form.reset();
+        } catch (error) {
+            console.log((error as any).response.data.error);
+            if ((error as any).response.data.error == 'Unauthorized') {
+                form.setError('currentPassword', {
+                    type: 'custom',
+                    message: 'Wrong current password',
+                });
+                return;
+            }
+            toast({
+                variant: 'destructive',
+                title: 'Uh oh! Something went wrong.',
+                description: `${(error as any).response.data.error}`,
+            });
+        }
+    };
 
     const getError = (): ReactNode => {
         const errors = form.formState.errors;
@@ -126,6 +164,7 @@ export default function ChangePasssword() {
             </Form>
             <Button
                 type='submit'
+                size='sm'
                 className='w-[168px] text-slate-50 bg-primary-500'
             >
                 Update password

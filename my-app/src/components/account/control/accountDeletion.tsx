@@ -53,7 +53,7 @@ export default function AccountDeletion() {
             </p>
             <Dialog>
                 <DialogTrigger type='button' className='w-[168px]'>
-                    <Button variant='destructive' className='w-full'>
+                    <Button variant='destructive' className='w-full' size='sm'>
                         Delete Account
                     </Button>
                 </DialogTrigger>
@@ -88,9 +88,13 @@ export default function AccountDeletion() {
                     </Form>
                     <DialogFooter className='flex flex-row justify-end gap-[8px]'>
                         <DialogClose asChild>
-                            <Button variant='secondary'>Cancel</Button>
+                            <Button variant='secondary' size='sm'>
+                                Cancel
+                            </Button>
                         </DialogClose>
-                        <Button variant='destructive'>Delete Account</Button>
+                        <Button variant='destructive' size='sm'>
+                            Delete Account
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
