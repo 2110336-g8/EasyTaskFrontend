@@ -9,6 +9,7 @@ import Map from '@/components/createTask/mapBox';
 import React, { useState } from 'react';
 import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
+import { numberWithCommas } from '@/utils/utils';
 
 export default function ViewAds(props: ViewAdsProps) {
     return (
@@ -104,7 +105,8 @@ export default function ViewAds(props: ViewAdsProps) {
                                     </div>
                                     <div className='flex flex-2 w-2/3 items-center justify-self-start'>
                                         <p className='text-slate-700 justify-self-start'>
-                                            ฿{props.wages} / person
+                                            ฿{numberWithCommas(props.wages)} /
+                                            person
                                         </p>
                                     </div>
                                 </div>
@@ -170,9 +172,9 @@ export default function ViewAds(props: ViewAdsProps) {
                             </div>
 
                             <div className='grid grid-cols-5 gap-4'>
-                                {props.applicants.map(worker => (
+                                {props.applicants.map(applicant => (
                                     <figure
-                                        key={worker.workerId}
+                                        key={applicant._id}
                                         className='w-14 h-14'
                                     >
                                         <Image

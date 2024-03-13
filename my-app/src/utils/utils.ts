@@ -28,6 +28,6 @@ export const range = (start: number, end: number) => {
     return Array.from({ length }, (_, idx) => idx + start);
 };
 
-function numberWithCommas(x: number) {
+export const numberWithCommas = (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
+};
