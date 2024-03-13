@@ -1,4 +1,5 @@
 import { SmileIcon, Banknote, Landmark, User } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function SideNav() {
@@ -29,7 +30,7 @@ export default function SideNav() {
                 href='control'
                 className='flex flex-row w-full h-fit rounded-[8px] px-[16px] py-[16px] gap-x-[8px] hover:bg-slate-200'
             >
-                <User className='size-[24px]'></User>
+                <Image src='/AccControl.png' alt='' width={24} height={24} />
                 <p>Account Control</p>
             </Link>
         </div>
