@@ -39,19 +39,19 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { addDays, differenceInCalendarDays } from 'date-fns';
-import { createTask } from '@/lib/createTask';
+import { createTask, uploadTaskImage } from '@/lib/createTask';
 
 const formSchema = z.object({
     title: z.string(),
-    picture: z.string(),
+    picture: z.instanceof(FileList),
     description: z.string().optional(),
     category: z.string(),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     }),
-    wages: z.number(),
-    sizeOfTeam: z.number(),
+    wages: z.number().optional(),
+    sizeOfTeam: z.number().optional(),
     locationName: z.string(),
 });
 
@@ -61,20 +61,17 @@ export default function CreateTaskForm() {
     const defaultDate: DateRange = {
         from: new Date(),
         to: addDays(new Date(), 1),
-      };
+    };
     const [selectedCategory, setSelectedCategory] = useState('');
     const [date, setDate] = useState<DateRange | undefined>(defaultDate);
     const [days, setDays] = useState(0);
-    useEffect(()=> {
-        if (date && date.from && date.to){
-            const dayCount = differenceInCalendarDays(
-                date.to,
-                date.from
-            )
+    useEffect(() => {
+        if (date && date.from && date.to) {
+            const dayCount = differenceInCalendarDays(date.to, date.from);
             setDays(dayCount);
         }
-    },[date])
-      
+    }, [date]);
+
     //   const [date, setDate] = useState<DateRange>(defaultDate);
     const handleCategoryToggle = (category: React.SetStateAction<string>) => {
         setSelectedCategory(category);
@@ -89,7 +86,7 @@ export default function CreateTaskForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: '',
-            picture: '',
+            picture: undefined,
             description: '',
             category: '',
             dateRange: {
@@ -102,41 +99,21 @@ export default function CreateTaskForm() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        if (!values.picture) {
+        if (
+            !(date && date.from && date.to) ||
+            !values.picture ||
+            selectedCategory == '' ||
+            values.wages == undefined ||
+            values.sizeOfTeam !== undefined ||
+            values.locationName == ''
+        ) {
             setError('invalidText', {
                 type: 'manual',
-                message: 'Please upload an image.',
-            });
-            return;
-        } else if (values.picture) {
-            // List of accepted image file extensions
-            const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
-
-            // Extract file extension
-            const fileExtension = values.picture
-                .split('.')
-                .pop()
-                ?.toLowerCase();
-
-            // Check if the file extension is undefined or not in the accepted list
-            if (!fileExtension || !acceptedExtensions.includes(fileExtension)) {
-                setError('invalidText', {
-                    type: 'manual',
-                    message:
-                        'Please upload the correct form of an image (jpg/jpeg/png/gif/bmp).',
-                });
-                return;
-            }
-        } else if (!(date && date.from && date.to)){
-            setError('invalidText', {
-                type: 'manual',
-                message:
-                    'Please complete the fill.',
+                message: 'Please complete the required fill(s).',
             });
             return;
         }
 
-        
         console.log(
             values.title,
             values.description,
@@ -161,10 +138,10 @@ export default function CreateTaskForm() {
             const result = await createTask(
                 values.title,
                 values.description ?? '',
-                date?.from ,
+                date?.from,
                 date?.to,
-                values.sizeOfTeam,
-                values.wages,
+                values.sizeOfTeam ?? 0,
+                values.wages ?? 0,
                 selectedCategory,
                 {
                     name: values.locationName,
@@ -203,7 +180,22 @@ export default function CreateTaskForm() {
                     });
                 }
             } else {
-                console.log('success');
+                if (result.task) {
+                    console.log(result.task);
+                    const imageUploadRes = await uploadTaskImage(
+                        result.task._id,
+                        0,
+                        values.picture,
+                    );
+                    if (
+                        imageUploadRes.message ==
+                        'Task image uploaded successfully'
+                    ) {
+                        console.log('image upload success');
+                    } else {
+                        console.log(imageUploadRes);
+                    }
+                }
             }
         } catch (error) {
             toast({
@@ -213,7 +205,6 @@ export default function CreateTaskForm() {
             });
             console.error('Unexpected error during creating ads:', error);
         }
-    
     };
 
     const [pinnedLocation, setPinnedLocation] = useState<{
@@ -230,7 +221,6 @@ export default function CreateTaskForm() {
     // const handleSliderChange = (value: number) => {
     //     setSliderValue(value);
     // };
-
 
     return (
         <div className='flex flex-col h-screen font-sans ml-20'>
@@ -292,10 +282,11 @@ export default function CreateTaskForm() {
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder='Easy task'
                                                             className='font-small text-p tracking-small'
                                                             type='file'
-                                                            {...field}
+                                                            {...form.register(
+                                                                'picture',
+                                                            )}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -445,7 +436,12 @@ export default function CreateTaskForm() {
                                                         </FormLabel>
                                                         <FormControl className='flex flex-row'>
                                                             <div className='font-small text-p tracking-small'>
-                                                                <DateRangePicker date={date} setDate={setDate}/>
+                                                                <DateRangePicker
+                                                                    date={date}
+                                                                    setDate={
+                                                                        setDate
+                                                                    }
+                                                                />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
