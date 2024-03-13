@@ -1,6 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { AdsCardProps } from '@/types/task';
+import {
+    AdsCardProps,
+    GetUserAdsResponse,
+    TaskStateOptions,
+} from '@/types/task';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import AdsToggleList from '@/components/adsList/adsToggleList';
@@ -8,47 +12,48 @@ import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import { toast } from '@/components/ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
+import { getUserAds } from '@/lib/getUserAds';
 
 export type WageRange = [number | null, number | null];
 
-const mockList: AdsCardProps[] = [
-    {
-        taskId: 'someTaskId',
-        title: 'someTitle',
-        category: 'someCategory',
-        location: 'someLocation',
-        wages: '5,000,000',
-        startDate: 'someStartDate',
-        applications: '1,000',
-    },
-    {
-        taskId: 'someTaskId',
-        title: 'someTitle',
-        category: 'someCategory',
-        location: 'someLocation',
-        wages: '1,000',
-        startDate: 'someStartDate',
-        applications: '1,000',
-    },
-    {
-        taskId: 'someTaskId',
-        title: 'someTitle',
-        category: 'someCategory',
-        location: 'someLocation',
-        wages: '1,000',
-        startDate: 'someStartDate',
-        applications: '1,000',
-    },
-    {
-        taskId: 'someTaskId',
-        title: 'someTitle',
-        category: 'someCategory',
-        location: 'someLocation',
-        wages: '1,000',
-        startDate: 'someStartDate',
-        applications: '1,000',
-    },
-];
+// const mockList: AdsCardProps[] = [
+//     {
+//         taskId: 'someTaskId',
+//         title: 'someTitle',
+//         category: 'someCategory',
+//         location: 'someLocation',
+//         wages: '5,000,000',
+//         startDate: 'someStartDate',
+//         applications: '1,000',
+//     },
+//     {
+//         taskId: 'someTaskId',
+//         title: 'someTitle',
+//         category: 'someCategory',
+//         location: 'someLocation',
+//         wages: '1,000',
+//         startDate: 'someStartDate',
+//         applications: '1,000',
+//     },
+//     {
+//         taskId: 'someTaskId',
+//         title: 'someTitle',
+//         category: 'someCategory',
+//         location: 'someLocation',
+//         wages: '1,000',
+//         startDate: 'someStartDate',
+//         applications: '1,000',
+//     },
+//     {
+//         taskId: 'someTaskId',
+//         title: 'someTitle',
+//         category: 'someCategory',
+//         location: 'someLocation',
+//         wages: '1,000',
+//         startDate: 'someStartDate',
+//         applications: '1,000',
+//     },
+// ];
 
 export default function AdsList() {
     const router = useRouter();
@@ -58,41 +63,62 @@ export default function AdsList() {
     const [adsClosedList, setAdsClosedList] = useState<AdsCardProps[]>([]);
 
     useEffect(() => {
-        const userId: string | null = clientStorage.get().user._id;
-        if (!userId) {
-            router.push('/login');
-        }
-        console.log(userId);
+        // const userId: string | null = clientStorage.get().user._id;
+        // if (!userId) {
+        //     router.push('/login');
+        // }
+        // console.log(userId);
+        const userId: string | null = '65eff56288030343046799b0';
         const fetchAdsList = async () => {
-            // getUserAds({
-            //     userId,
-            // }).then((adsListData: GetAdsResponse) => {
-            // const formattedAdsList: AdsCardProps[] = adsListData.tasks.map(
-            //     task => ({
-            //         taskId: task._id,
-            //         image: task.image,
-            //         title: task.title,
-            //         startDate: dayjs(task.startDate).format('DD MMM YYYY'),
-            //         location: task.location?.name,
-            //         applications: task.workers.toLocaleString(),
-            //         wages: task.wages.toLocaleString(),
-            //         category: task.category,
-            //     }),
-            // );
-            // logic fillter
-            setAdsPayList(mockList);
-            setAdsOpenList(mockList);
-            setAdsWorkList(mockList);
-            setAdsClosedList(mockList);
-            //     })
-            //     .catch(e => {
-            //         toast({
-            //             variant: 'destructive',
-            //             title: 'Uh oh! Something went wrong.',
-            //             description: 'There was a problem with your request.',
-            //         });
-            //         console.error('Error fetching ads list', e);
-            //     });
+            getUserAds({
+                userId,
+            })
+                .then((adsListData: GetUserAdsResponse) => {
+                    const formattedAdsList: AdsCardProps[] =
+                        adsListData.tasks.map(task => ({
+                            taskId: task._id,
+                            image: task.image,
+                            title: task.title,
+                            status: task.status,
+                            startDate: dayjs(task.startDate).format(
+                                'DD MMM YYYY',
+                            ),
+                            location: task.location?.name,
+                            applications: task.workers.toLocaleString(),
+                            wages: task.wages.toLocaleString(),
+                            category: task.category,
+                        }));
+                    console.log(adsListData);
+
+                    setAdsPayList(
+                        formattedAdsList.filter(
+                            task => task.status == TaskStateOptions.COMPLETED,
+                        ),
+                    );
+                    setAdsOpenList(
+                        formattedAdsList.filter(
+                            task => task.status == TaskStateOptions.OPEN,
+                        ),
+                    );
+                    setAdsWorkList(
+                        formattedAdsList.filter(
+                            task => task.status == TaskStateOptions.INPROGRESS,
+                        ),
+                    );
+                    setAdsClosedList(
+                        formattedAdsList.filter(
+                            task => task.status == TaskStateOptions.CLOSED,
+                        ),
+                    );
+                })
+                .catch(e => {
+                    toast({
+                        variant: 'destructive',
+                        title: 'Uh oh! Something went wrong.',
+                        description: 'There was a problem with your request.',
+                    });
+                    console.error('Error fetching ads list', e);
+                });
         };
         fetchAdsList();
     }, []);

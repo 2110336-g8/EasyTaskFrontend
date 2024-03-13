@@ -46,11 +46,7 @@ export default function AdsToggleList({
                             ))}
                         </div>
                     </div>
-                ) : (
-                    <h4 className='w-fit text-slate-500'>
-                        There is no matched task
-                    </h4>
-                )
+                ) : null
             ) : null}
         </div>
     );
