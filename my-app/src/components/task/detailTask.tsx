@@ -13,7 +13,6 @@ export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
-
     async function applyTaskHandler() {
         if (!isLoggedIn) {
             toast({
@@ -25,13 +24,16 @@ export default function ViewTask(props: ViewTaskProps) {
         }
 
         try {
-            const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${clientStorage.get().token}` 
-                }
-            });
+            const response = await fetch(
+                `http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${clientStorage.get().token}`,
+                    },
+                },
+            );
 
             if (response.ok) {
                 toast({
@@ -45,7 +47,9 @@ export default function ViewTask(props: ViewTaskProps) {
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description: errorData.error || 'An error occurred while applying for the task.',
+                    description:
+                        errorData.error ||
+                        'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -76,7 +80,10 @@ export default function ViewTask(props: ViewTaskProps) {
                     setHasApplied(data.hasApplied);
                 } else {
                     const errorData = await response.json();
-                    console.error('Error checking application status:', errorData.error);
+                    console.error(
+                        'Error checking application status:',
+                        errorData.error,
+                    );
                 }
             } catch (error) {
                 console.error('Error checking application status:', error);
@@ -87,7 +94,6 @@ export default function ViewTask(props: ViewTaskProps) {
             checkAppliedStatus();
         }
     }, [isLoggedIn, props.taskId]);
-    
 
     return (
         <div className='flex justify-center items-center'>
@@ -106,7 +112,10 @@ export default function ViewTask(props: ViewTaskProps) {
                 <div className='w-full flex flex-row justify-between gap-[40px]'>
                     <div className='flex flex-col w-[640px] gap-[24px]'>
                         <img
-                            src={props.imageUrls?.[0]?.imageUrl || '/mocktask.png'}
+                            src={
+                                props.imageUrls?.[0]?.imageUrl ||
+                                '/mocktask.png'
+                            }
                             alt=''
                             className='rounded-lg w-full h-full object-cover'
                         />
