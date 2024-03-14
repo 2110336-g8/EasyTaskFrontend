@@ -8,6 +8,8 @@ import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
 import { useEffect, useState } from 'react';
 import { getSelfUser } from '@/lib/getUser';
+import { instance } from "@/utils/axiosInstance";
+import { clientStorage } from "@/utils/storageService";
 
 export interface profile {
     avatarImg?: string;
@@ -179,8 +181,8 @@ export default function Profile() {
                 });
                 return;
             }
-            setUserData(userData);
-            console.log(userData);
+            setUserData(user);
+            console.log(user.firstName)
         };
         fetchUser();
     }, []);
@@ -199,7 +201,7 @@ export default function Profile() {
             </div>
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
-                    {data.username}
+                    {userData.username}
                 </div>
                 <div className='flex gap-2.5 my-auto text-xl font-medium tracking-normal leading-7 text-gray-500'>
                     <Image

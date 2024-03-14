@@ -61,6 +61,7 @@ export default function PersonalInfo() {
             if (!user) {
                 return;
             }
+            console.log(user) // testing
             setFirstName(user.firstName);
             setLastName(user.lastName);
             setPhoneNumber(user.phoneNumber ?? '');
