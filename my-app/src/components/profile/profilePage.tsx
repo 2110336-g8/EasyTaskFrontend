@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
+import { clientStorage } from '@/utils/storageService';
+import { toast } from '../ui/use-toast';
 
 export interface profile {
     avatarImg?: string;
@@ -14,6 +16,26 @@ export interface profile {
     rating: number;
     description: string;
     tel: string;
+}
+
+interface userData {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    ownedTasks: string[];
+    applications: {
+        taskId: string;
+        status: string;
+        createdAt: string;
+        _id: string;
+    }[];
+    tasks: string[]; 
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    imageKey: string;
+    imageUrl: string;
 }
 
 const mockData: profile = {
@@ -165,6 +187,32 @@ export default function Profile() {
     const openTask = jobData;
     const pastTask = pastData;
 
+    const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
+
+    // async function getUserData(): Promise<userData | undefined> {
+    //     if (!isLoggedIn) {
+    //         toast({
+    //             variant: 'destructive',
+    //             title: 'Login Required',
+    //             description: 'You need to login first to apply for this task.',
+    //         });
+    //         return undefined;
+    //     }
+    
+    //     try {
+    //         const response = await fetch(`http://api.easytask.vt.in.th/v1/users/${clientStorage.get().token}`);
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             return data.user as userData;
+    //         } else {
+    //             throw new Error(data.error || 'Failed to fetch user profile');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching user profile:', error.message);
+    //         return undefined;
+    //     }
+    // }
+
     return (
         <div className='flex flex-col pb-10'>
             <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
@@ -174,7 +222,7 @@ export default function Profile() {
                         alt='@shadcn'
                         loading='lazy'
                     />
-                    <AvatarFallback>Avatar</AvatarFallback>
+                    <AvatarFallback>UserAvatar</AvatarFallback>
                 </Avatar>
             </div>
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
