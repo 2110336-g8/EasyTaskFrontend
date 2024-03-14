@@ -8,11 +8,7 @@ import { toast } from '../ui/use-toast';
 import { User } from '@/types/user';
 import { Task } from '@/types/task';
 
-interface ProfileProps {
-    user: User;
-    openTasks: Task[];
-    pastTasks: Task[];
-}
+
 
 function Profile() {
     const [user, setUser] = useState<User | undefined>(undefined);
@@ -22,6 +18,7 @@ function Profile() {
 
     useEffect(() => {
         async function fetchUserData() {
+            console.log(isLoggedIn)
             if (!isLoggedIn) {
                 toast({
                     variant: 'destructive',
@@ -33,11 +30,14 @@ function Profile() {
             try {
                 const response = await fetch(`http://api.easytask.vt.in.th/v1/users/${clientStorage.get().token}`);
                 const data = await response.json();
+                console.log(response)
+                console.log(data)
                 if (response.ok) {
                     setUser(data.user);
                 } else {
                     throw new Error(data.error || 'Failed to fetch user profile');
                 }
+                console.log(user)
             } catch (error) {
                 console.error('Error fetching user profile:', error.message);
             }

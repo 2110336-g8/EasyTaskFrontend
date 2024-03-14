@@ -20,10 +20,33 @@ export default function ViewTask(props: ViewTaskProps) {
             'Content-Type': 'application/json',
         },
     });
+
+    useEffect(() => {
+        async function checkAppliedStatus() {
+            try {
+                const response = await api.get(`${props.taskId}/check`, {
+                    headers: {
+                        Authorization: `Bearer ${clientStorage.get().token}`,
+                    },
+                });
+
+                if (response.status === 200) {
+                    setHasApplied(response.data.hasApplied);
+                } else {
+                    console.error('Error checking application status:', response.data.error);
+                }
+            } catch (error) {
+                console.error('Error checking application status:', error);
+            }
+        }
+
+        if (isLoggedIn) {
+            checkAppliedStatus();
+        }
+    }, [isLoggedIn, props.taskId]);
     
-    async function applyTaskHandler() {
-        console.log(isLoggedIn);
-        console.log(clientStorage.get().token)
+    const applyTaskHandler = async () => {
+        console.log(isLoggedIn)
         if (!isLoggedIn) {
             toast({
                 variant: 'destructive',
@@ -32,7 +55,7 @@ export default function ViewTask(props: ViewTaskProps) {
             });
             return;
         }
-    
+
         try {
             const response = await api.post(`${props.taskId}/apply`, null, {
                 headers: {
@@ -40,8 +63,6 @@ export default function ViewTask(props: ViewTaskProps) {
                 },
             });
 
-            console.log(response)
-    
             if (response.status === 200) {
                 toast({
                     variant: 'default',
@@ -53,9 +74,7 @@ export default function ViewTask(props: ViewTaskProps) {
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description:
-                        response.data.error ||
-                        'An error occurred while applying for the task.',
+                    description: response.data.error || 'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -63,11 +82,10 @@ export default function ViewTask(props: ViewTaskProps) {
             toast({
                 variant: 'destructive',
                 title: 'Application Error',
-                description:
-                    'An error occurred while applying for the task. Please try again later.',
+                description: 'An error occurred while applying for the task. Please try again later.',
             });
         }
-    }
+    };
 
     useEffect(() => {
         async function checkAppliedStatus() {
