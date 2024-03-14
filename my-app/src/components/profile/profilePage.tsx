@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
 import { useEffect, useState } from 'react';
-import { getSelfUser } from '@/lib/getUser';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
+import { UserProfile } from '@/types/user';
 
 export interface profile {
     avatarImg?: string;
@@ -168,22 +168,33 @@ export default function Profile() {
     const openTask = jobData;
     const pastTask = pastData;
 
-    const [userData, setUserData] = useState<typeof Profile | null>(null);
+    const [userData, setUserData] = useState<UserProfile | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getSelfUser();
-            if (!user) {
+            try {
+                const id = clientStorage.get().user._id;
+                const userData = (await instance.get(`/v1/users/${id}`)).data.user;
+
+                if (!userData) {
+                    toast({
+                        variant: 'destructive',
+                        title: 'Login Required',
+                        description: 'You need to login first to view your profile.',
+                    });
+                    return;
+                }
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
                 toast({
                     variant: 'destructive',
-                    title: 'Login Required',
-                    description: 'You need to login first to view your profile.',
+                    title: 'Error Fetching User Data',
+                    description: 'Failed to fetch user data. Please try again later.',
                 });
-                return;
             }
-            setUserData(user);
-            console.log(user.firstName)
         };
+
         fetchUser();
     }, []);
 
@@ -201,7 +212,7 @@ export default function Profile() {
             </div>
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
-                    {userData.username}
+                    {data.username}
                 </div>
                 <div className='flex gap-2.5 my-auto text-xl font-medium tracking-normal leading-7 text-gray-500'>
                     <Image
@@ -254,7 +265,7 @@ export default function Profile() {
                         <TaskCard
                             key={task.taskId}
                             {...task}
-                            // className='flex-grow'
+                            className='flex-grow'
                         />
                     ))}
                 </div>
