@@ -15,7 +15,7 @@ const api = axios.create({
     },
 });
 
-export default function ViewTask(props: ViewTaskProps) {
+function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
     const [taskDetails, setTaskDetails] = useState<Task | null>(null);
