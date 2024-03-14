@@ -179,7 +179,8 @@ export default function Profile() {
                 });
                 return;
             }
-            setUserData(user);
+            setUserData(userData);
+            console.log(userData);
         };
         fetchUser();
     }, []);
