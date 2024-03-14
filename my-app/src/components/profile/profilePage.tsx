@@ -184,6 +184,7 @@ export default function Profile() {
                     });
                     return;
                 }
+                console.log(userData);
                 setUserData(userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
