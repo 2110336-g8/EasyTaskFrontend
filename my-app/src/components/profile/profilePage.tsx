@@ -170,6 +170,10 @@ export default function Profile() {
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
 
+    const copylink = (text: string) => {
+        navigator.clipboard.writeText(text)
+    }
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -184,7 +188,7 @@ export default function Profile() {
                     });
                     return;
                 }
-                console.log(userData);
+                // console.log(userData);
                 setUserData(userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -213,7 +217,7 @@ export default function Profile() {
             </div>
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
-                    {data.username}
+                    {`${userData?.firstName} ${userData?.lastName}`}
                 </div>
                 <div className='flex gap-2.5 my-auto text-xl font-medium tracking-normal leading-7 text-gray-500'>
                     <Image
@@ -231,13 +235,15 @@ export default function Profile() {
                 {data.description}
             </div>
                 <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
+                {userData?.phoneNumber && (
                 <Button
                     variant='outline'
                     className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
-                    asChild
+                    onClick={() => navigator.clipboard.writeText(userData.phoneNumber)}  
                 >
-                    <Link href='/phone'>{data.tel}</Link>
+                    {userData.phoneNumber}
                 </Button>
+                )}
                 <Button
                     variant='outline'
                     className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-border-black bg-white text-black hover:text-gray-600'
