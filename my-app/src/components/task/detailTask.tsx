@@ -23,7 +23,7 @@ export default function ViewTask(props: ViewTaskProps) {
     
     async function applyTaskHandler() {
         console.log(isLoggedIn);
-        console.log(!!clientStorage.get().token)
+        console.log(clientStorage.get().token)
         if (!isLoggedIn) {
             toast({
                 variant: 'destructive',
