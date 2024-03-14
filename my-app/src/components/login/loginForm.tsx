@@ -71,27 +71,34 @@ export default function LoginForm() {
         }
     };
 
+    const handleSignUpClick = () => {
+        // Replace '/signup' with the route you want to navigate to upon clicking "Sign up"
+        router.push('/signup');
+    };
+
     return (
         <div className='flex'>
             <div className='left-side w-1/2 h-full'>
                 <img
-                        src='/signupPic.jpg'
-                        alt='Image'
-                        className='image object-cover h-full w-full'
+                    src='/signupPic.jpg'
+                    alt='Image'
+                    className='image object-cover h-full w-full'
                 />
             </div>
             <div className='right-side w-1/2 h-full'>
                 <div className='flex flex-col items-center justify-center h-screen font-sans'>
                     <img
-                            src='/logoEasyTask.jpg'
-                            alt='Image'
-                            className='image object-cover w-[303px] m-[20px]'
+                        src='/logoEasyTask.jpg'
+                        alt='Image'
+                        className='image object-cover w-[303px] m-[20px]'
                     />
                     <Card className='w-[640px] h-[600px] p-10 m-[20px]'>
                         <CardHeader className='text-center m-[20px]'>
-                            <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>Login</CardTitle>
+                            <CardTitle className='font-bold text-[40px] tracking-[-0.01em]'>
+                                Login
+                            </CardTitle>
                         </CardHeader>
-                        <Form {...form} >
+                        <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)}>
                                 <CardContent>
                                     <div className='grid w-full items-center gap-4 m-[20px]'>
@@ -148,12 +155,14 @@ export default function LoginForm() {
                                             <br></br>
                                         </FormMessage>
                                     )}
-                                    <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>Login</Button>
+                                    <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>
+                                        Login
+                                    </Button>
                                     <CardDescription className='text-slate-500 text-[16px]'>
                                         Doesn't have any account?{' '}
                                         <a
-                                            href='/signup'
-                                            className='text-primary-700 font-bold hover:text-originalColor'
+                                            onClick={handleSignUpClick}
+                                            className='text-primary-700 font-bold hover:text-originalColor cursor-pointer'
                                         >
                                             Sign up
                                         </a>
