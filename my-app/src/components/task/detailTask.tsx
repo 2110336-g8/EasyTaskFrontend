@@ -8,12 +8,21 @@ import { ArrowLeftIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import MapReadOnly from '../map/mapBoxReadOnly';
+import axios from 'axios';
 
 export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
+    const api = axios.create({
+        baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
     async function applyTaskHandler() {
+        console.log(isLoggedIn);
         if (!isLoggedIn) {
             toast({
                 variant: 'destructive',
@@ -22,20 +31,17 @@ export default function ViewTask(props: ViewTaskProps) {
             });
             return;
         }
-
+    
         try {
-            const response = await fetch(
-                `http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${clientStorage.get().token}`,
-                    },
+            const response = await api.post(`${props.taskId}/apply`, null, {
+                headers: {
+                    Authorization: `Bearer ${clientStorage.get().token}`,
                 },
-            );
+            });
 
-            if (response.ok) {
+            console.log(response)
+    
+            if (response.status === 200) {
                 toast({
                     variant: 'default',
                     title: 'Task Applied',
@@ -43,12 +49,11 @@ export default function ViewTask(props: ViewTaskProps) {
                 });
                 setHasApplied(true);
             } else {
-                const errorData = await response.json();
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
                     description:
-                        errorData.error ||
+                        response.data.error ||
                         'An error occurred while applying for the task.',
                 });
             }
