@@ -31,7 +31,7 @@ const config = {
         },
         extend: {
             boxShadow: {
-                'md': '0 4px 6px -1px rgba(0, 0, 0, 0.05),0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+                md: '0 4px 6px -1px rgba(0, 0, 0, 0.05),0 2px 4px -2px rgba(0, 0, 0, 0.05)',
             },
             colors: {
                 border: 'hsl(var(--border))',
@@ -106,10 +106,10 @@ const config = {
                 sans: ['Inter', 'sans-serif'],
             },
             fontSize: {
-                h1: ['40px', { lineHeight: '48px' }],
+                h1: ['36px', { lineHeight: '54px' }],
                 h2: ['30px', { lineHeight: '36px' }],
-                h3: ['24px', { lineHeight: '30px' }],
-                h4: ['20px', { lineHeight: '28px' }],
+                h3: ['22px', { lineHeight: '30px' }],
+                h4: ['20px', { lineHeight: '26px' }],
                 p: ['16px', { lineHeight: '24px' }],
                 small: ['14px', { lineHeight: '20px' }],
                 smaller: ['12px', { lineHeight: '16px' }],
@@ -117,9 +117,9 @@ const config = {
             },
             fontWeight: {
                 h1: '600', //semibold
-                h2: '700', //bold
-                h3: '500', //medium
-                h4: '400', //regular
+                h2: '500', //medium
+                h3: '600', //semibold
+                h4: '500', //medium
                 p: '400', //regular
                 small: '400', //regular
                 smaller: '400', //regular
