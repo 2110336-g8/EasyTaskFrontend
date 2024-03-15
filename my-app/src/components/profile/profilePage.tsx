@@ -263,27 +263,39 @@ export default function Profile() {
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Open Jobs
-                <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
-                    {openTask.map(task => (
-                        <TaskCard
-                            key={task.taskId}
-                            {...task}
-                            className='flex-grow'
-                        />
-                    ))}
-                </div>
+                {userData && userData.tasks ? (
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                        {userData.tasks
+                            .filter(task => task.status === 'In Progress') 
+                            .map(task => (
+                                <TaskCard
+                                    key={task.taskId}
+                                    {...task}
+                                    className='flex-grow'
+                                />
+                            ))}
+                    </div>
+                ) : (
+                    <div className="italic text-sm text-gray-300">- This user has no current job openings -</div>
+                )}
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Past Jobs
-                <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
-                    {pastTask.map(task => (
-                        <TaskCard
-                            key={task.taskId}
-                            {...task}
-                            className='flex-grow'
-                        />
+                {userData && userData.tasks ? (
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                    {userData?.tasks
+                        .filter(task => task.status === 'Completed') 
+                        .map(task => (
+                            <TaskCard
+                                key={task.taskId}
+                                {...task}
+                                className='flex-grow'
+                            />
                     ))}
-                </div>
+                    </div>
+                ) : (
+                    <div className="italic text-sl text-gray-300">-This user has no past jobs-</div>
+                )}
             </div>
         </div>
     );
