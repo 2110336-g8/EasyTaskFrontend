@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
+import { Skeleton } from "@/components/ui/skeleton"
 
 export interface profile {
     avatarImg?: string;
@@ -188,7 +189,7 @@ export default function Profile() {
                     });
                     return;
                 }
-                // console.log(userData);
+                console.log(userData);
                 setUserData(userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -217,7 +218,7 @@ export default function Profile() {
             </div>
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
-                    {`${userData?.firstName} ${userData?.lastName}`}
+                    {userData ? `${userData?.firstName} ${userData?.lastName}` : <Skeleton className="h-6 w-[250px]" />}
                 </div>
                 <div className='flex gap-2.5 my-auto text-xl font-medium tracking-normal leading-7 text-gray-500'>
                     <Image
@@ -232,27 +233,34 @@ export default function Profile() {
                 </div>
             </div>
             <div className='mx-20 mt-4 text-base leading-6 text-slate-900 max-md:mr-2.5 max-md:max-w-full'>
-                {data.description}
-            </div>
-                <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
-                {userData?.phoneNumber && (
-                <Button
-                    variant='outline'
-                    className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
-                    onClick={() => navigator.clipboard.writeText(userData.phoneNumber)}  
-                >
-                    {userData.phoneNumber}
-                </Button>
+                {userData ? (
+                        <div>{data.description}</div>
+                ) : (
+                    <Skeleton className="h-12 w-[420px]" />
                 )}
-                <Button
-                    variant='outline'
-                    className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-border-black bg-white text-black hover:text-gray-600'
-                    asChild
-                >
-                    <Link href='/account'>Edit Profile</Link>
-                </Button>
             </div>
-            {/* deafult is 20 */}
+            <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
+                {userData?.phoneNumber && (
+                    <Button
+                        variant='outline'
+                        className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
+                        onClick={() => navigator.clipboard.writeText(userData.phoneNumber!)} // set to Copied!
+                    >
+                        {userData.phoneNumber.replace(/^(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')} 
+                    </Button>
+                )}
+                {userData ? (
+                    <Button
+                        variant='outline'
+                        className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-border-black bg-white text-black hover:text-gray-600'
+                        onClick={() => {}}
+                    >
+                        <Link href='/account'>Edit Profile</Link>
+                    </Button>
+                ) : (
+                    <Skeleton className="h-12 w-[250px]" />
+                )}
+            </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Open Jobs
                 <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
