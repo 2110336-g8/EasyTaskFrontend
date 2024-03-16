@@ -11,7 +11,7 @@ import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
-import { Task } from '@/types/task';
+import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 
 export interface profile {
@@ -55,6 +55,20 @@ export default function Profile() {
             return null;
         }
     };
+
+    const convertToTaskCardProps = (task: Task): TaskCardProps => {
+        return {
+            taskId: task._id,
+            title: task.title,
+            category: task.category,
+            imageUrl: task.imageUrls ? task.imageUrls[0] : undefined,
+            location: task.location ? task.location.name : undefined,
+            wages: task.wages.toString(),
+            startDate: task.startDate.toString(),
+            endDate: task.endDate.toString(),
+            workers: task.workers.toString()
+        }
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -184,7 +198,7 @@ export default function Profile() {
                             .map(task => (
                                 <TaskCard
                                     key={task._id}
-                                    {...task}
+                                    {...convertToTaskCardProps(task)}
                                     className='flex-grow'
                                 />
                             ))}
@@ -201,7 +215,7 @@ export default function Profile() {
                         .map(task => (
                             <TaskCard
                                 key={task._id}
-                                {...task}
+                                {...convertToTaskCardProps(task)}
                                 className='flex-grow'
                             />
                     ))}
