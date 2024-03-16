@@ -12,6 +12,7 @@ import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Task } from '@/types/task';
+import { TaskStateOptions } from '@/types/task';
 
 export interface profile {
     avatarImg?: string;
@@ -26,7 +27,9 @@ export default function Profile() {
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("")
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [pastTasks, setPastTasks] = useState<Task[]>([]);
+    const [openTasks, setOpenTasks] = useState<Task[]>([]);
+    const [loadingTasks, setLoadingTasks] = useState(false);
 
     const copylink = (text: string) => {
         navigator.clipboard.writeText(text)
@@ -102,16 +105,32 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchOwnedTasks = async () => {
-            if (!userData || !userData.ownedTasks) return; 
+            if (!userData || !userData.ownedTasks) return;
+            setLoadingTasks(true);
     
-            const fetchedTasks: Task[] = [];
+            const fetchedOpenTasks: Task[] = [];
+            const fetchedPastTasks: Task[] = [];
+            const existingTaskIds = new Set(userData.ownedTasks);
+            
             for (const taskId of userData.ownedTasks) {
+                if (existingTaskIds.has(taskId)) continue;
+    
                 const task = await fetchTaskById(taskId);
                 if (task) {
-                    fetchedTasks.push(task);
+                    if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
+                        fetchedOpenTasks.push(task);
+                    } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
+                        fetchedPastTasks.push(task);
+                    }
                 }
             }
-            setTasks(fetchedTasks);
+
+            console.log(fetchedOpenTasks)
+            console.log(fetchedPastTask)
+    
+            setPastTasks(prevPastTasks => [...prevPastTasks, ...fetchedPastTasks]); 
+            setOpenTasks(prevOpenTasks => [...prevOpenTasks, ...fetchedOpenTasks]); 
+            setLoadingTasks(false);
         };
     
         fetchOwnedTasks();
