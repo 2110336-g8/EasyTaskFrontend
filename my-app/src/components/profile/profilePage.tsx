@@ -248,9 +248,8 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchOwnedTasks = async () => {
-
-            if (userData?.ownedTasks === null) return;
-
+            if (!userData || !userData.ownedTasks) return; 
+    
             const fetchedTasks: Task[] = [];
             for (const taskId of userData.ownedTasks) {
                 const task = await fetchTaskById(taskId);
@@ -260,7 +259,7 @@ export default function Profile() {
             }
             setTasks(fetchedTasks);
         };
-
+    
         fetchOwnedTasks();
     }, [userData]);
 
