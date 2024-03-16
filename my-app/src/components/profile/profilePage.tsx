@@ -110,20 +110,22 @@ export default function Profile() {
     
             const fetchedOpenTasks: Task[] = [];
             const fetchedPastTasks: Task[] = [];
-
-            console.log("fetching tasks");
-
-            const ownedTaskIds = new Set(userData.ownedTasks);
-            
-            for (const taskId of Array.from(ownedTaskIds)) {
     
+            const ownedTaskIds = new Set(userData.ownedTasks);
+    
+            for (const taskId of Array.from(ownedTaskIds)) {
                 const task: Task | null = await fetchTaskById(taskId);
-
+    
                 if (task) {
-                    if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
-                        fetchedOpenTasks.push(task);
-                    } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
-                        fetchedPastTasks.push(task);
+                    const isInOpenTasks = openTasks.some(t => t._id === task._id);
+                    const isInPastTasks = pastTasks.some(t => t._id === task._id);
+    
+                    if (!isInOpenTasks && !isInPastTasks) {
+                        if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
+                            fetchedOpenTasks.push(task);
+                        } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
+                            fetchedPastTasks.push(task);
+                        }
                     }
                 }
             }
