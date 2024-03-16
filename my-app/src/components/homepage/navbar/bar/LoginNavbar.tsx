@@ -12,7 +12,7 @@ export default function LoginNavbar() {
     };
 
     return (
-    <div className="fixed left-0 top-0 right-0 justify-center items-center px-16 py-4 text-base font-medium tracking-normal leading-6 text-indigo-600 bg-slate-100 max-md:px-5">
+    <div className="fixed left-0 top-0 right-0 z-50 justify-center items-center px-16 py-4 text-base font-medium tracking-normal leading-6 text-indigo-600 bg-slate-100 max-md:px-5">
             <div className="flex gap-5 justify-between w-full max-w-[1328px] max-md:flex-wrap max-md:max-w-full">
                 <div className="flex gap-5 max-md:flex-wrap">
                     <a href="/">
