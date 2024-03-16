@@ -11,6 +11,7 @@ import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
+import { Task } from '@/types/task';
 
 export interface profile {
     avatarImg?: string;
@@ -171,10 +172,33 @@ export default function Profile() {
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("")
+    const [tasks, setTasks] = useState<Task[]>([]);
 
     const copylink = (text: string) => {
         navigator.clipboard.writeText(text)
     }
+
+    const fetchTaskById = async (taskId: string): Promise<Task | null> => {
+
+        try {
+            const response = (await instance.get(`/v1/tasks/${taskId}`)).data;
+            const responseData = await response.json();
+
+            console.log(responseData)
+
+            if ('error' in responseData) return null;
+
+            return responseData.task;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            toast({
+                variant: 'destructive',
+                title: 'Error Fetching User Data',
+                description: 'Failed to fetch user data. Please try again later.',
+            });
+        }
+
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -203,7 +227,7 @@ export default function Profile() {
         };
 
         fetchUser();
-    }, []);
+    }, [userData]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -211,7 +235,6 @@ export default function Profile() {
             if (!id) {
                 return;
             }
-
             try {
                 const res = await instance.get(
                     `v1/users/${id}/profile-image`,
@@ -222,7 +245,27 @@ export default function Profile() {
             }
         };
         fetchUser();
-    }, []);
+    }, [userImg]);
+
+    useEffect(() => {
+        const fetchOwnedTasks = async () => {
+
+            if (!userData?.tasks) return;
+
+            const fetchedTasks: Task[] = [];
+            for (const taskId of userData.ownedTasks) {
+                const task = await fetchTaskById(taskId);
+                if (task) {
+                    fetchedTasks.push(task);
+                }
+            }
+            setTasks(fetchedTasks);
+            console.log(tasks)
+        };
+
+        fetchOwnedTasks();
+
+    }, [tasks]);
 
     return (
         <div className='flex flex-col pb-10'>
@@ -243,17 +286,6 @@ export default function Profile() {
             <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
                     {userData ? `${userData?.firstName} ${userData?.lastName}` : <Skeleton className="h-6 w-[250px]" />}
-                </div>
-                <div className='flex gap-2.5 my-auto text-xl font-medium tracking-normal leading-7 text-gray-500'>
-                    <Image
-                        loading='lazy'
-                        width={32}
-                        height={32}
-                        alt='star'
-                        src='./star.svg'
-                        className='shrink-0 self-start w-6 aspect-square'
-                    />
-                    <div>{data.rating}</div>
                 </div>
             </div>
             <div className='mx-20 mt-4 text-base leading-6 text-slate-900 max-md:mr-2.5 max-md:max-w-full'>
@@ -318,7 +350,7 @@ export default function Profile() {
                     ))}
                     </div>
                 ) : (
-                    <div className="italic text-sl text-gray-300">-This user has no past jobs-</div>
+                    <div className="italic text-sm text-gray-300">-This user has no past jobs-</div>
                 )}
             </div>
         </div>
