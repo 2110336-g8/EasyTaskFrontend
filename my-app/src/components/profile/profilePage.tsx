@@ -100,7 +100,7 @@ export default function Profile() {
         };
 
         fetchOwnedTasks();
-    }, [userData, cachedTasks, openTasks, pastTasks]);
+    }, );
 
     useEffect(() => {
         const fetchUser = async () => {
