@@ -120,14 +120,9 @@ export default function Profile() {
     return (
         <div className='flex flex-col pb-10'>
             <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
-                <Avatar className='z-10 -mb-16 w-60 h-60 rounded-full aspect-square max-md:mb-2.5 max-md:ml-1'>
+                <Avatar className='z-10 -mb-16 w-60 h-60 rounded-full aspect-square max-md:mb-2.5 max-md:ml-1' style={{ backgroundColor: userImg === "" ? "white" : "transparent" }}>
                     <AvatarImage
-                        src={
-                            userImg === "" ? 
-                                '/ProfilePicEmpty.png'
-                                : 
-                                userImg}
-                        alt='@shadcn'
+                        src={userImg === "" ? '/ProfilePicEmpty.png' : userImg}
                         loading='lazy'
                     />
                     <AvatarFallback>Avatar</AvatarFallback>
