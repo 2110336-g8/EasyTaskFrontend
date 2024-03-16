@@ -110,6 +110,9 @@ export default function Profile() {
     
             const fetchedOpenTasks: Task[] = [];
             const fetchedPastTasks: Task[] = [];
+
+            console.log(userData.ownedTasks);
+
             const existingTaskIds = new Set(userData.ownedTasks);
             
             for (const taskId of userData.ownedTasks) {
