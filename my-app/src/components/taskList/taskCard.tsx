@@ -13,10 +13,11 @@ export default function TaskCard(props: TaskCardProps) {
             className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
         >
             <div className='w-full h-[180px]'>
-                <img
+                <Image // Testing for performance in profile page
                     className='w-full h-full object-cover'
                     src={props.imageUrl?.imageUrl || '/mocktask.png'}
                     alt={''}
+                    loading='lazy'
                 />
             </div>
             <div className='flex flex-col justify-between w-full h-[220px] p-[16px] pt-[8px]'>

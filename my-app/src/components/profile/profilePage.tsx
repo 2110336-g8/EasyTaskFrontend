@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
@@ -31,9 +31,11 @@ export default function Profile() {
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
 
-    const copylink = (text: string) => {
-        navigator.clipboard.writeText(text)
-    }
+    const copyPhoneNumber = useCallback(() => {
+        if (userData?.phoneNumber) {
+            navigator.clipboard.writeText(userData.phoneNumber);
+        }
+    }, [userData?.phoneNumber]);
 
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
@@ -159,6 +161,8 @@ export default function Profile() {
                     <AvatarImage
                         src={userImg === "" ? '/ProfilePicEmpty.png' : userImg}
                         loading='lazy'
+                        width={60}
+                        height={60}
                     />
                     <AvatarFallback>Avatar</AvatarFallback>
                 </Avatar>
@@ -173,7 +177,7 @@ export default function Profile() {
                     <Button
                         variant='outline'
                         className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
-                        onClick={() => navigator.clipboard.writeText(userData.phoneNumber!)} // set to Copied!
+                        onClick={copyPhoneNumber} 
                     >
                         {userData.phoneNumber.replace(/^(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')} 
                     </Button>
@@ -221,7 +225,7 @@ export default function Profile() {
                     ))}
                     </div>
                 ) : (
-                    <div className="italic text-base text-gray-300">-This user has no past jobs-</div>
+                    <div className="italic text-base text-gray-300">- This user has no past jobs -</div>
                 )}
             </div>
         </div>

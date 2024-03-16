@@ -9,7 +9,7 @@ import {
     HoverCardTrigger,
   } from "@/components/ui/hover-card"
 
-function LoginNavbar() {
+export default function MinLoginNavbar() {
     const handleLogout = () => {
         clientStorage.remove();
         window.location.reload();
