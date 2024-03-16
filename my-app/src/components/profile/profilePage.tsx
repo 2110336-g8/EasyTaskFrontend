@@ -178,13 +178,12 @@ export default function Profile() {
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Open Jobs
-                {userData && userData.tasks ? (
+                {openTasks.length > 0 ? (
                     <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
-                        {userData.tasks
-                            .filter(task => task.status === 'In Progress') 
+                        {openTasks
                             .map(task => (
                                 <TaskCard
-                                    key={task.taskId}
+                                    key={task._id}
                                     {...task}
                                     className='flex-grow'
                                 />
@@ -196,13 +195,12 @@ export default function Profile() {
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Past Jobs
-                {userData && userData.tasks ? (
+                {pastTasks.length > 0 ? (
                     <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
-                    {userData?.tasks
-                        .filter(task => task.status === 'Completed') 
+                    {pastTasks
                         .map(task => (
                             <TaskCard
-                                key={task.taskId}
+                                key={task._id}
                                 {...task}
                                 className='flex-grow'
                             />
