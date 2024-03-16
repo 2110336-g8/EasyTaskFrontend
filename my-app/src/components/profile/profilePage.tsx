@@ -170,6 +170,7 @@ export default function Profile() {
     const pastTask = pastData;
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [userImg, setUserImg] = useState("")
 
     const copylink = (text: string) => {
         navigator.clipboard.writeText(text)
@@ -204,12 +205,35 @@ export default function Profile() {
         fetchUser();
     }, []);
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            const id = clientStorage.get().user._id;
+            if (!id) {
+                return;
+            }
+
+            try {
+                const res = await instance.get(
+                    `v1/users/${id}/profile-image`,
+                );
+                setUserImg(res.data);
+            } catch (error) {
+                setUserImg('');
+            }
+        };
+        fetchUser();
+    }, []);
+
     return (
         <div className='flex flex-col pb-10'>
             <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
                 <Avatar className='z-10 -mb-16 w-60 h-60 rounded-full aspect-square max-md:mb-2.5 max-md:ml-1'>
                     <AvatarImage
-                        src='https://github.com/shadcn.png'
+                        src={
+                            userImg === "" ? 
+                                '/ProfilePicEmpty.png'
+                                : 
+                                userImg}
                         alt='@shadcn'
                         loading='lazy'
                     />
