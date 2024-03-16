@@ -111,6 +111,7 @@ export default function Profile() {
             const fetchedOpenTasks: Task[] = [];
             const fetchedPastTasks: Task[] = [];
 
+            console.log("fetching tasks");
             console.log(userData.ownedTasks);
 
             const existingTaskIds = new Set(userData.ownedTasks);
@@ -119,6 +120,9 @@ export default function Profile() {
                 if (existingTaskIds.has(taskId)) continue;
     
                 const task = await fetchTaskById(taskId);
+
+                console.log(task);
+
                 if (task) {
                     if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
                         fetchedOpenTasks.push(task);
@@ -127,9 +131,6 @@ export default function Profile() {
                     }
                 }
             }
-
-            console.log(fetchedOpenTasks)
-            console.log(fetchedPastTasks)
     
             setPastTasks(prevPastTasks => [...prevPastTasks, ...fetchedPastTasks]); 
             setOpenTasks(prevOpenTasks => [...prevOpenTasks, ...fetchedOpenTasks]); 
