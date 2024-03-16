@@ -250,7 +250,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchOwnedTasks = async () => {
 
-            if (!userData?.tasks) return;
+            if (!userData?.ownedTasks) return;
 
             const fetchedTasks: Task[] = [];
             for (const taskId of userData.ownedTasks) {
