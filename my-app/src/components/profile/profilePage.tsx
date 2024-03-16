@@ -23,9 +23,6 @@ export interface profile {
 }
 
 export default function Profile() {
-    const data = mockData;
-    const openTask = jobData;
-    const pastTask = pastData;
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("")
