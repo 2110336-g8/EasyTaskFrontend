@@ -204,7 +204,7 @@ export default function Profile() {
                             ))}
                     </div>
                 ) : (
-                    <div className="italic text-sm text-gray-300">- This user has no current job openings -</div>
+                    <div className="italic text-base text-gray-300">- This user has no current job openings -</div>
                 )}
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
@@ -221,7 +221,7 @@ export default function Profile() {
                     ))}
                     </div>
                 ) : (
-                    <div className="italic text-sm text-gray-300">-This user has no past jobs-</div>
+                    <div className="italic text-base text-gray-300">-This user has no past jobs-</div>
                 )}
             </div>
         </div>
