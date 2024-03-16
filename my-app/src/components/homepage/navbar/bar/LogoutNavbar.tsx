@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function LogoutNavbar() {
     return (
-        <div className="fixed left-0 top-0 right-0 flex flex-col justify-end pb-20 text-base tracking-normal bg-white">
+        <div className="fixed left-0 top-0 right-0 flex flex-col justify-end pb-20 text-base tracking-normal ">
             <div className="flex justify-center items-center px-16 py-3.5 w-full bg-slate-100 max-md:px-5 max-md:max-w-full">
                 <div className="flex gap-5 justify-between w-full max-w-[1328px] max-md:flex-wrap max-md:max-w-full">
                     <a href="/">
