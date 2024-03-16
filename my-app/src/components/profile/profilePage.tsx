@@ -191,25 +191,26 @@ export default function Profile() {
                 )}
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
-                <div className="mb-4">Open Jobs</div> 
+                Open Jobs
                 {openTasks.length > 0 ? (
-                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
-                        {openTasks.map(task => (
-                            <TaskCard
-                                key={task._id}
-                                {...convertToTaskCardProps(task)}
-                                className='flex-grow'
-                            />
-                        ))}
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                        {openTasks
+                            .map(task => (
+                                <TaskCard
+                                    key={task._id}
+                                    {...convertToTaskCardProps(task)}
+                                    className='flex-grow'
+                                />
+                            ))}
                     </div>
                 ) : (
                     <div className="italic text-base text-gray-300">- This user has no current job openings -</div>
                 )}
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
-                <div className="mb-4">Open Jobs</div> 
+                Past Jobs
                 {pastTasks.length > 0 ? (
-                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
                     {pastTasks
                         .map(task => (
                             <TaskCard
