@@ -227,7 +227,7 @@ export default function Profile() {
         };
 
         fetchUser();
-    }, [userData]);
+    }, []);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -245,7 +245,7 @@ export default function Profile() {
             }
         };
         fetchUser();
-    }, [userImg]);
+    }, []);
 
     useEffect(() => {
         const fetchOwnedTasks = async () => {
@@ -265,7 +265,7 @@ export default function Profile() {
 
         fetchOwnedTasks();
 
-    }, [tasks]);
+    }, []);
 
     return (
         <div className='flex flex-col pb-10'>
