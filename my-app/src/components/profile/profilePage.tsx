@@ -193,7 +193,7 @@ export default function Profile() {
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Open Jobs
                 {openTasks.length > 0 ? (
-                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
                         {openTasks
                             .map(task => (
                                 <TaskCard
@@ -210,7 +210,7 @@ export default function Profile() {
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
                 Past Jobs
                 {pastTasks.length > 0 ? (
-                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                    <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
                     {pastTasks
                         .map(task => (
                             <TaskCard

@@ -17,7 +17,7 @@ export default function ViewTask(props: ViewTaskProps) {
     const api = axios.create({
         baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // change this to axios instance
         },
     });
 
