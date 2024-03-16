@@ -14,19 +14,15 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 
-export interface profile {
-    avatarImg?: string;
-    bannerImg?: string;
-    username: string;
-    rating: number;
-    description: string;
-    tel: string;
+interface CachedTasks {
+    [taskId: string]: Task; 
 }
 
 export default function Profile() {
 
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("")
+    const [cachedTasks, setCachedTasks] = useState<CachedTasks>({});
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
@@ -71,6 +67,45 @@ export default function Profile() {
             workers: task.workers.toString()
         }
     }
+
+    useEffect(() => {
+        const fetchOwnedTasks = async () => {
+            if (!userData || !userData.ownedTasks) return;
+            setLoadingTasks(true);
+
+            const ownedTaskIds = new Set(userData.ownedTasks);
+            const tasksToFetch = Array.from(ownedTaskIds).filter(taskId => {
+                return !cachedTasks[taskId];
+            });
+
+            try {
+                const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
+                const fetchedTasks = await Promise.all(taskFetchPromises);
+
+                fetchedTasks.forEach(task => {
+                    if (task !== null) {
+                        const isInOpenTasks = task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS;
+                        const isInPastTasks = task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED;
+                        
+                        if (isInOpenTasks) {
+                            setOpenTasks(prevOpenTasks => [...prevOpenTasks, task]);
+                        }
+                        if (isInPastTasks) {
+                            setPastTasks(prevPastTasks => [...prevPastTasks, task]);
+                        }
+
+                        setCachedTasks(prevCachedTasks => ({ ...prevCachedTasks, [task._id]: task }));
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching owned tasks:', error);
+            } finally {
+                setLoadingTasks(false);
+            }
+        };
+
+        fetchOwnedTasks();
+    }, [userData, cachedTasks]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -119,40 +154,6 @@ export default function Profile() {
         fetchUser();
     }, []);
 
-    useEffect(() => {
-        const fetchOwnedTasks = async () => {
-            if (!userData || !userData.ownedTasks) return;
-            setLoadingTasks(true);
-    
-            const fetchedOpenTasks: Task[] = [];
-            const fetchedPastTasks: Task[] = [];
-    
-            const ownedTaskIds = new Set(userData.ownedTasks);
-    
-            for (const taskId of Array.from(ownedTaskIds)) {
-                const task: Task | null = await fetchTaskById(taskId);
-    
-                if (task) {
-                    const isInOpenTasks = openTasks.some(t => t._id === task._id);
-                    const isInPastTasks = pastTasks.some(t => t._id === task._id);
-    
-                    if (!isInOpenTasks && !isInPastTasks) {
-                        if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
-                            fetchedOpenTasks.push(task);
-                        } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
-                            fetchedPastTasks.push(task);
-                        }
-                    }
-                }
-            }
-    
-            setPastTasks(prevPastTasks => [...prevPastTasks, ...fetchedPastTasks]); 
-            setOpenTasks(prevOpenTasks => [...prevOpenTasks, ...fetchedOpenTasks]); 
-            setLoadingTasks(false);
-        };
-    
-        fetchOwnedTasks();
-    }, [userData]);
 
     return (
         <div className='flex flex-col pb-10'>
@@ -163,6 +164,7 @@ export default function Profile() {
                         loading='lazy'
                         width={60}
                         height={60}
+                        alt='User Profile'
                     />
                     <AvatarFallback>Avatar</AvatarFallback>
                 </Avatar>
@@ -203,12 +205,11 @@ export default function Profile() {
                                 <TaskCard
                                     key={task._id}
                                     {...convertToTaskCardProps(task)}
-                                    className='flex-grow'
                                 />
                             ))}
                     </div>
                 ) : (
-                    <div className="italic text-base text-gray-300">- This user has no current job openings -</div>
+                    <div className="italic text-base text-gray-500">- This user has no current job openings -</div>
                 )}
             </div>
             <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
@@ -220,12 +221,11 @@ export default function Profile() {
                             <TaskCard
                                 key={task._id}
                                 {...convertToTaskCardProps(task)}
-                                className='flex-grow'
                             />
                     ))}
                     </div>
                 ) : (
-                    <div className="italic text-base text-gray-300">- This user has no past jobs -</div>
+                    <div className="italic text-base text-gray-500">- This user has no past jobs -</div>
                 )}
             </div>
         </div>
