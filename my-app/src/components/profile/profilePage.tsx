@@ -13,14 +13,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 
-interface CachedTasks {
-    [taskId: string]: Task; 
-}
-
 export default function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("");
-    const [cachedTasks, setCachedTasks] = useState<CachedTasks>({});
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
@@ -70,17 +65,15 @@ export default function Profile() {
             setLoadingTasks(true);
     
             try {
-                const tasksToFetch = userData.ownedTasks.filter(taskId => !cachedTasks[taskId]);
+                const tasksToFetch = userData.ownedTasks.filter(taskId => !pastTasks.some(task => task._id === taskId) && !openTasks.some(task => task._id === taskId));
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
     
-                const newCachedTasks: CachedTasks = { ...cachedTasks };
                 const newOpenTasks = [...openTasks];
                 const newPastTasks = [...pastTasks];
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        newCachedTasks[task._id] = task;
                         if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
                             newOpenTasks.push(task);
                         } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
@@ -89,7 +82,6 @@ export default function Profile() {
                     }
                 });
     
-                setCachedTasks(newCachedTasks);
                 setOpenTasks(newOpenTasks);
                 setPastTasks(newPastTasks);
             } catch (error) {
