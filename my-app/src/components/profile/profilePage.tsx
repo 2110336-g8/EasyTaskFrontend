@@ -84,8 +84,8 @@ export default function Profile() {
 
                 fetchedTasks.forEach(task => {
                     if (task !== null) {
-                        const isInOpenTasks = task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS;
-                        const isInPastTasks = task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED;
+                        const isInOpenTasks = task.status === TaskStateOptions.OPEN;
+                        const isInPastTasks = task.status === TaskStateOptions.COMPLETED;
                         
                         if (isInOpenTasks) {
                             setOpenTasks(prevOpenTasks => [...prevOpenTasks, task]);
