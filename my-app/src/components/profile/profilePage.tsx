@@ -68,16 +68,16 @@ export default function Profile() {
         const fetchOwnedTasks = async () => {
             if (!userData || !userData.ownedTasks) return;
             setLoadingTasks(true);
-
+    
             try {
                 const tasksToFetch = userData.ownedTasks.filter(taskId => !cachedTasks[taskId]);
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
-
+    
                 const newCachedTasks = { ...cachedTasks };
                 const newOpenTasks = [...openTasks];
                 const newPastTasks = [...pastTasks];
-
+    
                 fetchedTasks.forEach(task => {
                     if (task) {
                         newCachedTasks[task._id] = task;
@@ -88,7 +88,7 @@ export default function Profile() {
                         }
                     }
                 });
-
+    
                 setCachedTasks(newCachedTasks);
                 setOpenTasks(newOpenTasks);
                 setPastTasks(newPastTasks);
@@ -98,9 +98,9 @@ export default function Profile() {
                 setLoadingTasks(false);
             }
         };
-
+    
         fetchOwnedTasks();
-    }, );
+    }, [userData, cachedTasks, openTasks, pastTasks]);
 
     useEffect(() => {
         const fetchUser = async () => {
