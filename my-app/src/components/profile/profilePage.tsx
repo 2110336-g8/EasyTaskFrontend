@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
