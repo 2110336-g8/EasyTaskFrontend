@@ -179,25 +179,24 @@ export default function Profile() {
     }
 
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
-
         try {
-            const response = (await instance.get(`/v1/tasks/${taskId}`)).data;
-            const responseData = await response.json();
-
-            console.log(responseData)
-
+            const response = await instance.get(`/v1/tasks/${taskId}`);
+            const responseData = response.data;
+    
+            console.log(responseData);
+    
             if ('error' in responseData) return null;
-
+    
             return responseData.task;
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Error fetching task data:', error);
             toast({
                 variant: 'destructive',
-                title: 'Error Fetching User Data',
-                description: 'Failed to fetch user data. Please try again later.',
+                title: 'Error Fetching Task Data',
+                description: 'Failed to fetch task data. Please try again later.',
             });
+            return null;
         }
-
     };
 
     useEffect(() => {
@@ -250,7 +249,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchOwnedTasks = async () => {
 
-            if (!userData?.ownedTasks) return;
+            // if (!userData?.ownedTasks) return;
 
             const fetchedTasks: Task[] = [];
             for (const taskId of userData.ownedTasks) {
@@ -260,12 +259,10 @@ export default function Profile() {
                 }
             }
             setTasks(fetchedTasks);
-            console.log(tasks)
         };
 
         fetchOwnedTasks();
-
-    }, []);
+    }, [userData]);
 
     return (
         <div className='flex flex-col pb-10'>
