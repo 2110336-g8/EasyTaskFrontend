@@ -35,7 +35,6 @@ const LayoutBox: React.FC = () => {
                         src='/banner1.png'
                         alt='Image'
                         className='image object-cover'
-                        loading="lazy"
                         width={800}
                         height={400}
                     />
@@ -69,7 +68,6 @@ const LayoutBox: React.FC = () => {
                         src='/banner2.png' 
                         alt='Image' 
                         className='image' 
-                        loading="lazy"
                         width={800}
                         height={400}
                     />
