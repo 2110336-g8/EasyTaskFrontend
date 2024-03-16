@@ -112,16 +112,12 @@ export default function Profile() {
             const fetchedPastTasks: Task[] = [];
 
             console.log("fetching tasks");
-            console.log(userData.ownedTasks);
 
-            const existingTaskIds = new Set(userData.ownedTasks);
+            const ownedTaskIds = new Set(userData.ownedTasks);
             
-            for (const taskId of userData.ownedTasks) {
-                if (existingTaskIds.has(taskId)) continue;
+            for (const taskId of Array.from(ownedTaskIds)) {
     
-                const task = await fetchTaskById(taskId);
-
-                console.log(task);
+                const task: Task | null = await fetchTaskById(taskId);
 
                 if (task) {
                     if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
