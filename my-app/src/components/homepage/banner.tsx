@@ -34,8 +34,10 @@ const LayoutBox: React.FC = () => {
                     <Image
                         src='/banner1.png'
                         alt='Image'
-                        className='image object-cover h-full w-full'
+                        className='image object-cover'
                         loading="lazy"
+                        width={800}
+                        height={400}
                     />
                 </div>
                 <style jsx>{`
@@ -63,7 +65,14 @@ const LayoutBox: React.FC = () => {
             </div>
             <div className='layout-box bg-primary-100 font-sans w-[1200px] h-[400px] rounded-lg p-[50px]'>
                 <div className='right-side w-[800px] mr-[50px] flex items-center'>
-                    <Image src='/banner2.png' alt='Image' className='image' loading="lazy"/>
+                    <Image 
+                        src='/banner2.png' 
+                        alt='Image' 
+                        className='image' 
+                        loading="lazy"
+                        width={800}
+                        height={400}
+                    />
                 </div>
                 <style jsx>{`
                     .layout-box {
