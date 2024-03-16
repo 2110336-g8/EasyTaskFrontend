@@ -1,12 +1,10 @@
-'use client';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
-import { useEffect, useState, useCallback } from 'react';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserProfile } from '@/types/user';
@@ -19,9 +17,8 @@ interface CachedTasks {
 }
 
 export default function Profile() {
-
     const [userData, setUserData] = useState<UserProfile | null>(null);
-    const [userImg, setUserImg] = useState("")
+    const [userImg, setUserImg] = useState("");
     const [cachedTasks, setCachedTasks] = useState<CachedTasks>({});
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
@@ -37,8 +34,6 @@ export default function Profile() {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
-    
-            console.log(responseData);
     
             if ('error' in responseData) return null;
     
@@ -73,30 +68,29 @@ export default function Profile() {
             if (!userData || !userData.ownedTasks) return;
             setLoadingTasks(true);
 
-            const ownedTaskIds = new Set(userData.ownedTasks);
-            const tasksToFetch = Array.from(ownedTaskIds).filter(taskId => {
-                return !cachedTasks[taskId];
-            });
-
             try {
+                const tasksToFetch = userData.ownedTasks.filter(taskId => !cachedTasks[taskId]);
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
 
-                fetchedTasks.forEach(task => {
-                    if (task !== null) {
-                        const isInOpenTasks = task.status === TaskStateOptions.OPEN;
-                        const isInPastTasks = task.status === TaskStateOptions.COMPLETED;
-                        
-                        if (isInOpenTasks) {
-                            setOpenTasks(prevOpenTasks => [...prevOpenTasks, task]);
-                        }
-                        if (isInPastTasks) {
-                            setPastTasks(prevPastTasks => [...prevPastTasks, task]);
-                        }
+                const newCachedTasks = { ...cachedTasks };
+                const newOpenTasks = [...openTasks];
+                const newPastTasks = [...pastTasks];
 
-                        setCachedTasks(prevCachedTasks => ({ ...prevCachedTasks, [task._id]: task }));
+                fetchedTasks.forEach(task => {
+                    if (task) {
+                        newCachedTasks[task._id] = task;
+                        if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
+                            newOpenTasks.push(task);
+                        } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
+                            newPastTasks.push(task);
+                        }
                     }
                 });
+
+                setCachedTasks(newCachedTasks);
+                setOpenTasks(newOpenTasks);
+                setPastTasks(newPastTasks);
             } catch (error) {
                 console.error('Error fetching owned tasks:', error);
             } finally {
@@ -111,18 +105,22 @@ export default function Profile() {
         const fetchUser = async () => {
             try {
                 const id = clientStorage.get().user._id;
-                const userData = (await instance.get(`/v1/users/${id}`)).data.user;
+                if (!id) {
+                    return;
+                }
+                const userDataResponse = await instance.get(`/v1/users/${id}`);
+                const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
 
-                if (!userData) {
+                if (userDataResponse.data.user) {
+                    setUserData(userDataResponse.data.user);
+                    setUserImg(userImageResponse.data);
+                } else {
                     toast({
                         variant: 'destructive',
                         title: 'Login Required',
                         description: 'You need to login first to view your profile.',
                     });
-                    return;
                 }
-                console.log(userData);
-                setUserData(userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 toast({
@@ -135,25 +133,6 @@ export default function Profile() {
 
         fetchUser();
     }, []);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const id = clientStorage.get().user._id;
-            if (!id) {
-                return;
-            }
-            try {
-                const res = await instance.get(
-                    `v1/users/${id}/profile-image`,
-                );
-                setUserImg(res.data);
-            } catch (error) {
-                setUserImg('');
-            }
-        };
-        fetchUser();
-    }, []);
-
 
     return (
         <div className='flex flex-col pb-10'>
