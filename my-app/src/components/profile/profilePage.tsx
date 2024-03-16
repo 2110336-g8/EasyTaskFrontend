@@ -249,7 +249,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchOwnedTasks = async () => {
 
-            if (!userData?.ownedTasks) return;
+            if (userData?.ownedTasks === null) return;
 
             const fetchedTasks: Task[] = [];
             for (const taskId of userData.ownedTasks) {
@@ -284,13 +284,6 @@ export default function Profile() {
                 <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
                     {userData ? `${userData?.firstName} ${userData?.lastName}` : <Skeleton className="h-6 w-[250px]" />}
                 </div>
-            </div>
-            <div className='mx-20 mt-4 text-base leading-6 text-slate-900 max-md:mr-2.5 max-md:max-w-full'>
-                {userData ? (
-                        <div>{data.description}</div>
-                ) : (
-                    <Skeleton className="h-12 w-[420px]" />
-                )}
             </div>
             <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
                 {userData?.phoneNumber && (
