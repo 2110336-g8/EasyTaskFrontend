@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { toast } from '../ui/use-toast';
-import Image from 'next/image';
+import dayjs from 'dayjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -64,8 +64,8 @@ export default function Profile() {
             imageUrl: task.imageUrls ? task.imageUrls[0] : undefined,
             location: task.location ? task.location.name : undefined,
             wages: task.wages.toString(),
-            startDate: task.startDate.toString(),
-            endDate: task.endDate.toString(),
+            startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),
+            endDate: dayjs(task.endDate).format('DD MMM YYYY').toString(),
             workers: task.workers.toString()
         }
     }
