@@ -126,7 +126,7 @@ export default function Profile() {
             }
 
             console.log(fetchedOpenTasks)
-            console.log(fetchedPastTask)
+            console.log(fetchedPastTasks)
     
             setPastTasks(prevPastTasks => [...prevPastTasks, ...fetchedPastTasks]); 
             setOpenTasks(prevOpenTasks => [...prevOpenTasks, ...fetchedOpenTasks]); 
