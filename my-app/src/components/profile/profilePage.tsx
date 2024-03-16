@@ -74,7 +74,7 @@ export default function Profile() {
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
     
-                const newCachedTasks = { ...cachedTasks };
+                const newCachedTasks: CachedTasks = { ...cachedTasks };
                 const newOpenTasks = [...openTasks];
                 const newPastTasks = [...pastTasks];
     
@@ -101,6 +101,7 @@ export default function Profile() {
     
         fetchOwnedTasks();
     }, [userData, cachedTasks, openTasks, pastTasks]);
+    
 
     useEffect(() => {
         const fetchUser = async () => {
