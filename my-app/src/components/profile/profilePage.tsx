@@ -69,16 +69,21 @@ export default function Profile() {
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
     
+                const newOpenTasks = [...openTasks];
+                const newPastTasks = [...pastTasks];
+    
                 fetchedTasks.forEach(task => {
                     if (task) {
                         if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
-                            setOpenTasks([...openTasks, task]);
+                            newOpenTasks.push(task);
                         } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
-                            setPastTasks([...pastTasks, task]);
+                            newPastTasks.push(task);
                         }
                     }
                 });
     
+                setOpenTasks(newOpenTasks);
+                setPastTasks(newPastTasks);
             } catch (error) {
                 console.error('Error fetching owned tasks:', error);
             } finally {
