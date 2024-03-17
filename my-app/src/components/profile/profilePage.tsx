@@ -1,5 +1,4 @@
-"use client"
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,9 +12,14 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 
+interface CachedTasks {
+    [taskId: string]: Task; 
+}
+
 export default function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("");
+    const [cachedTasks, setCachedTasks] = useState<CachedTasks>({});
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
@@ -28,12 +32,22 @@ export default function Profile() {
 
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
+            const cachedTask = cachedTasks[taskId];
+            if (cachedTask) {
+                return cachedTask; 
+            }
+
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
-    
+
             if ('error' in responseData) return null;
-    
-            return responseData.task;
+
+            const task = responseData.task;
+            setCachedTasks(prevCachedTasks => ({
+                ...prevCachedTasks,
+                [taskId]: task 
+            }));
+            return task;
         } catch (error) {
             console.error('Error fetching task data:', error);
             toast({
@@ -59,16 +73,19 @@ export default function Profile() {
         }
     }
 
+    const memoizedPastTasks = useMemo(() => pastTasks, [pastTasks]);
+    const memoizedOpenTasks = useMemo(() => openTasks, [openTasks]);
+
     useEffect(() => {
         const fetchOwnedTasks = async () => {
             if (!userData || !userData.ownedTasks) return;
             setLoadingTasks(true);
-    
+
             try {
-                const tasksToFetch = userData.ownedTasks.filter(taskId => !pastTasks.some(task => task._id === taskId) && !openTasks.some(task => task._id === taskId));
+                const tasksToFetch = userData.ownedTasks.filter(taskId => !memoizedPastTasks.some(task => task._id === taskId) && !memoizedOpenTasks.some(task => task._id === taskId));
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
-    
+
                 fetchedTasks.forEach(task => {
                     if (task) {
                         if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
@@ -78,17 +95,16 @@ export default function Profile() {
                         }
                     }
                 });
-    
+
             } catch (error) {
                 console.error('Error fetching owned tasks:', error);
             } finally {
                 setLoadingTasks(false);
             }
         };
-    
+
         fetchOwnedTasks();
-    }, [userData, openTasks, pastTasks]);
-    
+    }, [userData, memoizedPastTasks, memoizedOpenTasks]);
 
     useEffect(() => {
         const fetchUser = async () => {
