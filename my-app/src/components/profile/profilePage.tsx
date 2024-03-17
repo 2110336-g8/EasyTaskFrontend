@@ -12,17 +12,20 @@ import { UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
+
 export default function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("");
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
+
     const copyPhoneNumber = useCallback(() => {
         if (userData?.phoneNumber) {
             navigator.clipboard.writeText(userData.phoneNumber);
         }
     }, [userData?.phoneNumber]);
+
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
@@ -41,6 +44,7 @@ export default function Profile() {
             return null;
         }
     };
+
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
         return {
             taskId: task._id,
@@ -54,6 +58,7 @@ export default function Profile() {
             workers: task.workers.toString()
         }
     }
+
     useEffect(() => {
         const fetchOwnedTasks = async () => {
             if (!userData || !userData.ownedTasks) return;
@@ -63,17 +68,22 @@ export default function Profile() {
                 const tasksToFetch = userData.ownedTasks.filter(taskId => !pastTasks.some(task => task._id === taskId) && !openTasks.some(task => task._id === taskId));
                 const taskFetchPromises = tasksToFetch.map(taskId => fetchTaskById(taskId));
                 const fetchedTasks = await Promise.all(taskFetchPromises);
-
+    
+                const newOpenTasks = [...openTasks];
+                const newPastTasks = [...pastTasks];
+    
                 fetchedTasks.forEach(task => {
                     if (task) {
                         if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
-                            setOpenTasks([...openTasks, task]);
+                            newOpenTasks.push(task);
                         } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
-                            setPastTasks([...pastTasks, task]);
+                            newPastTasks.push(task);
                         }
                     }
                 });
-
+    
+                setOpenTasks(newOpenTasks);
+                setPastTasks(newPastTasks);
             } catch (error) {
                 console.error('Error fetching owned tasks:', error);
             } finally {
@@ -84,6 +94,7 @@ export default function Profile() {
         fetchOwnedTasks();
     }, [userData, openTasks, pastTasks]);
     
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -93,6 +104,7 @@ export default function Profile() {
                 }
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
                 const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
+
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
                     setUserImg(userImageResponse.data);
@@ -112,8 +124,10 @@ export default function Profile() {
                 });
             }
         };
+
         fetchUser();
     }, []);
+
     return (
         <div className='flex flex-col pb-10'>
             <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
