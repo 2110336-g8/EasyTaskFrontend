@@ -17,7 +17,7 @@ export default function ViewTask(props: ViewTaskProps) {
     const api = axios.create({
         baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // change this to axios instance
         },
     });
 
@@ -124,7 +124,7 @@ export default function ViewTask(props: ViewTaskProps) {
             <div className='flex flex-col w-[1000px] gap-[24px]'>
                 <div className='absolute'>
                     <a className='relative right-[80px]' href='/task'>
-                        <ArrowLeftIcon className=' w-[40px] h-[40px]' />
+                        <ArrowLeftIcon className='w-[40px] h-[40px]' />
                     </a>
                 </div>
                 <div className='w-full flex flex-col gap-[2px]'>

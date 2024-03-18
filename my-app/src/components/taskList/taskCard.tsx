@@ -17,6 +17,7 @@ export default function TaskCard(props: TaskCardProps) {
                     className='w-full h-full object-cover'
                     src={props.imageUrl?.imageUrl || '/mocktask.png'}
                     alt={''}
+                    loading='lazy'
                 />
             </div>
             <div className='flex flex-col justify-between w-full h-[220px] p-[16px] pt-[8px]'>
