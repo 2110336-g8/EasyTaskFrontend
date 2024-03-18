@@ -8,40 +8,39 @@ export default function AdsCard(props: AdsCardProps) {
     return (
         <Link
             href={'/ads/' + props.taskId}
-            className='rounded-lg bg-card text-card-foreground hover:shadow-md inner-border col-span-1 h-[400px] w-[320px] overflow-hidden'
+            className='rounded-lg bg-card flex text-card-foreground hover:shadow-md inner-border w-[1328px] h-auto overflow-hidden'
         >
-            <div className='w-full h-[180px]'>
+            <div className=''>
                 <img
-                    className='w-full h-full object-cover'
+                    className='w-[320px] h-[180px] object-cover'
                     src={props.image || '/mocktask.png'}
                     alt={''}
                 />
             </div>
-            <div className='flex flex-col justify-between w-full h-[220px] p-[16px] pt-[8px]'>
-                <div className='flex flex-col gap-[12px]'>
-                    <h3 className='text-slate-900 line-clamp-2 break-words'>
-                        {props.title}
-                    </h3>
-                    <div className='flex flex-col gap-[4px]'>
-                        <small className='w-full gap-[4px] flex items-center text-slate-500'>
-                            <ClockIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                            Start {props.startDate}
+            
+            <div className='flex flex-col  h-auto w-full p-[16px] '>
+                <h3 className='text-slate-900 line-clamp-2 break-words py-[24px]'>
+                    {props.title}
+                </h3>
+                <div className='flex flex-row gap-[24px] '>
+                    <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
+                        <ClockIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
+                        {props.startDate} - {props.endDate}
+                    </small>
+                    {props.location ? (
+                        <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
+                            <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
+                            {props.location}
                         </small>
-                        {props.location ? (
-                            <small className='w-full gap-[4px] flex items-center text-slate-500'>
-                                <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                {props.location}
-                            </small>
-                        ) : null}
-                        {props.applications ? (
-                            <small className='w-full gap-[4px] flex items-center text-slate-500'>
-                                <InboxIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                {props.applications} Applications
-                            </small>
-                        ) : null}
-                    </div>
+                    ) : null}
+                    {props.applications ? (
+                        <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
+                            <InboxIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
+                            {props.applications} Applications
+                        </small>
+                    ) : null}
                 </div>
-                <div className='w-full flex flex-row justify-between'>
+                <div className='w-full flex flex-row '>
                     {props.category ? (
                         <p className='px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
                             {props.category}

@@ -126,6 +126,7 @@ export interface AdsCardProps {
     location?: string;
     wages: string;
     startDate: string;
+    endDate: string;
     applications: string;
     status: string;
 }
