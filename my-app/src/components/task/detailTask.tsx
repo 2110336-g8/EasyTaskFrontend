@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import MapReadOnly from '../map/mapBoxReadOnly';
 import axios from 'axios';
+import { applyTask } from '@/lib/applyTask';
 
 export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
@@ -33,7 +34,10 @@ export default function ViewTask(props: ViewTaskProps) {
                 if (response.status === 200) {
                     setHasApplied(response.data.hasApplied);
                 } else {
-                    console.error('Error checking application status:', response.data.error);
+                    console.error(
+                        'Error checking application status:',
+                        response.data.error,
+                    );
                 }
             } catch (error) {
                 console.error('Error checking application status:', error);
@@ -44,9 +48,9 @@ export default function ViewTask(props: ViewTaskProps) {
             checkAppliedStatus();
         }
     }, [isLoggedIn, props.taskId]);
-    
+
     const applyTaskHandler = async () => {
-        console.log(isLoggedIn)
+        console.log(isLoggedIn);
         if (!isLoggedIn) {
             toast({
                 variant: 'destructive',
@@ -57,13 +61,13 @@ export default function ViewTask(props: ViewTaskProps) {
         }
 
         try {
-            const response = await api.post(`${props.taskId}/apply`, null, {
-                headers: {
-                    Authorization: `Bearer ${clientStorage.get().token}`,
-                },
-            });
-
-            if (response.status === 200) {
+            const response = await applyTask(
+                props.taskId,
+                clientStorage.get().token,
+            );
+            console.log(response.success);
+            if (response.success) {
+                console.log('applied task success');
                 toast({
                     variant: 'default',
                     title: 'Task Applied',
@@ -74,7 +78,9 @@ export default function ViewTask(props: ViewTaskProps) {
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description: response.data.error || 'An error occurred while applying for the task.',
+                    description:
+                        response.error ||
+                        'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -82,7 +88,8 @@ export default function ViewTask(props: ViewTaskProps) {
             toast({
                 variant: 'destructive',
                 title: 'Application Error',
-                description: 'An error occurred while applying for the task. Please try again later.',
+                description:
+                    'An error occurred while applying for the task. Please try again later.',
             });
         }
     };

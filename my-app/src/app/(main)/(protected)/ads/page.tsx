@@ -83,6 +83,9 @@ export default function AdsList() {
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
                             ),
+                            endDate: dayjs(task.endDate).format(
+                                'DD MMM YYYY',
+                            ),
                             location: task.location?.name,
                             applications: task.workers.toLocaleString(),
                             wages: task.wages.toLocaleString(),
@@ -127,15 +130,26 @@ export default function AdsList() {
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
                 <h1>Your Job Advertisements</h1>
-                <Button
-                    onClick={() => {
-                        router.push('/task/create');
-                    }}
-                    className='gap-x-[10px]'
-                >
-                    <PlusIcon />
-                    Create New Ads
-                </Button>
+                <div className='flex gap-[16px]'>
+                    <Button
+                        onClick={() => {
+                            router.push('/task/create');
+                        }}
+                        className='gap-x-[10px]'
+                    >
+                        <PlusIcon />
+                        Create 
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            router.push('/task/create');
+                        }}
+                        className='gap-x-[10px]'
+                    >
+                        <PlusIcon />
+                        Manage 
+                    </Button>
+                </div>
             </div>
             <AdsToggleList type='pay' adsList={adsPayList} />
             <AdsToggleList type='open' adsList={adsOpenList} />

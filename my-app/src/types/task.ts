@@ -126,6 +126,7 @@ export interface AdsCardProps {
     location?: string;
     wages: string;
     startDate: string;
+    endDate: string;
     applications: string;
     status: string;
 }
@@ -151,6 +152,29 @@ export interface GetUserAdsResponse {
     // page: number;
     // limit: number;
     tasks: Task[];
+}
+
+export interface ApplyTaskResponse {
+    success: boolean;
+    result?: {
+        _id: string;
+        title: string;
+        category: string;
+        description: string;
+        location: GeographicLocation;
+        status: TaskStateOptions;
+        wages: number;
+        workers: number; //
+        startDate: Date;
+        endDate: Date;
+        customerId: string;
+        imageKeys?: string[];
+        createdAt: Date;
+        updatedAt: Date;
+        __v: number;
+    };
+    error?:string;
+    
 }
 
 //*=================Create Task====================*//
@@ -182,3 +206,4 @@ export interface CreateTasksResponse {
 export interface UploadTaskImageResponse {
     message?: string;
 }
+
