@@ -75,10 +75,11 @@ export default function TaskList() {
                 }),
             })
                 .then((taskListData: AllTasksResponse) => {
+                    console.log(taskListData)
                     const formattedTaskList: TaskCardProps[] =
                         taskListData.tasks.map(task => ({
                             taskId: task._id,
-                            imageUrl: task.imageUrls?.[0],
+                            imageUrl: task.imageUrl,
                             title: task.title,
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
