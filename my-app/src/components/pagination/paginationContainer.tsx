@@ -21,7 +21,7 @@ const PaginationNumber: React.FC<{
                 onClick={() => setPage(pageNumber)}
                 isActive={isActive}
             >
-                {pageNumber}
+                <p>{pageNumber}</p>
             </PaginationLink>
         </PaginationItem>
     );
