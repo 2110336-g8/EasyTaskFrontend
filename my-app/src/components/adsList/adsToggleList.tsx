@@ -1,5 +1,4 @@
-'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AdsCardProps } from '@/types/task';
 import AdsCard from '@/components/adsList/adsCard';
 import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
@@ -8,10 +7,14 @@ export default function AdsToggleList({
     type,
     adsList,
     managing,
+    onAddToCancelList,
+    onRemoveFromCancelList,
 }: {
     type: keyof typeof names;
     adsList: AdsCardProps[];
     managing: boolean;
+    onAddToCancelList: (taskId: string) => void;
+    onRemoveFromCancelList: (taskId: string) => void;
 }) {
     const names = {
         pay: 'To Pay Deposit',
@@ -22,9 +25,14 @@ export default function AdsToggleList({
 
     const [isShow, setIsShow] = useState<boolean>(false);
     const [buttonFuncType, setButtonFuncType] = useState<string>(type);
-    if (managing) {
-        setButtonFuncType('managing');
-    }
+
+    useEffect(() => {
+        if (managing) {
+            setButtonFuncType('managing');
+        } else {
+            setButtonFuncType(type);
+        }
+    }, [managing, type]);
 
     return (
         <div className='w-full flex flex-col gap-[20px]'>
@@ -50,8 +58,12 @@ export default function AdsToggleList({
                             {adsList.map((task, index) => (
                                 <AdsCard
                                     key={index}
-                                    {...task}
-                                    buttonFunc={type}
+                                    props={task}
+                                    buttonFunc={buttonFuncType}
+                                    onAddToCancelList={onAddToCancelList}
+                                    onRemoveFromCancelList={
+                                        onRemoveFromCancelList
+                                    }
                                 />
                             ))}
                         </div>

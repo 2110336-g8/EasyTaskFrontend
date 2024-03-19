@@ -57,6 +57,7 @@ export interface Task {
     hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
+    __v?: number
 }
 
 export interface TaskKV {
@@ -203,3 +204,10 @@ export interface UploadTaskImageResponse {
     message?: string;
 }
 
+//*=================Cancel Task====================*//
+
+export interface CancelTaskResponse {
+    success: boolean;
+    task?: Task;
+    error?: string;
+}

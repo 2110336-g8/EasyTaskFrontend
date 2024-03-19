@@ -10,20 +10,61 @@ import {
 } from 'lucide-react';
 // import { Button } from 'react-day-picker';
 import { Button } from '../ui/button';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function AdsCard(props: AdsCardProps) {
+export default function AdsCard({
+    props,
+    buttonFunc,
+    onAddToCancelList,
+    onRemoveFromCancelList,
+}: {
+    props: AdsCardProps;
+    buttonFunc: string;
+    onAddToCancelList: (taskId: string) => void;
+    onRemoveFromCancelList: (taskId: string) => void;
+}) {
     // Assuming you have a functional component
+    const router = useRouter();
+
+    const handleViewTask = () => {
+        router.push('/ads/' + props.taskId);
+    };
+    const [isCanceled, setIsCanceled] = useState(false);
+
+    const handleCancelTask = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
+        const eventObject = event as unknown as Event;
+        eventObject.stopPropagation();
+        if (!isCanceled) {
+            onAddToCancelList(props.taskId);
+            setIsCanceled(true);
+        } else {
+            onRemoveFromCancelList(props.taskId);
+            setIsCanceled(false);
+        }
+    };
+
     function FunctionalButton() {
         // Dynamically set buttonText based on status prop
         let buttonText;
-        if (props.buttonFunc === 'open') {
+        if (buttonFunc === 'open') {
             buttonText = 'Start Job';
-        } else if (props.buttonFunc == 'working') {
+        } else if (buttonFunc == 'working') {
             buttonText = 'Go to chat';
-        } else if (props.buttonFunc == 'pay') {
+        } else if (buttonFunc == 'pay') {
             buttonText = 'Pay Deposit';
-        } else if (props.buttonFunc == 'managing') {
-            buttonText = 'Cancel Task';
+        } else if (buttonFunc == 'managing') {
+            buttonText = isCanceled ? 'Canceled' : 'Cancel Task';
+            return (
+                <Button
+                    variant={isCanceled ? 'gray' : 'destructive'}
+                    onClick={handleCancelTask}
+                >
+                    {buttonText}
+                </Button>
+            );
         } else {
             return <div></div>;
         }
@@ -32,9 +73,10 @@ export default function AdsCard(props: AdsCardProps) {
     }
 
     return (
-        <Link
-            href={'/ads/' + props.taskId}
+        <div
             className='rounded-lg bg-card items-center flex text-card-foreground hover:shadow-md inner-border w-[1328px] h-auto overflow-hidden'
+            onClick={handleViewTask}
+            style={{ cursor: 'pointer' }}
         >
             <div className=''>
                 <img
@@ -86,6 +128,6 @@ export default function AdsCard(props: AdsCardProps) {
                     {FunctionalButton()}
                 </div>
             </div>
-        </Link>
+        </div>
     );
 }
