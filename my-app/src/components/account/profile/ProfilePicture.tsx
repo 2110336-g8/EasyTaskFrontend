@@ -190,7 +190,7 @@ export default function ProfilePicture() {
                 {isEditing ? (
                     <>
                         <Image
-                            className='size-[160px] rounded-[80px]'
+                            className='size-[160px] rounded-[80px] object-cover'
                             src={
                                 preview === ''
                                     ? currentimageURL === ''
@@ -289,7 +289,7 @@ export default function ProfilePicture() {
                     </>
                 ) : (
                     <Image
-                        className='size-[160px] rounded-[80px]'
+                        className='size-[160px] rounded-[80px] object-cover'
                         src={
                             currentimageURL === ''
                                 ? '/ProfilePicEmpty.png'
