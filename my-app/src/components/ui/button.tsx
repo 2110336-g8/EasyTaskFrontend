@@ -24,6 +24,9 @@ const buttonVariants = cva(
                 default: 'h-[52px] py-[12px] px-[24px]',
                 sm: 'h-[40px] py-[8px] px-[20px]',
                 icon: 'h-10 w-10',
+                xs: 'py-[4px] px-[12px] font-medium text-[14px] leading-[18px] tracking tracking-[-0.005em]',
+                s: 'py-[8px] px-[16px] font-semibold text-[16px] leading-[24px] tracking tracking-[-0.005em]',
+                m: 'py-[12px] px-[24px] font-semibold text-[20px] leading-[28px] tracking tracking-[-0.005em]',
             },
         },
         defaultVariants: {
