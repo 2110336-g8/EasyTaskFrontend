@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { getSelfUser } from '@/lib/getUser';
 import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
@@ -49,7 +49,7 @@ export default function ChangePasssword() {
 
     const submitData = async (values: z.infer<typeof schema>) => {
         try {
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             if (!user) {
                 throw Error('Current User Not Found');
             }

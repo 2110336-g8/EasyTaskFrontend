@@ -10,9 +10,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { getSelfUser } from '@/lib/getUser';
 import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ClientRequest } from 'http';
 import { Pencil, Save, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -56,16 +57,13 @@ export default function PersonalInfo() {
     });
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getSelfUser();
-            if (!user) {
-                return;
-            }
-            setFirstName(user.firstName);
-            setLastName(user.lastName);
-            setPhoneNumber(user.phoneNumber ?? '');
-        };
-        fetchUser();
+        const user = clientStorage.get().user;
+        if (!user) {
+            return;
+        }
+        setFirstName(user.firstName);
+        setLastName(user.lastName);
+        setPhoneNumber(user.phoneNumber ?? '');
     }, []);
 
     useEffect(() => {
@@ -89,7 +87,7 @@ export default function PersonalInfo() {
             toUpdate.phoneNumber = data.phoneNumber.replace(/-/g, '');
         }
         try {
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             await instance.patch(`v1/users/${user?._id}`, toUpdate);
             window.location.reload();
         } catch (error) {
