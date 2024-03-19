@@ -59,7 +59,7 @@ export default function AdsCard(props: AdsCardProps) {
                     </div>
                 </div>
                 <div className='flex item-centers justify-between pt-[40px] mr-[5px]'>
-                    <Button>Pay Deposit</Button>
+                    <Button>{props.buttonText}</Button>
                 </div>
             </div>
         </Link>

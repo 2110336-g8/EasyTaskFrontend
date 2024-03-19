@@ -124,6 +124,7 @@ export interface AdsCardProps {
     endDate: string;
     applications: string;
     status: string;
+    buttonText?: string;
 }
 
 export interface ViewAdsProps {
