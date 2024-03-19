@@ -7,9 +7,11 @@ import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 export default function AdsToggleList({
     type,
     adsList,
+    managing,
 }: {
     type: keyof typeof names;
     adsList: AdsCardProps[];
+    managing: boolean;
 }) {
     const names = {
         pay: 'To Pay Deposit',
@@ -19,6 +21,10 @@ export default function AdsToggleList({
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);
+    const [buttonFuncType, setButtonFuncType] = useState<string>(type);
+    if (managing) {
+        setButtonFuncType('managing');
+    }
 
     return (
         <div className='w-full flex flex-col gap-[20px]'>
@@ -42,7 +48,11 @@ export default function AdsToggleList({
                     <div className='w-fit'>
                         <div className='flex flex-col gap-[24px] tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
                             {adsList.map((task, index) => (
-                                <AdsCard key={index} {...task} />
+                                <AdsCard
+                                    key={index}
+                                    {...task}
+                                    buttonFunc={type}
+                                />
                             ))}
                         </div>
                     </div>

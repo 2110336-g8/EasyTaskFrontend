@@ -12,9 +12,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { getAllBanks } from '@/lib/getAllBanks';
-import { getSelfUser } from '@/lib/getUser';
 import { Bank } from '@/types/bank';
 import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
     Popover,
@@ -77,16 +77,10 @@ export default function BankAccountInfo() {
     }, []);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getSelfUser();
-            if (!user) {
-                return;
-            }
-            setBankId(user.bankId ?? '');
-            setBankAccName(user.bankAccName ?? '');
-            setbankAccNo(user.bankAccNo ?? '');
-        };
-        fetchUser();
+        const user = clientStorage.get().user;
+        setBankId(user.bankId ?? '');
+        setBankAccName(user.bankAccName ?? '');
+        setbankAccNo(user.bankAccNo ?? '');
     }, []);
 
     useEffect(() => {
@@ -111,7 +105,7 @@ export default function BankAccountInfo() {
         }
         try {
             console.log(toUpdate);
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             await instance.patch(`v1/users/${user?._id}`, toUpdate);
             window.location.reload();
         } catch (error) {

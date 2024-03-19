@@ -2,30 +2,34 @@
 
 import { AdsCardProps } from '@/types/task';
 import Link from 'next/link';
-import { ClockIcon, InboxIcon, MapPinIcon, CalendarDaysIcon } from 'lucide-react';
+import {
+    ClockIcon,
+    InboxIcon,
+    MapPinIcon,
+    CalendarDaysIcon,
+} from 'lucide-react';
 // import { Button } from 'react-day-picker';
 import { Button } from '../ui/button';
 
 export default function AdsCard(props: AdsCardProps) {
-
     // Assuming you have a functional component
-    function YourComponent() {
-    // Dynamically set buttonText based on status prop
+    function FunctionalButton() {
+        // Dynamically set buttonText based on status prop
         let buttonText;
-        if (props.status === 'Open') {
+        if (props.buttonFunc === 'open') {
             buttonText = 'Start Job';
-        } else if (props.status == 'In Progress'){
-            buttonText = 'Go to chat'
-        } 
-        else {
-            return <div></div>
+        } else if (props.buttonFunc == 'working') {
+            buttonText = 'Go to chat';
+        } else if (props.buttonFunc == 'pay') {
+            buttonText = 'Pay Deposit';
+        } else if (props.buttonFunc == 'managing') {
+            buttonText = 'Cancel Task';
+        } else {
+            return <div></div>;
         }
 
-        return (
-            <Button>{buttonText}</Button>
-        );
+        return <Button>{buttonText}</Button>;
     }
-
 
     return (
         <Link
@@ -79,7 +83,7 @@ export default function AdsCard(props: AdsCardProps) {
                     </div>
                 </div>
                 <div className='flex item-centers justify-between pt-[40px] mr-[5px]'>
-                    {YourComponent()}
+                    {FunctionalButton()}
                 </div>
             </div>
         </Link>

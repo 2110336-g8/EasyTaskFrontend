@@ -326,13 +326,6 @@ export default function CreateTaskForm() {
                                                 </FormItem>
                                             )}
                                         />
-                                        {/* <div className='flex flex-row'>
-                                            <h4>Task Picture</h4>
-                                            <h4 className='text-error-500'>
-                                                *
-                                            </h4>
-                                        </div>
-                                        <Input id='picture' type='file' /> */}
                                     </div>
 
                                     <FormField

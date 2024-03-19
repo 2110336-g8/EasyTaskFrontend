@@ -61,6 +61,7 @@ export default function AdsList() {
     const [adsOpenList, setAdsOpenList] = useState<AdsCardProps[]>([]);
     const [adsWorkList, setAdsWorkList] = useState<AdsCardProps[]>([]);
     const [adsClosedList, setAdsClosedList] = useState<AdsCardProps[]>([]);
+    const [isManaging, setIsManaging] = useState(false);
 
     useEffect(() => {
         const userId: string | null = clientStorage.get().user._id;
@@ -83,9 +84,7 @@ export default function AdsList() {
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
                             ),
-                            endDate: dayjs(task.endDate).format(
-                                'DD MMM YYYY',
-                            ),
+                            endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                             location: task.location?.name,
                             applications: task.workers.toLocaleString(),
                             wages: task.wages.toLocaleString(),
@@ -126,6 +125,11 @@ export default function AdsList() {
         fetchAdsList();
     }, []);
 
+    // Function to set isManaging to true
+    const handleManage = () => {
+        setIsManaging(true);
+    };
+
     return (
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
@@ -138,23 +142,37 @@ export default function AdsList() {
                         className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px] hover:bg-slate-200'
                     >
                         <PlusIcon />
-                        Create 
+                        Create
                     </Button>
                     <Button
-                        onClick={() => {
-                            router.push('/task/create');
-                        }}
+                        onClick={handleManage}
                         className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px]'
                     >
                         <PenSquareIcon />
-                        Manage 
+                        Manage
                     </Button>
                 </div>
             </div>
-            <AdsToggleList type='pay' adsList={adsPayList} />
-            <AdsToggleList type='open' adsList={adsOpenList} />
-            <AdsToggleList type='working' adsList={adsWorkList} />
-            <AdsToggleList type='closed' adsList={adsClosedList} />
+            <AdsToggleList
+                type='pay'
+                adsList={adsPayList}
+                managing={isManaging}
+            />
+            <AdsToggleList
+                type='open'
+                adsList={adsOpenList}
+                managing={isManaging}
+            />
+            <AdsToggleList
+                type='working'
+                adsList={adsWorkList}
+                managing={isManaging}
+            />
+            <AdsToggleList
+                type='closed'
+                adsList={adsClosedList}
+                managing={isManaging}
+            />
         </main>
     );
 }
