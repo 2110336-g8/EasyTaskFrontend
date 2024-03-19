@@ -40,7 +40,7 @@ export default function AdsToggleList({
             {isShow ? (
                 adsList.length > 0 ? (
                     <div className='w-fit'>
-                        <div className='flex flex-col tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
+                        <div className='flex flex-col gap-[24px] tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
                             {adsList.map((task, index) => (
                                 <AdsCard key={index} {...task} />
                             ))}

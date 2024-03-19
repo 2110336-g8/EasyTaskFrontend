@@ -120,7 +120,14 @@ const Map = ({
     };
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                height: '400px',
+                borderRadius: '15px',
+            }}
+        >
             <div
                 ref={mapContainer}
                 style={{
@@ -129,6 +136,7 @@ const Map = ({
                     bottom: 0,
                     left: 0,
                     right: 0,
+                    borderRadius: '15px',
                 }}
             />
             <button
