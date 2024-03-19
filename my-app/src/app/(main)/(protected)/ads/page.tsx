@@ -6,7 +6,7 @@ import {
     TaskStateOptions,
 } from '@/types/task';
 import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, PenSquareIcon, PenBoxIcon } from 'lucide-react';
 import AdsToggleList from '@/components/adsList/adsToggleList';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
@@ -135,7 +135,7 @@ export default function AdsList() {
                         onClick={() => {
                             router.push('/task/create');
                         }}
-                        className='gap-x-[10px]'
+                        className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px] hover:bg-slate-200'
                     >
                         <PlusIcon />
                         Create 
@@ -144,9 +144,9 @@ export default function AdsList() {
                         onClick={() => {
                             router.push('/task/create');
                         }}
-                        className='gap-x-[10px]'
+                        className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px]'
                     >
-                        <PlusIcon />
+                        <PenSquareIcon />
                         Manage 
                     </Button>
                 </div>
