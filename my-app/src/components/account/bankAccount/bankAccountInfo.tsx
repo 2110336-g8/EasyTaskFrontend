@@ -57,7 +57,43 @@ export default function BankAccountInfo() {
         .refine(data => [0, 13].includes(data.bankAccNo.length), {
             message: 'Please fill a valid bank account number',
             path: ['bankAccNo'],
-        });
+        })
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo == '') ||
+                    data.bankId !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankId'],
+            },
+        )
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo !== '') ||
+                    data.bankAccName !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankAccName'],
+            },
+        )
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo !== '') ||
+                    data.bankAccNo !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankAccNo'],
+            },
+        );
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -104,9 +140,9 @@ export default function BankAccountInfo() {
             toUpdate.bankAccNo = data.bankAccNo.replace(/-/g, '');
         }
         try {
-            console.log(toUpdate);
             const user = clientStorage.get().user;
-            await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            const res = await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            clientStorage.setCustom('user', res.data.user);
             window.location.reload();
         } catch (error) {
             toast({
@@ -131,6 +167,20 @@ export default function BankAccountInfo() {
         } else {
             return <p>Select a bank...</p>;
         }
+    };
+
+    const getError = (): ReactNode => {
+        const errors = form.formState.errors;
+        if (errors.bankId) {
+            return <p className='text-error-500'>{errors.bankId.message}</p>;
+        } else if (errors.bankAccName) {
+            return (
+                <p className='text-error-500'>{errors.bankAccName.message}</p>
+            );
+        } else if (errors.bankAccNo) {
+            return <p className='text-error-500'>{errors.bankAccNo.message}</p>;
+        }
+        return <></>;
     };
 
     return (
@@ -221,6 +271,9 @@ export default function BankAccountInfo() {
                                                                                     'bankId',
                                                                                     value,
                                                                                 );
+                                                                                form.trigger(
+                                                                                    'bankId',
+                                                                                );
                                                                                 setOpen(
                                                                                     false,
                                                                                 );
@@ -258,11 +311,6 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankId && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankId.message}
-                                </p>
-                            )}
                             <FormField
                                 control={form.control}
                                 name='bankAccName'
@@ -281,11 +329,6 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankAccName && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankAccName.message}
-                                </p>
-                            )}
                             <FormField
                                 control={form.control}
                                 name='bankAccNo'
@@ -346,11 +389,7 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankAccNo && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankAccNo.message}
-                                </p>
-                            )}
+                            {getError()}
                         </div>
                     </Form>
                 ) : (
