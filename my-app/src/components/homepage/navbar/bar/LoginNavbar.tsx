@@ -19,7 +19,7 @@ export default function LoginNavbar() {
                         <Image src="/logo.svg" alt="Logo" width={58} height={32} loading="lazy" className="shrink-0 my-auto aspect-[1.82] w-[58px]" />
                     </a>
                     <div className="flex flex-auto gap-4">
-                        <a href="/" className="flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100"> {/* jobs to be routed */}
+                        <a href="/job" className="flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100"> {/* jobs to be routed */}
                             <Briefcase />
                             <div>Your Jobs</div>
                         </a>
