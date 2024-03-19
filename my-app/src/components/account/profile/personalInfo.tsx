@@ -88,7 +88,11 @@ export default function PersonalInfo() {
         }
         try {
             const user = clientStorage.get().user;
-            await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            const res = await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            clientStorage.set({
+                user: res.data.user,
+                token: clientStorage.get().token,
+            });
             window.location.reload();
         } catch (error) {
             toast({

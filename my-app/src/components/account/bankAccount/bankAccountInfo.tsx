@@ -142,7 +142,10 @@ export default function BankAccountInfo() {
         try {
             const user = clientStorage.get().user;
             const res = await instance.patch(`v1/users/${user?._id}`, toUpdate);
-            clientStorage.setCustom('user', res.data.user);
+            clientStorage.set({
+                user: res.data.user,
+                token: clientStorage.get().token,
+            });
             window.location.reload();
         } catch (error) {
             toast({

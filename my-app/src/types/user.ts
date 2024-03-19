@@ -4,7 +4,7 @@ export interface User {
     lastName: string;
     email: string;
     phoneNumber?: string;
-    photoURL?: string;
+    imageUrl?: string;
     bankId?: string;
     bankAccName?: string;
     bankAccNo?: string;
@@ -18,18 +18,18 @@ export interface UserProfile {
     phoneNumber?: string;
     imageKey?: string;
     imageUrl?: string;
-    bankId?: string; 
+    bankId?: string;
     bankAccName?: string;
     bankAccNo?: string;
     applications: Array<{
-        taskId: string; 
+        taskId: string;
         status: 'Pending' | 'Accepted' | 'Rejected' | 'Cancel';
         createdAt: Date;
     }>;
     tasks: Array<{
-        taskId: string; 
+        taskId: string;
         status: 'In Progress' | 'Completed' | 'Cancel';
         createdAt: Date;
     }>;
-    ownedTasks: string[]; 
+    ownedTasks: string[];
 }

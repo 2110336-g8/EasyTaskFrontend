@@ -57,10 +57,14 @@ export default function ChangePasssword() {
                 currentPassword: form.getValues('currentPassword'),
                 newPassword: form.getValues('newPassword'),
             };
-            await instance.patch(
+            const res = await instance.patch(
                 `v1/users/${user._id}/change-password`,
                 passwords,
             );
+            clientStorage.set({
+                user: res.data.user,
+                token: clientStorage.get().token,
+            });
             toast({
                 variant: 'default',
                 title: 'User data updated!',
