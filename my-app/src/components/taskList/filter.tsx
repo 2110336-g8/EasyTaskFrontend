@@ -65,7 +65,7 @@ export default function FilterTaskList({
                     <ToggleGroupItem
                         onClick={() => updateCategoryFilters(category)}
                         value={category}
-                        key={index}
+                        key={`categoryFilter${index}`}
                         className=''
                         aria-label='Toggle bold'
                         active={false}
@@ -82,7 +82,7 @@ export default function FilterTaskList({
                         <ToggleGroupItem
                             onClick={() => updateIndividualFilter(true)}
                             value='Individual'
-                            key={'Individual'}
+                            key={'IndividualFilter'}
                             className=''
                             aria-label='Toggle bold'
                             active={false}
@@ -93,7 +93,7 @@ export default function FilterTaskList({
                         <ToggleGroupItem
                             onClick={() => updateIndividualFilter(false)}
                             value='Team'
-                            key={'Team'}
+                            key={'TeamFilter'}
                             className=''
                             aria-label='Toggle bold'
                             active={false}
@@ -115,7 +115,7 @@ export default function FilterTaskList({
                                         updateWageRangeFilters(range)
                                     }
                                     value={formattedRange}
-                                    key={'index'}
+                                    key={key}
                                     className=''
                                     aria-label='Toggle bold'
                                     active={false}

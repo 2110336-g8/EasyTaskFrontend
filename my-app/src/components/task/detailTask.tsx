@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import MapReadOnly from '../map/mapBoxReadOnly';
 import axios from 'axios';
 import { applyTask } from '@/lib/applyTask';
+import Image from 'next/image';
 
 export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
@@ -142,14 +143,17 @@ export default function ViewTask(props: ViewTaskProps) {
                 </div>
                 <div className='w-full flex flex-row justify-between gap-[40px]'>
                     <div className='flex flex-col w-[640px] gap-[24px]'>
-                        <img
-                            src={
-                                props.imageUrls?.[0]?.imageUrl ||
-                                '/mocktask.png'
-                            }
-                            alt=''
-                            className='rounded-lg w-full h-full object-cover'
-                        />
+                        <figure className='w-full h-[360px] '>
+                            <Image
+                                width={0}
+                                height={0}
+                                sizes='100vw'
+                                src={props.imageUrl || '/mocktask.png'}
+                                alt=''
+                                className='rounded-lg w-full h-full object-cover'
+                            />
+                        </figure>
+
                         {props.description ? (
                             <div className='flex flex-col gap-[16px]'>
                                 <h4 className='text-slate-900'>Description</h4>

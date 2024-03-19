@@ -62,11 +62,6 @@ export default function TaskList() {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('page', page);
-            console.log('searchName', searchName);
-            console.log('categoryFilters', categoryFilters);
-            console.log('isIndividual', isIndividual);
-            console.log('wageRangeFilters', wageRangeFilters);
             getAllTasks({
                 page,
                 limit,
@@ -80,11 +75,11 @@ export default function TaskList() {
                 }),
             })
                 .then((taskListData: AllTasksResponse) => {
-                    console.log(taskListData);
+                    console.log(taskListData)
                     const formattedTaskList: TaskCardProps[] =
                         taskListData.tasks.map(task => ({
                             taskId: task._id,
-                            imageUrl: task.imageUrls?.[0],
+                            imageUrl: task.imageUrl,
                             title: task.title,
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
@@ -127,7 +122,7 @@ export default function TaskList() {
                     </h4>
                     <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
                         {taskList.map((task, index) => (
-                            <TaskCard key={index} {...task} />
+                            <TaskCard key={`taskcard${index}`} {...task} />
                         ))}
                     </div>
                     <PaginationContainer
