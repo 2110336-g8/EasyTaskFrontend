@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { AdsCardProps } from '@/types/task';
-import AdsCard from '@/components/adsList/adsCard';
+import JobCard from './jobCard';
 import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 
-export default function AdsToggleList({
+export default function JobToggleList({
     type,
     adsList,
     managing,
@@ -14,10 +14,11 @@ export default function AdsToggleList({
     managing: boolean;
 }) {
     const names = {
-        pay: 'To Pay Deposit',
-        open: 'Open for Apply',
-        working: 'Working On',
-        closed: 'Closed',
+        offer: 'Offering',
+        onGoing: 'Ongoing',
+        applied: 'Applied',
+        completed: 'Completed',
+        rejected: 'Rejected'
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);
@@ -48,7 +49,7 @@ export default function AdsToggleList({
                     <div className='w-fit'>
                         <div className='flex flex-col gap-[24px] tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
                             {adsList.map((task, index) => (
-                                <AdsCard
+                                <JobCard
                                     key={index}
                                     {...task}
                                     buttonFunc={type}

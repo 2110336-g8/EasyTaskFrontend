@@ -607,7 +607,7 @@ export default function CreateTaskForm() {
                                         <br></br>
                                     </FormMessage>
                                 )}
-                                <Button className='w-full bg-primary-500 text-p font-extra-bold tracking-p text-white'>
+                                <Button size='m' className='w-full'>
                                     Publish Now
                                 </Button>
                             </div>
