@@ -7,6 +7,26 @@ import { ClockIcon, InboxIcon, MapPinIcon, CalendarDaysIcon } from 'lucide-react
 import { Button } from '../ui/button';
 
 export default function AdsCard(props: AdsCardProps) {
+
+    // Assuming you have a functional component
+    function YourComponent() {
+    // Dynamically set buttonText based on status prop
+        let buttonText;
+        if (props.status === 'Open') {
+            buttonText = 'Start Job';
+        } else if (props.status == 'In Progress'){
+            buttonText = 'Go to chat'
+        } 
+        else {
+            return <div></div>
+        }
+
+        return (
+            <Button>{buttonText}</Button>
+        );
+    }
+
+
     return (
         <Link
             href={'/ads/' + props.taskId}
@@ -59,7 +79,7 @@ export default function AdsCard(props: AdsCardProps) {
                     </div>
                 </div>
                 <div className='flex item-centers justify-between pt-[40px] mr-[5px]'>
-                    <Button>{props.buttonText}</Button>
+                    {YourComponent()}
                 </div>
             </div>
         </Link>

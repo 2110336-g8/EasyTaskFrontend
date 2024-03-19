@@ -129,7 +129,7 @@ export default function AdsList() {
     return (
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
-                <h1>Your Job Advertisements</h1>
+                <h1>Your Advertisements</h1>
                 <div className='flex gap-[16px]'>
                     <Button
                         onClick={() => {
