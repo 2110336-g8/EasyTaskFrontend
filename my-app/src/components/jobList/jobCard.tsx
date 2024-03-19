@@ -11,20 +11,16 @@ import {
 // import { Button } from 'react-day-picker';
 import { Button } from '../ui/button';
 
-export default function AdsCard(props: AdsCardProps) {
+export default function JobCard(props: AdsCardProps) {
     // Assuming you have a functional component
     function FunctionalButton() {
         // Dynamically set buttonText based on status prop
         let buttonText;
-        if (props.buttonFunc === 'open') {
-            buttonText = 'Start Job';
-        } else if (props.buttonFunc == 'working') {
+        if (props.buttonFunc === 'offer') {
+            buttonText = 'Response';
+        } else if (props.buttonFunc == 'onGoing') {
             buttonText = 'Go to chat';
-        } else if (props.buttonFunc == 'pay') {
-            buttonText = 'Pay Deposit';
-        } else if (props.buttonFunc == 'managing') {
-            buttonText = 'Cancel Task';
-        } else {
+        }else {
             return <div></div>;
         }
 
