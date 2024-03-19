@@ -9,16 +9,19 @@ export default function Home() {
     const router = useRouter();
 
     useEffect(() => {
-        const user = clientStorage.get().user;
-        if (user) {
+        const token = clientStorage.get().token;
+        if (token) {
             router.push('/task');
+        } else {
+            setLoading(false);
         }
-        setLoading(true);
     }, []);
 
     return (
-        <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-            <LayoutBox />
-        </main>
+        !isLoading && (
+            <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+                <LayoutBox />
+            </main>
+        )
     );
 }
