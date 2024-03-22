@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AdsCardProps } from '@/types/task';
 import AdsCard from '@/components/adsList/adsCard';
-import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { ChevronDownIcon, ChevronRightIcon, AlertTriangleIcon } from 'lucide-react';
 
 export default function AdsToggleList({
     type,
@@ -55,6 +55,11 @@ export default function AdsToggleList({
                 adsList.length > 0 ? (
                     <div className='w-fit'>
                         <div className='flex flex-col gap-[24px] tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
+                        {type === 'open' && (
+                            <div className="bg-error-100 gap-[8px] px-[8px] py-[10px] rounded-[6px] flex">
+                                <AlertTriangleIcon className='w-[24px] h-[24px] text-error-500' /><p className='text-error-500'>Please select candidate before the job start date. If not, it will be automatically closed after the job start within 1 week.</p>
+                            </div>
+                        )}
                             {adsList.map((task, index) => (
                                 <AdsCard
                                     key={index}
