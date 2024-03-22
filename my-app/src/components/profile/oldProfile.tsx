@@ -12,11 +12,8 @@ import { UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
-import ProfileCard from "./profileCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-
-export default function Profile() {
+function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
     const [userImg, setUserImg] = useState("");
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
@@ -127,19 +124,78 @@ export default function Profile() {
     }, []);
 
     return (
-		<div className="flex flex-col self-stretch pb-10 text-xl font-semibold tracking-normal leading-7">
-			<div className="w-full bg-indigo-300 rounded-md min-h-[160px] max-md:max-w-full" />
-            <div className='z-10 -mt-10 max-w-full rounded-full'>
-                <ProfileCard />
+        <div className='flex flex-col pb-10'>
+            <div className='flex flex-col items-start px-16 pt-16 w-full bg-indigo-300 max-md:px-5 max-md:max-w-full aspect-w-[26px] aspect-h-[5px]'>
+                <Avatar className='z-10 -mb-16 w-60 h-60 rounded-full aspect-square max-md:mb-2.5 max-md:ml-1' style={{ backgroundColor: userImg === "" ? "white" : "transparent" }}>
+                    <AvatarImage
+                        src={userImg === "" ? '/ProfilePicEmpty.png' : userImg}
+                        loading='lazy'
+                        width={60}
+                        height={60}
+                        alt='User Profile'
+                    />
+                    <AvatarFallback>Avatar</AvatarFallback>
+                </Avatar>
             </div>
-            <Tabs defaultValue="open" className="flex flex-col items-center justify-center">
-                <TabsList className="flex gap-3 p-3 text-xl font-semibold tracking-normal leading-7 rounded-md bg-slate-100">
-                    <TabsTrigger value="open" className='justify-center rounded-md'>Open for Apply</TabsTrigger>
-                    <TabsTrigger value="past" className='justify-center rounded-md'>Experience</TabsTrigger>
-                </TabsList>
-                <TabsContent value="open">Make changes to your account here.</TabsContent>
-                <TabsContent value="past">Change your password here.</TabsContent>
-            </Tabs>
+            <div className='flex gap-5 mx-20 mt-20 leading-6 whitespace-nowrap max-md:flex-wrap max-md:pr-5 max-md:mt-10'>
+                <div className='text-4xl font-semibold tracking-tight leading-[54px] text-slate-900'>
+                    {userData ? `${userData?.firstName} ${userData?.lastName}` : <Skeleton className="h-6 w-[250px]" />}
+                </div>
+            </div>
+            <div className='flex gap-5 self-start mt-4 ml-20 text-xl font-semibold tracking-normal leading-7 whitespace-nowrap max-md:ml-2.5'>
+                {userData?.phoneNumber && (
+                    <Button
+                        variant='outline'
+                        className='grow justify-center px-4 py-3 bg-black text-white hover:bg-gray-600 hover:text-white'
+                        onClick={copyPhoneNumber} 
+                    >
+                        {userData.phoneNumber.replace(/^(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')} 
+                    </Button>
+                )}
+                {userData ? (
+                    <Button
+                        variant='outline'
+                        className='grow justify-center px-4 py-3 rounded-md border-2 border-solid border-border-black bg-white text-black hover:text-gray-600'
+                        onClick={() => {}}
+                    >
+                        <Link href='/account'>Edit Profile</Link>
+                    </Button>
+                ) : (
+                    <Skeleton className="h-12 w-[250px]" />
+                )}
+            </div>
+            <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
+                Open Jobs
+                {openTasks.length > 0 ? (
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                        {openTasks
+                            .map(task => (
+                                <TaskCard
+                                    key={task._id}
+                                    {...convertToTaskCardProps(task)}
+                                />
+                            ))}
+                    </div>
+                ) : (
+                    <div className="italic text-base text-gray-500">- This user has no current job openings -</div>
+                )}
+            </div>
+            <div className='mx-20 mt-12 text-3xl font-semibold tracking-tight leading-9 text-slate-900 max-md:mt-10 max-md:mr-5 max-md:max-w-full'>
+                Past Jobs
+                {pastTasks.length > 0 ? (
+                    <div className='flex flex-wrap justify-start gap-x-8 gap-y-8 mt-8'>
+                    {pastTasks
+                        .map(task => (
+                            <TaskCard
+                                key={task._id}
+                                {...convertToTaskCardProps(task)}
+                            />
+                    ))}
+                    </div>
+                ) : (
+                    <div className="italic text-base text-gray-500">- This user has no past jobs -</div>
+                )}
+            </div>
         </div>
     );
 }
