@@ -1,5 +1,12 @@
 'use client';
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+    ReactNode,
+    use,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import { ZodType, z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -22,7 +29,7 @@ interface SendMessage {
 interface UserInfo {
     type: 'worker' | 'customer';
     firstName: string;
-    imageUrl: string;
+    imageUrl?: string;
 }
 
 export default function MessageRoom(props: { taskId: string }) {
@@ -157,8 +164,20 @@ export default function MessageRoom(props: { taskId: string }) {
             // Type UserInfo is declared in the top of this file
             const senderName: string =
                 userInfo?.get(message.senderId ?? '')?.firstName ?? '';
+            const senderImage: string | undefined = userInfo?.get(
+                message.senderId ?? '',
+            )?.imageUrl;
+
             rendered.push(
                 <div key={message._id}>
+                    <Image
+                        className='size-[56px] rounded-full object-cover'
+                        src={senderImage ?? '/ProfilePicEmpty.png'}
+                        width={56}
+                        height={56}
+                        alt=''
+                        priority
+                    ></Image>
                     <h3>{senderName}</h3>
                     <p>{message.text.content}</p>
                 </div>,
