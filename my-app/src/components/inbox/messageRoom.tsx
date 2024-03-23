@@ -19,10 +19,15 @@ interface Message {
 export default function MessageRoom(props: { taskId: string }) {
     const router = useRouter();
 
-    const [task, setTask] = useState<Task | null>(null);
+    // === Rendering Task name and user data ===
+    const [taskName, setTaskName] = useState<string>('');
+
+    // === messages list ===
+    // === [ {taskId, senderType, senderId, text: {title, content}}, ... ] ===
     const [messages, setMessages] = useState<string[]>([]);
     const [isJoined, setJoined] = useState(false);
 
+    // === Connet to socket room ===
     const socketRef = useRef<Socket | null>(null);
     useEffect(() => {
         const setupSocket = () => {
@@ -64,6 +69,7 @@ export default function MessageRoom(props: { taskId: string }) {
         };
     }, []);
 
+    // === Fetch Task and user data (including imgURL) ===
     useEffect(() => {}, []);
 
     const schema: ZodType<Message> = z.object({
@@ -90,7 +96,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
     return (
         <div className='w-full h-full'>
-            {isJoined ? (
+            {isJoined && (
                 <>
                     <div className='flex flex-col-reverse'>
                         {messages.map(message => (
@@ -121,8 +127,6 @@ export default function MessageRoom(props: { taskId: string }) {
                         </Button>
                     </form>
                 </>
-            ) : (
-                <p>Unable to join chat room</p>
             )}
         </div>
     );
