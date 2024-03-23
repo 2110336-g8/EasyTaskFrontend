@@ -18,7 +18,7 @@ export default function ProfileCard(props: UserCard) {
                             alt="Profile Image"
                             width={200}
                             height={200}
-                            className="rounded-full border-4 border-white object-cover size-[200px] object-cover"
+                            className="rounded-full border-4 border-white size-[200px] object-cover"
                             style={{ backgroundColor: props.imageUrl ? "transparent": "white"}}
                         />
                         </div>
