@@ -2,13 +2,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
-import { UserProfile } from '@/types/user';
+import { UserCard, UserProfile } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
@@ -124,7 +123,7 @@ export default function Profile() {
 		<div className="flex flex-col self-stretch pb-10 text-xl font-semibold tracking-normal leading-7">
 			<div className="w-full bg-indigo-300 rounded-md min-h-[160px] max-md:max-w-full" />
             <div className='flex z-10 -mt-10 max-w-full px-4 md:px-20'>
-                <ProfileCard />
+                <ProfileCard {...userData as UserCard}/>
                 <Button className="justify-center text-base md:text-sm px-3 py-2 mt-12 ml-12 md:mt-0 border bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
                     Edit Profile
                 </Button>
