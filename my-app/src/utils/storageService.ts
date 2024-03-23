@@ -30,7 +30,7 @@ class ClientStorage {
                     lastName: '',
                     email: '',
                     phoneNumber: '',
-                    photoURL: '',
+                    imageUrl: '',
                     bankId: '',
                     bankAccNo: '',
                 },
