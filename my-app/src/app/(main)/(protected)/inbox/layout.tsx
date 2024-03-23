@@ -4,8 +4,6 @@ export default async function InboxLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className='w-full px-[96px] tablet:px-[172px] desktop:px-[364px]'>
-            {children}
-        </div>
+        <div className='w-full desktop:w-[1000px] self-center'>{children}</div>
     );
 }

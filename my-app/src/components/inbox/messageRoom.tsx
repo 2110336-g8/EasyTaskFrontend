@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import { ZodType, z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Message, MessageRoomInfo } from '@/types/message';
 import { instance } from '@/utils/axiosInstance';
 import Image from 'next/image';
+import { render } from 'react-dom';
 
 interface SendMessage {
     content: string;
@@ -109,7 +110,7 @@ export default function MessageRoom(props: { taskId: string }) {
         }
     }, []);
 
-    // === Fetch messages history ===
+    // === Fetch messages history (only last 16 for now, you might wnat to create a function that able to use pagination, API doc in notion)===
     useMemo(async () => {
         const oldMessagesHistory = (
             await instance.get(`/v1/messages/${props.taskId}/history`)
@@ -140,38 +141,39 @@ export default function MessageRoom(props: { taskId: string }) {
         });
     };
 
+    const renderMessage = (): ReactNode => {
+        const rendered: ReactNode[] = [];
+        for (let message of messages) {
+            // TO DO
+            // PUSH React node (e.g. <div></div>) into the rendered array including
+            //  - Date/Day seperator e.g. <div>Today</div> (look in figma for clearify)
+            //  - User Profile and FirstName
+            //  - Message
+            //  - System Message
+            //
+            // Note
+            // type of message is Message (look for fields in types/message.ts)
+            // already fetch user info as state (map from user_id: string -> info: UserInfo)
+            // Type UserInfo is declared in the top of this file
+            const senderName: string =
+                userInfo?.get(message.senderId ?? '')?.firstName ?? '';
+            rendered.push(
+                <div key={message._id}>
+                    <h3>{senderName}</h3>
+                    <p>{message.text.content}</p>
+                </div>,
+            );
+        }
+        return <>{rendered}</>;
+    };
+
     return (
         <div className='w-full h-full'>
             <h1>{taskTitle}</h1>
             <div className='w-full h-full flex flex-col gap-y-[16px]'>
+                {/* TO DO : Infinite scoll pane*/}
                 <div className='flex flex-col-reverse w-full h-[500px] bg-slate-200 round'>
-                    {messages.map(message => (
-                        <div key={message._id} className='flex flex-row'>
-                            <Image
-                                className='size-[56px] rounded-[80px] object-cover'
-                                src={
-                                    (userInfo &&
-                                        message.senderId &&
-                                        userInfo.get(message.senderId)
-                                            ?.imageUrl) ??
-                                    '/ProfilePicEmpty.png'
-                                }
-                                width={160}
-                                height={160}
-                                alt=''
-                                priority
-                            />
-                            <div>
-                                <h3>
-                                    {userInfo &&
-                                        message.senderId &&
-                                        userInfo.get(message.senderId)
-                                            ?.firstName}
-                                </h3>
-                                <p>{message.text.content}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {renderMessage()}
                 </div>
                 <form
                     className='flex flex-row'

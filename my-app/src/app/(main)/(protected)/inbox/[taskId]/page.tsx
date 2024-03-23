@@ -8,7 +8,7 @@ export default function MessageRoomPage({
     params: { taskId: string };
 }) {
     return (
-        <div className='w-fit h-fit flex flex-row gap-x-[40px]'>
+        <div className='w-full h-fit flex flex-row gap-x-[40px]'>
             <Link href='/inbox'>
                 <ArrowLeft size={40}></ArrowLeft>
             </Link>
