@@ -45,7 +45,7 @@ export default function ProfileCard(props: UserCard) {
                                 {props.email && (
                                     <button className="flex gap-2 px-4 py-2 bg-indigo-600 rounded-3xl">
                                         <Mail />
-                                        <div>smith.m@gmail.com</div>
+                                        <div>{props.email}</div>
                                     </button>
                                     )
                                 }
