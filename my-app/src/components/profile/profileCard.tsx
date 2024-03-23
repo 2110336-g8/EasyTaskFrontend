@@ -37,13 +37,13 @@ export default function ProfileCard(props: UserCard) {
 
                             <div className="flex gap-2 mt-2 text-base tracking-normal text-white whitespace-nowrap">
                                 {props.phoneNumber && (
-                                    <button className="flex gap-2 px-4 py-2 bg-indigo-600 rounded-[34px]">
+                                    <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Phone />
                                         <div>{props.phoneNumber}</div>
                                     </button>
                                 )}
                                 {props.email && (
-                                    <button className="flex gap-2 px-4 py-2 bg-indigo-600 rounded-3xl">
+                                    <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Mail />
                                         <div>{props.email}</div>
                                     </button>
