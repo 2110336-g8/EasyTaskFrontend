@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { clientStorage } from '@/utils/storageService';
-import { Briefcase, CircleUser, LogOut, Megaphone, Send } from 'lucide-react';
+import { Briefcase, CircleUser, LogOut, MessageCircle, Megaphone, Send } from 'lucide-react';
 
 export default function LoginNavbar() {
 
@@ -34,11 +34,15 @@ export default function LoginNavbar() {
                     </div>
                 </div>
                 <div className="flex gap-5">
-                    <a href="/account"className="flex flex-1 gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100">
+                    <a href="/message" className="flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100">
+                        <MessageCircle />
+                        <div>Message</div>
+                    </a>
+                    <a href="/account" className="flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100">
                         <CircleUser />
                         <div>Account</div>
                     </a>
-                    <a href="/login" className="flex flex-1 gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100" onClick={handleLogout}>
+                    <a href="/login" className="flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100" onClick={handleLogout}>
                         <LogOut />
                         <div>Log out</div>
                     </a>
