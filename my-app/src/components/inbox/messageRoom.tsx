@@ -20,7 +20,6 @@ import { useRouter } from 'next/navigation';
 import { Message, MessageRoomInfo } from '@/types/message';
 import { instance } from '@/utils/axiosInstance';
 import Image from 'next/image';
-import { render } from 'react-dom';
 
 interface SendMessage {
     content: string;
@@ -54,25 +53,18 @@ export default function MessageRoom(props: { taskId: string }) {
                 },
             });
             socketRef.current = socket;
-            socket.emit('join_room', props.taskId);
 
+            // Join socket room
+            socket.emit('join_room', props.taskId);
             socket.on('join_success', () => {
-                console.log('Joined room successfully');
                 setJoined(true);
             });
-            socket.on('join_error', (error: string) => {
-                console.log(error);
-                // router.push('/inbox');
-            });
 
+            // Recieving chat
             socket.on('chat_message', (text: Message) => {
                 console.log('Received message');
                 console.log(text);
                 setMessages(messages => [text, ...messages]);
-            });
-
-            socket.on('connect_error', err => {
-                console.log(err.message);
             });
 
             return () => {
@@ -114,16 +106,20 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            console.error('Error fetching task data:', error);
+            router.push('/messages');
         }
     }, []);
 
     // === Fetch messages history (only last 16 for now, you might wnat to create a function that able to use pagination, API doc in notion)===
     useMemo(async () => {
-        const oldMessagesHistory = (
-            await instance.get(`/v1/messages/${props.taskId}/history`)
-        ).data.messages;
-        setMessages(oldMessagesHistory);
+        try {
+            const oldMessagesHistory = (
+                await instance.get(`/v1/messages/${props.taskId}/history`)
+            ).data.messages;
+            setMessages(oldMessagesHistory);
+        } catch (error) {
+            router.push('/messages');
+        }
     }, []);
 
     const schema: ZodType<SendMessage> = z.object({
