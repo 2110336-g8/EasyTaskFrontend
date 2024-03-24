@@ -5,14 +5,13 @@ import { ViewAdsProps } from '@/types/task';
 import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import FullWidthBar from '@/components/ui/hbar';
-import Map from '@/components/createTask/mapBox';
 import React, { useState } from 'react';
 import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import { numberWithCommas } from '@/utils/utils';
 import MapReadOnly from '@/components/map/mapBoxReadOnly';
 
-export default function ViewAds(props: ViewAdsProps) {
+export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[40px]'>
@@ -37,7 +36,7 @@ export default function ViewAds(props: ViewAdsProps) {
                                 width={0}
                                 height={0}
                                 sizes='100vw'
-                                src={props.image || '/mocktask.png'}
+                                src={props.image || '/mocktask.png'} // todo: Task image here
                                 alt=''
                                 className='rounded-lg w-full h-full object-cover'
                             />
