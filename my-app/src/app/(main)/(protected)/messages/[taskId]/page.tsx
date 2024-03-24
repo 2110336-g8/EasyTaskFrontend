@@ -1,4 +1,4 @@
-import MessageRoom from '@/components/inbox/messageRoom';
+import MessageRoom from '@/components/inbox/room/messageRoom';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
