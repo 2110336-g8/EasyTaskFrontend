@@ -159,7 +159,7 @@ export default function LoginForm() {
                                         Login
                                     </Button>
                                     <CardDescription className='text-slate-500 text-[16px]'>
-                                        Doesn't have any account?{' '}
+                                        {`Doesn't have any account?{' '}`}
                                         <a
                                             onClick={handleSignUpClick}
                                             className='text-primary-700 font-bold hover:text-originalColor cursor-pointer'
