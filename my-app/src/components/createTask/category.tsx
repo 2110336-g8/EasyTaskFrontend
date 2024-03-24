@@ -15,11 +15,10 @@ export function Categories({
             <ToggleGroup
                 size={'sm'}
                 type='single'
-                className='gap-2 mt-2 justify-start flex-col'
+                className='gap-3 mt-2 justify-start flex-col'
             >
-                <div className='justify-start'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
-                        className='mr-2'
                         value='General'
                         onClick={() => handleCategoryToggle('General')}
                         aria-label='Toggle bold'
@@ -28,7 +27,6 @@ export function Categories({
                         General
                     </ToggleGroupItem>
                     <ToggleGroupItem
-                        className='mr-2'
                         value='Graphic Design'
                         onClick={() => handleCategoryToggle('Graphic Design')}
                         aria-label='Toggle bold'
@@ -46,9 +44,8 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='justify-start'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
-                        className='mr-2'
                         value='Translation'
                         onClick={() => handleCategoryToggle('Translation')}
                         aria-label='Toggle bold'
@@ -66,7 +63,7 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='gap-2 justify-start'>
+                <div className='gap-2 justify-start flex space-x-3'>
                     <ToggleGroupItem
                         value='Programming and Tech'
                         onClick={() =>
@@ -79,9 +76,8 @@ export function Categories({
                     </ToggleGroupItem>
                 </div>
 
-                <div className='justify-start'>
+                <div className='justify-start flex space-x-3'>
                     <ToggleGroupItem
-                        className='mr-2 justify-start'
                         value='Images and Sound'
                         onClick={() => handleCategoryToggle('Images and Sound')}
                         aria-label='Toggle bold'

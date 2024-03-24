@@ -6,17 +6,14 @@ import LogoutNavbar from './bar/LogoutNavbar';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-
-    const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         setIsLoggedIn(!!clientStorage.get().token);
     }, []);
 
-    // console.log(isLoggedIn);
-
     return (
-        <div>
+        <div id="main-navbar">
             {isLoggedIn ? (
                 <LoginNavbar />
             ) : (
@@ -25,3 +22,4 @@ export default function Navbar() {
         </div>
     );
 }
+

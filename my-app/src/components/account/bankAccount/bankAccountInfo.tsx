@@ -12,9 +12,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { getAllBanks } from '@/lib/getAllBanks';
-import { getSelfUser } from '@/lib/getUser';
 import { Bank } from '@/types/bank';
 import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
     Popover,
@@ -57,7 +57,43 @@ export default function BankAccountInfo() {
         .refine(data => [0, 13].includes(data.bankAccNo.length), {
             message: 'Please fill a valid bank account number',
             path: ['bankAccNo'],
-        });
+        })
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo == '') ||
+                    data.bankId !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankId'],
+            },
+        )
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo !== '') ||
+                    data.bankAccName !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankAccName'],
+            },
+        )
+        .refine(
+            data => {
+                return (
+                    (bankId !== '' && bankAccName !== '' && bankAccNo !== '') ||
+                    data.bankAccNo !== ''
+                );
+            },
+            {
+                message: 'Please complete the fill',
+                path: ['bankAccNo'],
+            },
+        );
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -77,16 +113,10 @@ export default function BankAccountInfo() {
     }, []);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getSelfUser();
-            if (!user) {
-                return;
-            }
-            setBankId(user.bankId ?? '');
-            setBankAccName(user.bankAccName ?? '');
-            setbankAccNo(user.bankAccNo ?? '');
-        };
-        fetchUser();
+        const user = clientStorage.get().user;
+        setBankId(user.bankId ?? '');
+        setBankAccName(user.bankAccName ?? '');
+        setbankAccNo(user.bankAccNo ?? '');
     }, []);
 
     useEffect(() => {
@@ -110,9 +140,12 @@ export default function BankAccountInfo() {
             toUpdate.bankAccNo = data.bankAccNo.replace(/-/g, '');
         }
         try {
-            console.log(toUpdate);
-            const user = await getSelfUser();
-            await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            const user = clientStorage.get().user;
+            const res = await instance.patch(`v1/users/${user?._id}`, toUpdate);
+            clientStorage.set({
+                user: res.data.user,
+                token: clientStorage.get().token,
+            });
             window.location.reload();
         } catch (error) {
             toast({
@@ -137,6 +170,20 @@ export default function BankAccountInfo() {
         } else {
             return <p>Select a bank...</p>;
         }
+    };
+
+    const getError = (): ReactNode => {
+        const errors = form.formState.errors;
+        if (errors.bankId) {
+            return <p className='text-error-500'>{errors.bankId.message}</p>;
+        } else if (errors.bankAccName) {
+            return (
+                <p className='text-error-500'>{errors.bankAccName.message}</p>
+            );
+        } else if (errors.bankAccNo) {
+            return <p className='text-error-500'>{errors.bankAccNo.message}</p>;
+        }
+        return <></>;
     };
 
     return (
@@ -227,6 +274,9 @@ export default function BankAccountInfo() {
                                                                                     'bankId',
                                                                                     value,
                                                                                 );
+                                                                                form.trigger(
+                                                                                    'bankId',
+                                                                                );
                                                                                 setOpen(
                                                                                     false,
                                                                                 );
@@ -264,11 +314,6 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankId && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankId.message}
-                                </p>
-                            )}
                             <FormField
                                 control={form.control}
                                 name='bankAccName'
@@ -287,11 +332,6 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankAccName && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankAccName.message}
-                                </p>
-                            )}
                             <FormField
                                 control={form.control}
                                 name='bankAccNo'
@@ -352,38 +392,42 @@ export default function BankAccountInfo() {
                                     </FormItem>
                                 )}
                             />
-                            {form.formState.errors.bankAccNo && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.bankAccNo.message}
-                                </p>
-                            )}
+                            {getError()}
                         </div>
                     </Form>
                 ) : (
                     <div className='w-full grid grid-cols-3 gap-x-[16px] gap-y-[24px] pt-[12px] item-center'>
                         <p>Bank Name</p>
                         <div className='flex flex-row gap-x-[8px] col-span-2'>
-                            <Image
-                                src={banks.at(parseInt(bankId))?.url ?? ''}
-                                alt=''
-                                width={24}
-                                height={24}
-                            />
+                            {bankId != '' && (
+                                <Image
+                                    src={banks.at(parseInt(bankId))?.url ?? ''}
+                                    alt=''
+                                    width={24}
+                                    height={24}
+                                />
+                            )}
                             <p className='text-slate-500'>
-                                {banks.at(parseInt(bankId))?.name ?? ''}
+                                {bankId === ''
+                                    ? '-'
+                                    : banks.at(parseInt(bankId))?.name ?? '-'}
                             </p>
                         </div>
                         <p>Account Name</p>
                         <p className='col-span-2 text-slate-500'>
-                            {bankAccName}
+                            {bankAccName === '' ? '-' : bankAccName}
                         </p>
                         <p>Account Number</p>
                         <p className='col-span-2 text-slate-500'>
-                            {bankAccNo.replace(
-                                /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
-                                (_, p1, p2, p3, p4) =>
-                                    [p1, p2, p3, p4].filter(Boolean).join('-'),
-                            )}
+                            {bankAccNo === ''
+                                ? '-'
+                                : bankAccNo.replace(
+                                      /^(\d{0,3})(\d{0,1})(\d{0,5})(\d{0,1})$/,
+                                      (_, p1, p2, p3, p4) =>
+                                          [p1, p2, p3, p4]
+                                              .filter(Boolean)
+                                              .join('-'),
+                                  )}
                         </p>
                     </div>
                 )}

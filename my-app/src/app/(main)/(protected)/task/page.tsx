@@ -33,6 +33,7 @@ export default function TaskList() {
             newFilters.add(value);
         }
         setCategoryFilters(newFilters);
+        setPage(1);
     };
 
     const updateWageRangeFilters = (value: WageRange) => {
@@ -43,6 +44,7 @@ export default function TaskList() {
             newFilters.add(value);
         }
         setWageRangeFilters(newFilters);
+        setPage(1);
     };
 
     const updateIndividualFilter = (newIndiv: boolean) => {
@@ -55,15 +57,11 @@ export default function TaskList() {
                 setIndividual(newIndiv);
             }
         }
+        setPage(1);
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('page', page);
-            console.log('searchName', searchName);
-            console.log('categoryFilters', categoryFilters);
-            console.log('isIndividual', isIndividual);
-            console.log('wageRangeFilters', wageRangeFilters);
             getAllTasks({
                 page,
                 limit,
@@ -77,11 +75,11 @@ export default function TaskList() {
                 }),
             })
                 .then((taskListData: AllTasksResponse) => {
-                    console.log(taskListData);
+                    console.log(taskListData)
                     const formattedTaskList: TaskCardProps[] =
                         taskListData.tasks.map(task => ({
                             taskId: task._id,
-                            image: task.image,
+                            imageUrl: task.imageUrl,
                             title: task.title,
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
@@ -124,7 +122,7 @@ export default function TaskList() {
                     </h4>
                     <div className='grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 h-fit w-fit gap-x-[16px] gap-y-[24px] justify-between'>
                         {taskList.map((task, index) => (
-                            <TaskCard key={index} {...task} />
+                            <TaskCard key={`taskcard${index}`} {...task} />
                         ))}
                     </div>
                     <PaginationContainer

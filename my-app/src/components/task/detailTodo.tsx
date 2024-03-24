@@ -15,7 +15,7 @@ const api = axios.create({
     },
 });
 
-export default function ViewTask(props: ViewTaskProps) {
+function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
     const [taskDetails, setTaskDetails] = useState<Task | null>(null);
@@ -112,7 +112,8 @@ export default function ViewTask(props: ViewTaskProps) {
                         <div className='w-full h-[360px] '>
                             <img
                                 src={taskDetails.image || '/mocktask.png'}
-                                alt=''
+                                alt='taskpicture'
+                                loading='lazy'
                                 className='rounded-lg w-full h-full object-cover'
                             />
                         </div>

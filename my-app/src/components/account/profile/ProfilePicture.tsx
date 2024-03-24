@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { getSelfUser } from '@/lib/getUser';
 import { User } from '@/types/user';
 import { instance, instanceBinary } from '@/utils/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,6 +28,7 @@ import Image from 'next/image';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
+import { clientStorage } from '@/utils/storageService';
 
 interface UserImage {
     file: FileList;
@@ -77,7 +77,7 @@ export default function ProfilePicture() {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user: User | null = await getSelfUser();
+            const user = clientStorage.get().user;
             if (!user) {
                 return;
             }
@@ -100,7 +100,7 @@ export default function ProfilePicture() {
 
     const submitData = async (values: z.infer<typeof schema>) => {
         try {
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             if (!user) {
                 return;
             }
@@ -129,7 +129,7 @@ export default function ProfilePicture() {
 
     const deletePicture = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             if (!user) {
                 return;
             }
@@ -190,7 +190,7 @@ export default function ProfilePicture() {
                 {isEditing ? (
                     <>
                         <Image
-                            className='size-[160px] rounded-[80px]'
+                            className='size-[160px] rounded-[80px] object-cover'
                             src={
                                 preview === ''
                                     ? currentimageURL === ''
@@ -289,7 +289,7 @@ export default function ProfilePicture() {
                     </>
                 ) : (
                     <Image
-                        className='size-[160px] rounded-[80px]'
+                        className='size-[160px] rounded-[80px] object-cover'
                         src={
                             currentimageURL === ''
                                 ? '/ProfilePicEmpty.png'

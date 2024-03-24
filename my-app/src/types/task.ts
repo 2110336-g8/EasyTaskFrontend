@@ -45,7 +45,7 @@ export interface Task {
     title: string;
     category: string;
     description?: string;
-    image?: string;
+    imageUrl?: string;
     location?: GeographicLocation;
     status: TaskStateOptions;
     wages: number;
@@ -57,6 +57,7 @@ export interface Task {
     hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
+    __v?: number
 }
 
 export interface TaskKV {
@@ -84,7 +85,7 @@ export interface TaskCardProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrl?: string;
     location?: string;
     wages: string;
     startDate: string;
@@ -96,7 +97,7 @@ export interface ViewTaskProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrl?: string;
     description?: string;
     location?: GeographicLocation;
     wages: string;
@@ -121,8 +122,10 @@ export interface AdsCardProps {
     location?: string;
     wages: string;
     startDate: string;
+    endDate: string;
     applications: string;
     status: string;
+    buttonFunc?: string;
 }
 
 export interface ViewAdsProps {
@@ -146,6 +149,29 @@ export interface GetUserAdsResponse {
     // page: number;
     // limit: number;
     tasks: Task[];
+}
+
+export interface ApplyTaskResponse {
+    success: boolean;
+    result?: {
+        _id: string;
+        title: string;
+        category: string;
+        description: string;
+        location: GeographicLocation;
+        status: TaskStateOptions;
+        wages: number;
+        workers: number; //
+        startDate: Date;
+        endDate: Date;
+        customerId: string;
+        imageKeys?: string[];
+        createdAt: Date;
+        updatedAt: Date;
+        __v: number;
+    };
+    error?:string;
+    
 }
 
 //*=================Create Task====================*//
@@ -176,4 +202,12 @@ export interface CreateTasksResponse {
 
 export interface UploadTaskImageResponse {
     message?: string;
+}
+
+//*=================Cancel Task====================*//
+
+export interface CancelTaskResponse {
+    success: boolean;
+    task?: Task;
+    error?: string;
 }

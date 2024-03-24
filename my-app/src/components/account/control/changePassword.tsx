@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { getSelfUser } from '@/lib/getUser';
 import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
@@ -49,7 +49,7 @@ export default function ChangePasssword() {
 
     const submitData = async (values: z.infer<typeof schema>) => {
         try {
-            const user = await getSelfUser();
+            const user = clientStorage.get().user;
             if (!user) {
                 throw Error('Current User Not Found');
             }
@@ -57,10 +57,14 @@ export default function ChangePasssword() {
                 currentPassword: form.getValues('currentPassword'),
                 newPassword: form.getValues('newPassword'),
             };
-            await instance.patch(
+            const res = await instance.patch(
                 `v1/users/${user._id}/change-password`,
                 passwords,
             );
+            clientStorage.set({
+                user: res.data.user,
+                token: clientStorage.get().token,
+            });
             toast({
                 variant: 'default',
                 title: 'User data updated!',
@@ -68,7 +72,6 @@ export default function ChangePasssword() {
             });
             form.reset();
         } catch (error) {
-            console.log((error as any).response.data.error);
             if ((error as any).response.data.error == 'Unauthorized') {
                 form.setError('currentPassword', {
                     type: 'custom',
@@ -86,7 +89,6 @@ export default function ChangePasssword() {
 
     const getError = (): ReactNode => {
         const errors = form.formState.errors;
-        console.log(errors);
         if (errors.currentPassword) {
             return (
                 <p className='text-error-500'>

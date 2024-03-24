@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const LayoutBox: React.FC = () => {
     const router = useRouter();
@@ -30,10 +31,12 @@ const LayoutBox: React.FC = () => {
                     </button>
                 </div>
                 <div className='right-side w-[800px] flex items-center'>
-                    <img
+                    <Image
                         src='/banner1.png'
                         alt='Image'
-                        className='image object-cover h-full w-full'
+                        className='image object-cover'
+                        width={800}
+                        height={400}
                     />
                 </div>
                 <style jsx>{`
@@ -61,7 +64,13 @@ const LayoutBox: React.FC = () => {
             </div>
             <div className='layout-box bg-primary-100 font-sans w-[1200px] h-[400px] rounded-lg p-[50px]'>
                 <div className='right-side w-[800px] mr-[50px] flex items-center'>
-                    <img src='/banner2.png' alt='Image' className='image' />
+                    <Image 
+                        src='/banner2.png' 
+                        alt='Image' 
+                        className='image' 
+                        width={800}
+                        height={400}
+                    />
                 </div>
                 <style jsx>{`
                     .layout-box {

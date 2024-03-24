@@ -1,38 +1,31 @@
-import { useEffect, useState } from 'react';
+'use client';
+import { useState } from 'react';
 import { AdsCardProps } from '@/types/task';
-import AdsCard from '@/components/adsList/adsCard';
-import { ChevronDownIcon, ChevronRightIcon, AlertTriangleIcon } from 'lucide-react';
+import JobCard from './jobCard';
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 
-export default function AdsToggleList({
+export default function JobToggleList({
     type,
     adsList,
     managing,
-    onAddToCancelList,
-    onRemoveFromCancelList,
 }: {
     type: keyof typeof names;
     adsList: AdsCardProps[];
     managing: boolean;
-    onAddToCancelList: (taskId: string) => void;
-    onRemoveFromCancelList: (taskId: string) => void;
 }) {
     const names = {
-        pay: 'To Pay Deposit',
-        open: 'Open for Apply',
-        working: 'Working On',
-        closed: 'Closed',
+        offer: 'Offering',
+        onGoing: 'Ongoing',
+        applied: 'Applied',
+        completed: 'Completed',
+        rejected: 'Rejected'
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);
     const [buttonFuncType, setButtonFuncType] = useState<string>(type);
-
-    useEffect(() => {
-        if (managing) {
-            setButtonFuncType('managing');
-        } else {
-            setButtonFuncType(type);
-        }
-    }, [managing, type]);
+    if (managing) {
+        setButtonFuncType('managing');
+    }
 
     return (
         <div className='w-full flex flex-col gap-[20px]'>
@@ -55,20 +48,11 @@ export default function AdsToggleList({
                 adsList.length > 0 ? (
                     <div className='w-fit'>
                         <div className='flex flex-col gap-[24px] tablet:grid-cols-2 laptop:grid-cols-3 desktop-l:grid-cols-4 w-full gap-y-[24px] justify-between'>
-                        {type === 'open' && (
-                            <div className="bg-error-100 gap-[8px] px-[8px] py-[10px] rounded-[6px] flex">
-                                <AlertTriangleIcon className='w-[24px] h-[24px] text-error-500' /><p className='text-error-500'>Please select candidate before the job start date. If not, it will be automatically closed after the job start within 1 week.</p>
-                            </div>
-                        )}
                             {adsList.map((task, index) => (
-                                <AdsCard
+                                <JobCard
                                     key={index}
-                                    props={task}
-                                    buttonFunc={buttonFuncType}
-                                    onAddToCancelList={onAddToCancelList}
-                                    onRemoveFromCancelList={
-                                        onRemoveFromCancelList
-                                    }
+                                    {...task}
+                                    buttonFunc={type}
                                 />
                             ))}
                         </div>

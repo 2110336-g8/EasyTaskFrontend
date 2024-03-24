@@ -59,14 +59,12 @@ export async function uploadTaskImage(
 ): Promise<UploadTaskImageResponse> {
     const file = imageFile[0];
     console.log(file.type);
-    const sequenceNumber = seq; // Example sequence number
-    const fileData = Buffer.from(await file.arrayBuffer());
+    const fileData = new Blob([Buffer.from(await file.arrayBuffer())]); // Convert Buffer to Blob
     const formData = new FormData(); // Instantiate a new FormData object
 
-    formData.append('seq', '0'); // Append the sequence number
-    formData.append('file', file); // Append the file from the input field
+    formData.append('file', fileData, file.name); // Append the file data with the file name
     return instance
-        .post('/v1/tasks/' + _id + '/task-image', formData, {
+        .post('/v1/tasks/' + _id + '/task-image', file, {
             headers: { 'Content-Type': file.type },
             maxBodyLength: Infinity,
             maxContentLength: Infinity,
@@ -75,7 +73,8 @@ export async function uploadTaskImage(
         .then(res => {
             const result: UploadTaskImageResponse = res.data;
             console.log('Uploading Image for task', _id);
-            return result;
+
+            return { message: 'Task image uploaded successfully' };
         })
         .catch(error => {
             if (error.response && error.response.status === 400) {

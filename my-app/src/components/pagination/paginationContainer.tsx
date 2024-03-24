@@ -21,7 +21,7 @@ const PaginationNumber: React.FC<{
                 onClick={() => setPage(pageNumber)}
                 isActive={isActive}
             >
-                {pageNumber}
+                <p>{pageNumber}</p>
             </PaginationLink>
         </PaginationItem>
     );
@@ -60,14 +60,16 @@ const PaginationContainer: React.FC<{
                 {paginationRange.map(pageNumber => {
                     if (pageNumber === 0) {
                         return (
-                            <PaginationItem>
+                            <PaginationItem
+                                key={`paginationNumber${pageNumber}`}
+                            >
                                 <PaginationEllipsis />
                             </PaginationItem>
                         );
                     }
                     return (
                         <PaginationNumber
-                            key={pageNumber}
+                            key={`paginationNumber${pageNumber}`}
                             pageNumber={pageNumber}
                             setPage={setPage}
                             isActive={currentPage == pageNumber}

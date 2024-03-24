@@ -11,11 +11,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 
     useEffect(() => {
         const token: string | null = clientStorage.get().token;
-        // console.log('token', token); 
-        // if (!token) {
-        //     router.push('/login');
-        //     return;
-        // }
+        if (!token) {
+            router.push('/login');
+            return;
+        }
         setLoading(false);
     }, []);
     return isLoading ? null : children;

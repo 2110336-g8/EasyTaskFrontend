@@ -97,20 +97,28 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
             console.error('Unexpected error during authentication:', error);
         }
     };
+    const handleLoginClick = () => {
+        // Replace '/signup' with the route you want to navigate to upon clicking "Sign up"
+        router.push('/login');
+    };
 
     return (
         <div className='flex'>
             <div className='left-side w-1/2 h-full'>
                 <div className='flex flex-col items-center justify-center h-screen font-sans'>
-                <img
+                    <img
                         src='/logoEasyTask.jpg'
                         alt='Image'
                         className='image object-cover w-[303px] m-[20px]'
-                />
+                    />
                     <Card className='w-[640px] h-[600px] p-10 m-[20px]'>
                         <CardHeader className='text-center m-[20px]'>
-                            <CardTitle className='font-h1 text-h1 tracking-h1'>Sign up</CardTitle>
-                            <CardDescription className='font-p text-p tracking-p text-slate-400'>Welcome to Easy Task</CardDescription>
+                            <CardTitle className='font-h1 text-h1 tracking-h1'>
+                                Sign up
+                            </CardTitle>
+                            <CardDescription className='font-p text-p tracking-p text-slate-400'>
+                                Welcome to Easy Task
+                            </CardDescription>
                         </CardHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -122,7 +130,9 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                                                 name='email'
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel className='font-p text-p tracking-p'>Email</FormLabel>
+                                                        <FormLabel className='font-p text-p tracking-p'>
+                                                            Email
+                                                        </FormLabel>
                                                         <FormControl>
                                                             <Input
                                                                 className='font-small text-p tracking-small'
@@ -151,8 +161,8 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
                                     <CardDescription className='text-slate-500 text-[16px]'>
                                         Already have an account?{' '}
                                         <a
-                                            href='/login'
-                                            className='text-primary-700 font-bold hover:text-originalColor'
+                                            onClick={handleLoginClick}
+                                            className='text-primary-700 font-bold hover:text-originalColor cursor-pointer'
                                         >
                                             Log in
                                         </a>
@@ -165,9 +175,9 @@ export default function SignupForm({ setAuthType }: SignupFormProps) {
             </div>
             <div className='right-side w-1/2 h-full'>
                 <img
-                        src='/signupPic.jpg'
-                        alt='Image'
-                        className='image object-cover h-full w-full'
+                    src='/signupPic.jpg'
+                    alt='Image'
+                    className='image object-cover h-full w-full'
                 />
             </div>
         </div>

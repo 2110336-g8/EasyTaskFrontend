@@ -8,12 +8,50 @@ import { ArrowLeftIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import MapReadOnly from '../map/mapBoxReadOnly';
+import axios from 'axios';
+import { applyTask } from '@/lib/applyTask';
+import Image from 'next/image';
 
 export default function ViewTask(props: ViewTaskProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     const [hasApplied, setHasApplied] = useState(false);
 
-    async function applyTaskHandler() {
+    const api = axios.create({
+        baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
+        headers: {
+            'Content-Type': 'application/json', // change this to axios instance
+        },
+    });
+
+    useEffect(() => {
+        async function checkAppliedStatus() {
+            try {
+                const response = await api.get(`${props.taskId}/check`, {
+                    headers: {
+                        Authorization: `Bearer ${clientStorage.get().token}`,
+                    },
+                });
+
+                if (response.status === 200) {
+                    setHasApplied(response.data.hasApplied);
+                } else {
+                    console.error(
+                        'Error checking application status:',
+                        response.data.error,
+                    );
+                }
+            } catch (error) {
+                console.error('Error checking application status:', error);
+            }
+        }
+
+        if (isLoggedIn) {
+            checkAppliedStatus();
+        }
+    }, [isLoggedIn, props.taskId]);
+
+    const applyTaskHandler = async () => {
+        console.log(isLoggedIn);
         if (!isLoggedIn) {
             toast({
                 variant: 'destructive',
@@ -24,27 +62,26 @@ export default function ViewTask(props: ViewTaskProps) {
         }
 
         try {
-            const response = await fetch(`http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/apply`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${clientStorage.get().token}` 
-                }
-            });
-
-            if (response.ok) {
+            const response = await applyTask(
+                props.taskId,
+                clientStorage.get().token,
+            );
+            console.log(response.success);
+            if (response.success) {
+                console.log('applied task success');
                 toast({
                     variant: 'default',
                     title: 'Task Applied',
                     description: 'You have successfully applied for this task.',
                 });
-                setHasApplied(true); // Update state to reflect application status
+                setHasApplied(true);
             } else {
-                const errorData = await response.json();
                 toast({
                     variant: 'destructive',
                     title: 'Application Error',
-                    description: errorData.error || 'An error occurred while applying for the task.',
+                    description:
+                        response.error ||
+                        'An error occurred while applying for the task.',
                 });
             }
         } catch (error) {
@@ -56,7 +93,7 @@ export default function ViewTask(props: ViewTaskProps) {
                     'An error occurred while applying for the task. Please try again later.',
             });
         }
-    }
+    };
 
     useEffect(() => {
         async function checkAppliedStatus() {
@@ -75,7 +112,10 @@ export default function ViewTask(props: ViewTaskProps) {
                     setHasApplied(data.hasApplied);
                 } else {
                     const errorData = await response.json();
-                    console.error('Error checking application status:', errorData.error);
+                    console.error(
+                        'Error checking application status:',
+                        errorData.error,
+                    );
                 }
             } catch (error) {
                 console.error('Error checking application status:', error);
@@ -92,7 +132,7 @@ export default function ViewTask(props: ViewTaskProps) {
             <div className='flex flex-col w-[1000px] gap-[24px]'>
                 <div className='absolute'>
                     <a className='relative right-[80px]' href='/task'>
-                        <ArrowLeftIcon className=' w-[40px] h-[40px]' />
+                        <ArrowLeftIcon className='w-[40px] h-[40px]' />
                     </a>
                 </div>
                 <div className='w-full flex flex-col gap-[2px]'>
@@ -103,11 +143,17 @@ export default function ViewTask(props: ViewTaskProps) {
                 </div>
                 <div className='w-full flex flex-row justify-between gap-[40px]'>
                     <div className='flex flex-col w-[640px] gap-[24px]'>
-                        <img
-                            src={props.image || '/mocktask.png'}
-                            alt=''
-                            className='rounded-lg w-full h-full object-cover'
-                        />
+                        <figure className='w-full h-[360px] '>
+                            <Image
+                                width={0}
+                                height={0}
+                                sizes='100vw'
+                                src={props.imageUrl || '/mocktask.png'}
+                                alt=''
+                                className='rounded-lg w-full h-full object-cover'
+                            />
+                        </figure>
+
                         {props.description ? (
                             <div className='flex flex-col gap-[16px]'>
                                 <h4 className='text-slate-900'>Description</h4>

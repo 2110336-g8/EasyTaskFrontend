@@ -38,9 +38,7 @@ export default function AdsDetailPage({
         createdAt: new Date('2021-11-30'),
         updatedAt: new Date('2021-11-30'),
     };
-
     const mockApplicants: Array<Applicant> = [];
-
     const mockAds: ViewAdsProps = {
         taskId: mockTaskRaw._id,
         title: mockTaskRaw.title,
@@ -56,15 +54,28 @@ export default function AdsDetailPage({
         createdAt: mockTaskRaw.createdAt,
     };
 
+    enum PageSelection {
+        MainAdsPage = 0,
+        CandidateSelectionPage,
+    }
+
+    // React State for page selection: main or selection
+    const [currentView, setCurrentView] = useState<PageSelection>(
+        PageSelection.MainAdsPage,
+    );
+
+    // React State for getting the data in the main page
     const [data, setData] = useState<ViewAdsProps | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+
     const router = useRouter();
 
     useEffect(() => {
         const userId: string | null = clientStorage.get().user._id;
         // const userId: string | null = '65eff56288030343046799b0';
         if (!userId) {
+            // User does not exist in the local storage, push to login
             router.push('/login');
         }
 
@@ -104,5 +115,13 @@ export default function AdsDetailPage({
         return <div>Loading...</div>;
     }
 
-    return <div>{data ? <ViewAds {...data} /> : <h1>{error}</h1>}</div>;
+    return (
+        <div>
+            {currentView === PageSelection.MainAdsPage ? (
+                <div>{data ? <ViewAds {...data} /> : <h1>{error}</h1>}</div>
+            ) : (
+                <div>{'Hello world!'}</div>
+            )}
+        </div>
+    );
 }

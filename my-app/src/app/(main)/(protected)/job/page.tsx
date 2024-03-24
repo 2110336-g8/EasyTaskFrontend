@@ -6,13 +6,12 @@ import {
     TaskStateOptions,
 } from '@/types/task';
 import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
-import AdsToggleList from '@/components/adsList/adsToggleList';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import { toast } from '@/components/ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
 import { getUserAds } from '@/lib/getUserAds';
+import JobToggleList from '@/components/jobList/jobToggleList';
 
 export type WageRange = [number | null, number | null];
 
@@ -57,25 +56,27 @@ export type WageRange = [number | null, number | null];
 
 export default function AdsList() {
     const router = useRouter();
-    const [adsPayList, setAdsPayList] = useState<AdsCardProps[]>([]);
-    const [adsOpenList, setAdsOpenList] = useState<AdsCardProps[]>([]);
-    const [adsWorkList, setAdsWorkList] = useState<AdsCardProps[]>([]);
-    const [adsClosedList, setAdsClosedList] = useState<AdsCardProps[]>([]);
+    const [jobOfferList, setJobOfferList] = useState<AdsCardProps[]>([]);
+    const [jobOnGoingList, setJobOnGoingList] = useState<AdsCardProps[]>([]);
+    const [jobAppliedList, setJobAppliedList] = useState<AdsCardProps[]>([]);
+    const [jobCompletedList, setJobCompletedList] = useState<AdsCardProps[]>([]);
+    const [jobRejectedList, setRejectedList] = useState<AdsCardProps[]>([]);
+    const [isManaging, setIsManaging] = useState(false);
 
     useEffect(() => {
-        // const userId: string | null = clientStorage.get().user._id;
-        // if (!userId) {
-        //     router.push('/login');
-        // }
+        const userId: string | null = clientStorage.get().user._id;
+        if (!userId) {
+            router.push('/login');
+        }
         // console.log(userId);
-        const userId: string | null = '65eff56288030343046799b0';
+        // const userId: string | null = '65eff56288030343046799b0';
         const fetchAdsList = async () => {
             getUserAds({
                 userId,
             })
-                .then((adsListData: GetUserAdsResponse) => {
-                    const formattedAdsList: AdsCardProps[] =
-                        adsListData.tasks.map(task => ({
+                .then((jobListData: GetUserAdsResponse) => {
+                    const formattedJobList: AdsCardProps[] =
+                        jobListData.tasks.map(task => ({
                             taskId: task._id,
                             image: task.image,
                             title: task.title,
@@ -83,30 +84,36 @@ export default function AdsList() {
                             startDate: dayjs(task.startDate).format(
                                 'DD MMM YYYY',
                             ),
+                            endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                             location: task.location?.name,
                             applications: task.workers.toLocaleString(),
                             wages: task.wages.toLocaleString(),
                             category: task.category,
                         }));
-                    console.log(adsListData);
+                    console.log(jobListData);
 
-                    setAdsPayList(
-                        formattedAdsList.filter(
-                            task => task.status == TaskStateOptions.COMPLETED,
+                    setJobOfferList(
+                        formattedJobList.filter(
+                            task => task.status == TaskStateOptions.COMPLETED, //edit here after backend done the state
                         ),
                     );
-                    setAdsOpenList(
-                        formattedAdsList.filter(
+                    setJobOnGoingList(
+                        formattedJobList.filter(
                             task => task.status == TaskStateOptions.OPEN,
                         ),
                     );
-                    setAdsWorkList(
-                        formattedAdsList.filter(
+                    setJobAppliedList(
+                        formattedJobList.filter(
                             task => task.status == TaskStateOptions.INPROGRESS,
                         ),
                     );
-                    setAdsClosedList(
-                        formattedAdsList.filter(
+                    setJobCompletedList(
+                        formattedJobList.filter(
+                            task => task.status == TaskStateOptions.CLOSED,
+                        ),
+                    );
+                    setRejectedList(
+                        formattedJobList.filter(
                             task => task.status == TaskStateOptions.CLOSED,
                         ),
                     );
@@ -123,24 +130,59 @@ export default function AdsList() {
         fetchAdsList();
     }, []);
 
+    // Function to set isManaging to true
+    const handleManage = () => {
+        setIsManaging(true);
+    };
+
     return (
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
-                <h1>Your Job Advertisements</h1>
-                <Button
-                    onClick={() => {
-                        router.push('/task/create');
-                    }}
-                    className='gap-x-[10px]'
-                >
-                    <PlusIcon />
-                    Create New Ads
-                </Button>
+                <h1>Your Job</h1>
+                {/* <div className='flex gap-[16px]'>
+                    <Button
+                        onClick={() => {
+                            router.push('/task/create');
+                        }}
+                        className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px] hover:bg-slate-200'
+                    >
+                        <PlusIcon />
+                        Create
+                    </Button>
+                    <Button
+                        onClick={handleManage}
+                        className='gap-x-[10px] text-primary-500 bg-slate-50 border border-primary-500 border-[2px]'
+                    >
+                        <PenSquareIcon />
+                        Manage
+                    </Button>
+                </div> */}
             </div>
-            <AdsToggleList type='pay' adsList={adsPayList} />
-            <AdsToggleList type='open' adsList={adsOpenList} />
-            <AdsToggleList type='working' adsList={adsWorkList} />
-            <AdsToggleList type='closed' adsList={adsClosedList} />
+            <JobToggleList
+                type='offer'
+                adsList={jobOfferList}
+                managing={isManaging}
+            />
+            <JobToggleList
+                type='onGoing'
+                adsList={jobOnGoingList}
+                managing={isManaging}
+            />
+            <JobToggleList
+                type='applied'
+                adsList={jobAppliedList}
+                managing={isManaging}
+            />
+            <JobToggleList
+                type='completed'
+                adsList={jobCompletedList}
+                managing={isManaging}
+            />
+            <JobToggleList
+                type='rejected'
+                adsList={jobRejectedList}
+                managing={isManaging}
+            />
         </main>
     );
 }
