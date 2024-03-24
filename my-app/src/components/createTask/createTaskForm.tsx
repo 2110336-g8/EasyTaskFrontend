@@ -41,9 +41,10 @@ import {
 import { addDays, differenceInCalendarDays } from 'date-fns';
 import { createTask, uploadTaskImage } from '@/lib/createTask';
 
+// changed: picture: z.instanceof(FileList) -> z.any(): enable rendering on client
 const formSchema = z.object({
     title: z.string(),
-    picture: z.instanceof(FileList),
+    picture: z.any(),
     // .refine(file => file?.length == 1, 'Picture is required.')
     // .refine(file => {
     //     const fileType = file?.item(0)?.type;
