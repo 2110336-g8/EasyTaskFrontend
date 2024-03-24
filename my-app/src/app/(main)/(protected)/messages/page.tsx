@@ -1,0 +1,70 @@
+'use client';
+import MessagePreviewBox, {
+    MessagePreview,
+} from '@/components/inbox/messagePreview';
+import { instance } from '@/utils/axiosInstance';
+import { clientStorage } from '@/utils/storageService';
+import { useRef, useEffect, useState, useMemo } from 'react';
+import { Socket, io } from 'socket.io-client';
+
+export default function Inbox() {
+    const socketRef = useRef<Socket | null>(null);
+    const [activeRooms, setActiveRooms] = useState<MessagePreview[]>([]);
+    const [archivedRooms, setArchivedRooms] = useState<MessagePreview[]>([]);
+
+    useEffect(() => {
+        const setupSocket = () => {
+            const socket = io('localhost:5001/messages', {
+                auth: {
+                    token: clientStorage.get().token,
+                },
+            });
+            socketRef.current = socket;
+
+            socket.on('chat_message', async () => {});
+
+            return () => {
+                socket.disconnect();
+            };
+        };
+
+        setupSocket();
+
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
+    }, []);
+
+    useMemo(async () => {
+        try {
+            const messagePreviewInfos = await instance.get(`/v1/messages/`);
+            console.log(messagePreviewInfos.data);
+            setActiveRooms(messagePreviewInfos.data.messagesRooms.activeRooms);
+            setArchivedRooms(
+                messagePreviewInfos.data.messagesRooms.archivedRooms,
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    return (
+        <div>
+            <h1>Messages</h1>
+            <div className='flex flex-col gap-y-[16px]'>
+                {activeRooms.map(room => (
+                    <MessagePreviewBox
+                        key={room._id}
+                        _id={room._id}
+                        taskTitle={room.taskTitle}
+                        imageUrl={room.imageUrl}
+                        latestMessage={room.latestMessage}
+                        unreadCount={room.unreadCount}
+                    ></MessagePreviewBox>
+                ))}
+            </div>
+        </div>
+    );
+}

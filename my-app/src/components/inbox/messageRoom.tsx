@@ -48,7 +48,7 @@ export default function MessageRoom(props: { taskId: string }) {
     const socketRef = useRef<Socket | null>(null);
     useEffect(() => {
         const setupSocket = () => {
-            const socket = io('localhost:5001/chats', {
+            const socket = io('localhost:5001/messages', {
                 auth: {
                     token: clientStorage.get().token,
                 },
@@ -61,6 +61,7 @@ export default function MessageRoom(props: { taskId: string }) {
                 setJoined(true);
             });
             socket.on('join_error', (error: string) => {
+                console.log(error);
                 // router.push('/inbox');
             });
 
