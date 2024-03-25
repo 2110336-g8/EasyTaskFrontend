@@ -348,7 +348,7 @@ export default function MessageRoom(props: { taskId: string }) {
                             />
                         </Form>
                         <Button size='xs' className='py-[7px] px-[9px]'>
-                            <Send size={28} />
+                            <Send size={28} className='stroke-white' />
                         </Button>
                     </form>
                 </div>
