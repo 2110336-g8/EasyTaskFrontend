@@ -1,23 +1,27 @@
 import { User } from './user';
 
 export enum WorkerStatusOptions {
-    INPROGRESS = 'In Progress',
+    INPROGRESS = 'InProgress',
+    SUBMITTED = 'Submitted',
+    REVISING = 'Revising',
+    RESUBMITTED = 'Resubmitted',
     COMPLETED = 'Completed',
-    CANCELED = 'Cancel',
+    DISMISSED = 'Dismissed',
 }
 
 export enum ApplicantStatusOptions {
     PENDING = 'Pending',
+    OFFERING = 'Offering',
     ACCEPTED = 'Accepted',
     REJECTED = 'Rejected',
-    CANCELED = 'Cancel',
+    NOTPROCEED = 'NotProceed',
 }
 
 export enum TaskStateOptions {
     OPEN = 'Open',
-    INPROGRESS = 'In Progress',
+    INPROGRESS = 'InProgress',
+    DISMISSED = 'Dismissed',
     COMPLETED = 'Completed',
-    CLOSED = 'Closed',
 }
 
 export interface GeographicLocation {
@@ -52,12 +56,12 @@ export interface Task {
     startDate: Date;
     endDate: Date;
     workers: number;
-    customerId: User;
+    customerId: string;
     applicants: Applicant[];
     hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
-    __v?: number
+    __v?: number;
 }
 
 export interface TaskKV {
@@ -74,6 +78,34 @@ export interface AllTasksResponse {
 
 export interface TaskDetailResponse {
     task: Task;
+}
+
+export interface JobDetailResponse extends TaskDetailResponse {
+    customerInfo: User;
+    status: JobStateOptions;
+}
+
+export enum JobStateOptions {
+    //========OPEN========//
+    OPEN = 'Open',
+    PENDING = 'Pending',
+    OFFERING = 'Offering',
+    ACCEPTED = 'Accepted',
+    REJECTED = 'Rejected',
+    NOTPROCEED = 'NotProceed',
+    //========INPROGRESS========//
+    INPROGRESS = 'InProgress',
+    SUBMITTED = 'Submitted',
+    REVISING = 'Revising',
+    RESUBMITTED = 'Resubmitted',
+    //========DISMISSED========//
+    DISMISSED = 'Dismissed',
+    //========COMPLETED========//
+    COMPLETED = 'Completed',
+}
+
+export interface AdsDetailResponse extends TaskDetailResponse {
+    applicantInfo: Applicant[];
 }
 
 export interface GetCategoriesResponse {
@@ -94,6 +126,7 @@ export interface TaskCardProps {
 }
 
 export interface ViewTaskProps {
+    viewType: 'job' | 'ads';
     taskId: string;
     title: string;
     category: string;
@@ -105,7 +138,7 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
     posted: string;
-    customer: {
+    customer?: {
         name: string;
         image?: string;
         phoneNumber?: string;
@@ -170,8 +203,7 @@ export interface ApplyTaskResponse {
         updatedAt: Date;
         __v: number;
     };
-    error?:string;
-    
+    error?: string;
 }
 
 //*=================Create Task====================*//
