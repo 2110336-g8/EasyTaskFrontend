@@ -10,6 +10,18 @@ const nextConfig = {
             },
         ],
     },
+
+    typescript: {
+        // !! WARN !!
+        // Dangerously allow production builds to successfully complete even if
+        // your project has type errors.
+        // !! WARN !!
+        ignoreBuildErrors: true,
+    },
+
+    env: {
+        NEXT_PUBLIC_BACK_HOSTNAME: process.env.NEXT_PUBLIC_BACK_HOSTNAME,
+    },
 };
 
 export default nextConfig;

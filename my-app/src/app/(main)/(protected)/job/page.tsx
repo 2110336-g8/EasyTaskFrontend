@@ -59,7 +59,9 @@ export default function AdsList() {
     const [jobOfferList, setJobOfferList] = useState<AdsCardProps[]>([]);
     const [jobOnGoingList, setJobOnGoingList] = useState<AdsCardProps[]>([]);
     const [jobAppliedList, setJobAppliedList] = useState<AdsCardProps[]>([]);
-    const [jobCompletedList, setJobCompletedList] = useState<AdsCardProps[]>([]);
+    const [jobCompletedList, setJobCompletedList] = useState<AdsCardProps[]>(
+        [],
+    );
     const [jobRejectedList, setRejectedList] = useState<AdsCardProps[]>([]);
     const [isManaging, setIsManaging] = useState(false);
 
@@ -169,17 +171,22 @@ export default function AdsList() {
                 managing={isManaging}
             />
             <JobToggleList
-                type='applied'
+                type='pending'
                 adsList={jobAppliedList}
                 managing={isManaging}
             />
             <JobToggleList
-                type='completed'
+                type='accomplished'
                 adsList={jobCompletedList}
                 managing={isManaging}
             />
             <JobToggleList
                 type='rejected'
+                adsList={jobRejectedList}
+                managing={isManaging}
+            />
+            <JobToggleList
+                type='notProceed'
                 adsList={jobRejectedList}
                 managing={isManaging}
             />
