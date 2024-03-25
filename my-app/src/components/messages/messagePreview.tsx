@@ -39,7 +39,10 @@ export default function MessagePreviewBox(props: MessagePreview) {
                     <p className='font-medium text-slate-600'>
                         {props.latestMessage?.senderName +
                             ': ' +
-                            props.latestMessage?.message +
+                            (props.latestMessage?.message.length ?? 0 > 32
+                                ? props.latestMessage?.message.slice(0, 32) +
+                                  '...'
+                                : props.latestMessage?.message) +
                             ' · ' +
                             dayjs(
                                 props.latestMessage?.sentAt.toString(),
