@@ -84,6 +84,7 @@ export default function MessageRoom(props: { taskId: string }) {
             // router.push('/messages');
         }
     };
+
     const renderMessage = (): ReactNode => {
         return (
             <>
@@ -106,23 +107,43 @@ export default function MessageRoom(props: { taskId: string }) {
                                         : 'flex flex-row gap-x-[8px] p-[4px]'
                                 }
                             >
-                                <Image
-                                    className='size-[56px] rounded-full object-cover'
-                                    src={senderImage ?? '/ProfilePicEmpty.png'}
-                                    width={56}
-                                    height={56}
-                                    alt=''
-                                    priority
-                                ></Image>
-                                <div
-                                    className={
+                                
+                                    <Image
+                                        className='size-[56px] rounded-full object-cover'
+                                        src={senderImage ?? '/ProfilePicEmpty.png'}
+                                        width={56}
+                                        height={56}
+                                        alt=''
+                                        priority
+                                    ></Image>
+                                <div className='flex flex-col'>
+                                    {isSelf
+                                    ? <div/>
+                                    : <h4>{senderName}</h4>}
+                                    <div className={
                                         isSelf
-                                            ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-end'
-                                            : 'bg-primary-100 rounded-xl p-2 flex flex-col items-start'
-                                    }
-                                >
-                                    <h4>{senderName}</h4>
-                                    <p>{message.text.content}</p>
+                                            ? 'flex flex-row-reverse gap-[8px]'
+                                            : 'flex flex-row gap-[8px]'
+                                    }>
+                                        <div
+                                            className={
+                                                isSelf
+                                                    ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit max-w-[70%]'
+                                                    : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit max-w-[70%]'
+                                            }
+                                            
+                                        >
+                                            <p className='text-slate-900 break-all'>{message.text.content}</p>
+                                        </div>
+                                        <div className='text-slate-400 flex items-ends'>
+                                            {message.sentAt && (
+                                                // Extract hours and minutes from the Date object
+                                                <small className='self-end pb-1'>
+                                                    {new Date(message.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </small>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -208,6 +229,7 @@ export default function MessageRoom(props: { taskId: string }) {
             senderId: clientStorage.get().user._id,
             text: values.content,
         });
+        form.reset();
     };
 
     return (
@@ -216,7 +238,7 @@ export default function MessageRoom(props: { taskId: string }) {
             {isJoined && (
                 <div className='w-full h-fill flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse w-full h-[500px] overflow-auto'
+                        className='flex flex-col-reverse w-full h-[500px] overflow-y-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
@@ -229,9 +251,10 @@ export default function MessageRoom(props: { taskId: string }) {
                         {renderMessage()}
                     </InfiniteScroll>
                     <form
-                        className='flex flex-row'
+                        className='flex flex-row gap-[8px]'
                         onSubmit={form.handleSubmit(submitData)}
                     >
+                        
                         <Form {...form}>
                             <FormField
                                 control={form.control}
@@ -241,15 +264,18 @@ export default function MessageRoom(props: { taskId: string }) {
                                         <FormControl className='w-full'>
                                             <Input
                                                 {...form.register('content')}
+                                                placeholder='Messages...'
+                                                className='rounded-full h-[44px]'
                                             ></Input>
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
                         </Form>
-                        <Button size='xs'>
+                        <Button size='xs' className='py-[7px] px-[9px]'>
                             <Send size={28} />
                         </Button>
+                        
                     </form>
                 </div>
             )}
