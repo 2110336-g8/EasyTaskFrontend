@@ -12,7 +12,7 @@ export default function ProfileCard(props: UserCard) {
                 <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                     <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex justify-center items-center max-md:mt-10">
-                            <Avatar className="size-[200px] rounded-full border-4 bg-white">
+                            <Avatar className="size-[200px] rounded-full border-[4px] bg-white">
                                 <AvatarImage
                                     src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
                                     loading='lazy'
