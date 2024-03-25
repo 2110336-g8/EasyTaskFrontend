@@ -149,11 +149,14 @@ export default function MessageRoom(props: { taskId: string }) {
     const socketRef = useRef<Socket | null>(null);
     useEffect(() => {
         const setupSocket = () => {
-            const socket = io('localhost:5001/messages', {
-                auth: {
-                    token: clientStorage.get().token,
+            const socket = io(
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
+                {
+                    auth: {
+                        token: clientStorage.get().token,
+                    },
                 },
-            });
+            );
             socketRef.current = socket;
 
             // Join socket room

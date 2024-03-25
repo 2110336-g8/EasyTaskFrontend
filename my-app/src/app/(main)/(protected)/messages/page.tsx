@@ -14,11 +14,14 @@ export default function Inbox() {
 
     useEffect(() => {
         const setupSocket = () => {
-            const socket = io('localhost:5001/messages', {
-                auth: {
-                    token: clientStorage.get().token,
+            const socket = io(
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
+                {
+                    auth: {
+                        token: clientStorage.get().token,
+                    },
                 },
-            });
+            );
             socketRef.current = socket;
 
             socket.on('chat_message', async () => {});
