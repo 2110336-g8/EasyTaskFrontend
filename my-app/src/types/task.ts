@@ -118,12 +118,13 @@ export interface AdsCardProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrl?: string;
     location?: string;
     wages: string;
     startDate: string;
     endDate: string;
     applications: string;
+    hiredworkersNumber?: number;
     status: string;
     buttonFunc?: string;
 }

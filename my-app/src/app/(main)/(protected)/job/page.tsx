@@ -80,7 +80,7 @@ export default function AdsList() {
                     const formattedJobList: AdsCardProps[] =
                         jobListData.tasks.map(task => ({
                             taskId: task._id,
-                            image: task.image,
+                            image: task.imageUrl,
                             title: task.title,
                             status: task.status,
                             startDate: dayjs(task.startDate).format(
