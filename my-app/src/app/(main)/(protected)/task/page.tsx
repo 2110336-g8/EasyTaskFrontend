@@ -75,7 +75,7 @@ export default function TaskList() {
                 }),
             })
                 .then((taskListData: AllTasksResponse) => {
-                    console.log(taskListData)
+                    console.log(taskListData);
                     const formattedTaskList: TaskCardProps[] =
                         taskListData.tasks.map(task => ({
                             taskId: task._id,
@@ -87,7 +87,10 @@ export default function TaskList() {
                             endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                             location: task.location?.name,
                             workers: task.workers.toLocaleString(),
-                            wages: task.wages.toLocaleString(),
+                            wages:
+                                task.wages / 1000000 >= 1
+                                    ? (task.wages / 1000000).toFixed(0) + 'M+'
+                                    : task.wages.toLocaleString(),
                             category: task.category,
                         }));
                     setTaskList(formattedTaskList);

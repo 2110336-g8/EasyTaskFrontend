@@ -9,6 +9,7 @@ import {
     UserIcon,
     UsersIcon,
 } from 'lucide-react';
+import { Button } from '../ui/button';
 
 const formatTeam = (workers: string) => {
     const numWorkers = parseInt(workers);
@@ -16,7 +17,7 @@ const formatTeam = (workers: string) => {
     if (numWorkers === 1) {
         return 'Individual';
     } else if (numWorkers > 10) {
-        return 'Team up for 10+ people';
+        return 'Team: 10+ people';
     } else {
         return 'Team: ' + workers + ' people';
     }
@@ -45,12 +46,12 @@ export default function TaskCard(props: TaskCardProps) {
                 <div className='flex flex-col gap-[4px]'>
                     <small className='w-full gap-[4px] flex items-center text-slate-500'>
                         <CalendarDaysIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                        {props.startDate} - {props.endDate}
+                        Apply: {props.startDate} - {props.endDate}
                     </small>
                     {props.location ? (
                         <small className='w-full gap-[4px] flex items-center text-slate-500'>
                             <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                            {props.location}
+                            Location: {props.location}
                         </small>
                     ) : null}
                     {props.workers ? (
@@ -66,13 +67,13 @@ export default function TaskCard(props: TaskCardProps) {
                 </div>
                 <div className='w-full flex flex-row justify-between'>
                     {props.category ? (
-                        <p className='px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
+                        <div className='text-button-xs font-button-xs tracking-button-xs px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 max-w-[140px]'>
                             {props.category}
-                        </p>
+                        </div>
                     ) : (
                         <div />
                     )}
-                    <div className='font-extrabold text-[24px]/[32px] tracking-[.006em] text-slate-700'>
+                    <div className='self-end font-button-m text-button-m tracking-button-m text-slate-700'>
                         ฿ {props.wages}
                     </div>
                 </div>
