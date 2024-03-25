@@ -60,7 +60,6 @@ export default function Profile() {
     
             return taskImage;
         } catch (error) {
-            console.error('Error fetching task image:', error);
             return null;
         }
     };
