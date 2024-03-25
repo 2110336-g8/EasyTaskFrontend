@@ -12,7 +12,6 @@ export default function TaskDetailPage({
 }: {
     params: { taskId: string };
 }) {
-
     const [task, setTask] = useState<ViewTaskProps>();
     const [error, setError] = useState<string>('');
 
@@ -37,7 +36,7 @@ export default function TaskDetailPage({
                             name:
                                 task.customerId.firstName +
                                 task.customerId.lastName,
-                            image: task.customerId.photoURL,
+                            image: task.customerId.imageUrl,
                             phoneNumber: task.customerId.phoneNumber,
                         },
                     };
