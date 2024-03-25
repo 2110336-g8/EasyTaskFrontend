@@ -46,7 +46,7 @@ export default function Profile() {
             taskId: task._id,
             title: task.title,
             category: task.category,
-            imageUrl: task.imageUrl ? (task.imageUrl[0].startsWith('/') ? task.imageUrl[0] : `/${task.imageUrl[0]}`) : undefined,
+            imageUrl: undefined,
             location: task.location ? task.location.name : undefined,
             wages: task.wages.toString(),
             startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),
