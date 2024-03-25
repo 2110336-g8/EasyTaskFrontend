@@ -15,7 +15,7 @@ export enum ApplicantStatusOptions {
 
 export enum TaskStateOptions {
     OPEN = 'Open',
-    INPROGRESS = 'In Progress',
+    INPROGRESS = 'InProgress', 
     COMPLETED = 'Completed',
     CLOSED = 'Closed',
 }

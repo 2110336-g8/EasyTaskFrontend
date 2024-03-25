@@ -30,8 +30,12 @@ export default function Profile() {
             console.log(responseData);
     
             if ('error' in responseData) return null;
+
+            const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`)
+
+            console.log(taskImageResponse);
     
-            return responseData.task;
+            return {...responseData.task};
 
         } catch (error) {
             console.error('Error fetching task data:', error);
