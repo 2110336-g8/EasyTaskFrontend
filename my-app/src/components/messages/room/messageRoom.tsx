@@ -149,15 +149,15 @@ export default function MessageRoom(props: { taskId: string }) {
                         <div
                             className={
                                 isSelf
-                                    ? 'flex flex-row-reverse gap-[8px]'
+                                    ? 'flex flex-row-reverse gap-[8px] h-full'
                                     : 'flex flex-row gap-[8px]'
                             }
                         >
                             <div
                                 className={
                                     isSelf
-                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit max-w-[70%]'
-                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit max-w-[70%]'
+                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start self-end h-fit max-w-[70%]'
+                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end self-end h-fit max-w-[70%]'
                                 }
                             >
                                 <p className='text-slate-900 break-all'>
