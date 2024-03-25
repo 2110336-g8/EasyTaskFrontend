@@ -3,7 +3,7 @@ import { Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { UserCard } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton"
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function ProfileCard(props: UserCard) {
     return (
@@ -12,15 +12,16 @@ export default function ProfileCard(props: UserCard) {
                 <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                     <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex justify-center items-center max-md:mt-10">
-                        <Image
-                            loading="lazy"
-                            src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
-                            alt="Profile Image"
-                            width={200}
-                            height={200}
-                            className="h-50 w-50 rounded-full border-4 border-white"
-                            style={{ backgroundColor: props.imageUrl ? "transparent": "white"}}
-                        />
+                            <Avatar className="size-[200px] rounded-full border-4 bg-white">
+                                <AvatarImage
+                                    src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
+                                    loading='lazy'
+                                    width={60}
+                                    height={60}
+                                    alt='User Profile'
+                                />
+                                <AvatarFallback>Avatar</AvatarFallback>
+                            </Avatar>
                         </div>
                     </div>
                     <div className="flex flex-col ml-5 w-[67%] max-md:ml-0 max-md:w-full">
