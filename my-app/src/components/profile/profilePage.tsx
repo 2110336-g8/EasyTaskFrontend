@@ -29,7 +29,14 @@ export default function Profile() {
     
             if ('error' in responseData) return null;
     
-            return responseData.task;
+            const image: string | null = await fetchTaskImageById(taskId);
+    
+            const updatedData: Task = {
+                ...responseData.task,
+                imageUrl: image,
+            };
+    
+            return updatedData;
         } catch (error) {
             console.error('Error fetching task data:', error);
             toast({
@@ -41,12 +48,28 @@ export default function Profile() {
         }
     };
 
+    const fetchTaskImageById = async (taskId: string): Promise<string | null> => {
+        try {
+            const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
+    
+            if ('error' in taskImageResponse) return null;
+
+            if (taskImageResponse.status === 404) return null;
+    
+            const taskImage = await taskImageResponse.data;
+    
+            return taskImage;
+        } catch (error) {
+            return null;
+        }
+    };
+
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
         return {
             taskId: task._id,
             title: task.title,
             category: task.category,
-            imageUrl: task.imageUrl ? task.imageUrl[0] : undefined,
+            imageUrl: task.imageUrl ? task.imageUrl : undefined,
             location: task.location ? task.location.name : undefined,
             wages: task.wages.toString(),
             startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),

@@ -167,12 +167,13 @@ export interface AdsCardProps {
     taskId: string;
     title: string;
     category: string;
-    image?: string;
+    imageUrl?: string;
     location?: string;
     wages: string;
     startDate: string;
     endDate: string;
     applications: string;
+    hiredworkersNumber?: number;
     status: string;
     buttonFunc?: string;
 }
@@ -219,6 +220,12 @@ export interface ApplyTaskResponse {
         updatedAt: Date;
         __v: number;
     };
+    error?: string;
+}
+
+//*=================Jobs====================*//
+export interface GetUserJobsResponse {
+    tasks?: Task[];
     error?: string;
 }
 

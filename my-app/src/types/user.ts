@@ -28,7 +28,7 @@ export interface UserProfile {
     }>;
     tasks: Array<{
         taskId: string;
-        status: 'In Progress' | 'Completed' | 'Cancel';
+        status: 'InProgress' | 'Completed' | 'Cancel';
         createdAt: Date;
     }>;
     ownedTasks: string[];

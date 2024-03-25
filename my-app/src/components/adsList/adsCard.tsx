@@ -50,11 +50,12 @@ export default function AdsCard({
         // Dynamically set buttonText based on status prop
         let buttonText;
         if (buttonFunc === 'open') {
-            buttonText = 'Start Job';
-        } else if (buttonFunc == 'working') {
-            buttonText = 'Go to chat';
-        } else if (buttonFunc == 'pay') {
-            buttonText = 'Pay Deposit';
+            buttonText = 'Select Employees';
+            if (props.hiredworkersNumber && props.hiredworkersNumber > 0) {
+                buttonText = 'Start Job Now';
+            }
+        } else if (buttonFunc == 'inprogress') {
+            buttonText = 'Go to Messages';
         } else if (buttonFunc == 'managing') {
             buttonText = isCanceled ? 'Canceled' : 'Cancel Task';
             return (
@@ -69,7 +70,7 @@ export default function AdsCard({
             return <div></div>;
         }
 
-        return <Button>{buttonText}</Button>;
+        return <Button variant='default'>{buttonText}</Button>;
     }
 
     return (
@@ -81,7 +82,7 @@ export default function AdsCard({
             <div className=''>
                 <img
                     className='w-[320px] h-[180px] object-cover'
-                    src={props.image || '/mocktask.png'}
+                    src={props.imageUrl || '/mocktask.png'}
                     alt={''}
                 />
             </div>
