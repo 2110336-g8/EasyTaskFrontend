@@ -7,6 +7,7 @@ export interface Message {
         title?: string;
         content?: string;
     };
+    sentAt: string;
 }
 
 export interface MessageRoomInfo {
