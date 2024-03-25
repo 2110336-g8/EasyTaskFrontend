@@ -19,7 +19,7 @@ const nextConfig = {
         ignoreBuildErrors: true,
     },
 
-    publicRuntimeConfig: {
+    env: {
         NEXT_PUBLIC_BACK_HOSTNAME: process.env.NEXT_PUBLIC_BACK_HOSTNAME,
     },
 };
