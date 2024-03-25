@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY /my-app/ ./my-app/
 
-WORKDIR ./my-app/
+WORKDIR /usr/src/app/my-app/
 
 FROM base as dev
 
