@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export enum WorkerStatusOptions {
-    INPROGRESS = 'In Progress',
+    INPROGRESS = 'InProgress',
     COMPLETED = 'Completed',
     CANCELED = 'Cancel',
 }
@@ -15,7 +15,7 @@ export enum ApplicantStatusOptions {
 
 export enum TaskStateOptions {
     OPEN = 'Open',
-    INPROGRESS = 'In Progress',
+    INPROGRESS = 'InProgress',
     COMPLETED = 'Completed',
     CLOSED = 'Closed',
 }
@@ -57,7 +57,7 @@ export interface Task {
     hiredWorkers: Worker[];
     createdAt: Date;
     updatedAt: Date;
-    __v?: number
+    __v?: number;
 }
 
 export interface TaskKV {
@@ -170,8 +170,7 @@ export interface ApplyTaskResponse {
         updatedAt: Date;
         __v: number;
     };
-    error?:string;
-    
+    error?: string;
 }
 
 //*=================Create Task====================*//
