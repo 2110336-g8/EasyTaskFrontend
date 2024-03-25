@@ -59,9 +59,9 @@ export default function Profile() {
             const taskImage = await taskImageResponse.data;
     
             return taskImage;
-
         } catch (error) {
-            return null
+            console.error('Error fetching task image:', error);
+            return null;
         }
     };
 
