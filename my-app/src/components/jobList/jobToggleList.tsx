@@ -16,9 +16,10 @@ export default function JobToggleList({
     const names = {
         offer: 'Offering',
         onGoing: 'Ongoing',
-        applied: 'Applied',
-        completed: 'Completed',
-        rejected: 'Rejected'
+        pending: 'Pending',
+        accomplished: 'Accomplished',
+        rejected: 'Rejected',
+        notProceed: 'Not Proceed',
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);
