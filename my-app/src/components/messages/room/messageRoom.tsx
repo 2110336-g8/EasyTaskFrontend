@@ -312,7 +312,7 @@ export default function MessageRoom(props: { taskId: string }) {
             {isJoined && (
                 <div className='w-full h-full flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto gap-y-[16px]'
+                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
@@ -348,7 +348,7 @@ export default function MessageRoom(props: { taskId: string }) {
                             />
                         </Form>
                         <Button size='xs' className='py-[7px] px-[9px]'>
-                            <Send size={28} />
+                            <Send size={28} className='stroke-white' />
                         </Button>
                     </form>
                 </div>
