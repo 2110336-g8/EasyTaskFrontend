@@ -26,26 +26,36 @@ export default function Profile() {
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
 
-    const fetchTaskById = async (taskId: string): Promise<Task | null> => {
+    const fetchTaskById = async (taskId: string): Promise<TaskWithImage | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
     
             if ('error' in responseData) return null;
-
-            // const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`)
-
-            // console.log(taskImageResponse);
     
-            return responseData.task;
+            return {...responseData.task, image: fetchTaskImageById(taskId)};
 
         } catch (error) {
             console.error('Error fetching task data:', error);
-            // toast({
-            //     variant: 'destructive',
-            //     title: 'Error Fetching Task Data',
-            //     description: 'Failed to fetch task data. Please try again later.',
-            // });
+            toast({
+                variant: 'destructive',
+                title: 'Error Fetching Task Data',
+                description: 'Failed to fetch task data. Please try again later.',
+            });
+            return null;
+        }
+    };
+
+    const fetchTaskImageById = async (taskId: string): Promise<String | null> => {
+        try {
+            const response = await instance.get(`/v1/tasks/${taskId}/task-image`);
+    
+            console.log("Task Image Data:", response.data);
+    
+            return response.data;
+
+        } catch (error) {
+            
             return null;
         }
     };
