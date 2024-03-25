@@ -14,10 +14,6 @@ import { TaskStateOptions } from '@/types/task';
 import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-interface TaskWithImage extends Task {
-    image?: string; 
-}
-
 
 export default function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
@@ -26,17 +22,21 @@ export default function Profile() {
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
 
-    const fetchTaskById = async (taskId: string): Promise<TaskWithImage | null> => {
+    const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
     
             if ('error' in responseData) return null;
-
-            console.log({...responseData.task, image: fetchTaskImageById(taskId)});
     
-            return {...responseData.task, image: fetchTaskImageById(taskId)};
-
+            const image: string | null = await fetchTaskImageById(taskId);
+    
+            const updatedData: Task = {
+                ...responseData.task,
+                imageUrl: image,
+            };
+    
+            return updatedData;
         } catch (error) {
             console.error('Error fetching task data:', error);
             toast({
@@ -61,13 +61,8 @@ export default function Profile() {
             console.log(taskImage);
     
             return taskImage;
-        } catch (error: any) {
-            if (error.response && error.response.status === 404) {
-                return null;
-            } else {
-                console.error('Error fetching task image:', error);
-                return null;
-            }
+        } catch (error) {
+            return null
         }
     };
 
@@ -76,7 +71,7 @@ export default function Profile() {
             taskId: task._id,
             title: task.title,
             category: task.category,
-            imageUrl: undefined,
+            imageUrl: task.imageUrl ? task.imageUrl : undefined,
             location: task.location ? task.location.name : undefined,
             wages: task.wages.toString(),
             startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),
