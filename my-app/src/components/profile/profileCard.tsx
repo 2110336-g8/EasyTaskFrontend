@@ -16,6 +16,7 @@ export default function ProfileCard(props: UserCard) {
                             loading="lazy"
                             src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
                             alt="Profile Image"
+                            priority
                             width={200}
                             height={200}
                             className="size-[200px] rounded-[100px] object-cover border-4 border-white"
