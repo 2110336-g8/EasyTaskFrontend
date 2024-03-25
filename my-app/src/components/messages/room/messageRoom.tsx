@@ -107,39 +107,44 @@ export default function MessageRoom(props: { taskId: string }) {
                                         : 'flex flex-row gap-x-[8px] p-[4px]'
                                 }
                             >
-                                
-                                    <Image
-                                        className='size-[56px] rounded-full object-cover'
-                                        src={senderImage ?? '/ProfilePicEmpty.png'}
-                                        width={56}
-                                        height={56}
-                                        alt=''
-                                        priority
-                                    ></Image>
+                                <Image
+                                    className='size-[56px] rounded-full object-cover'
+                                    src={senderImage ?? '/ProfilePicEmpty.png'}
+                                    width={56}
+                                    height={56}
+                                    alt=''
+                                    priority
+                                ></Image>
                                 <div className='flex flex-col'>
-                                    {isSelf
-                                    ? <div/>
-                                    : <h4>{senderName}</h4>}
-                                    <div className={
-                                        isSelf
-                                            ? 'flex flex-row-reverse gap-[8px]'
-                                            : 'flex flex-row gap-[8px]'
-                                    }>
+                                    {isSelf ? <div /> : <h4>{senderName}</h4>}
+                                    <div
+                                        className={
+                                            isSelf
+                                                ? 'flex flex-row-reverse gap-[8px]'
+                                                : 'flex flex-row gap-[8px]'
+                                        }
+                                    >
                                         <div
                                             className={
                                                 isSelf
                                                     ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit max-w-[70%]'
                                                     : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit max-w-[70%]'
                                             }
-                                            
                                         >
-                                            <p className='text-slate-900 break-all'>{message.text.content}</p>
+                                            <p className='text-slate-900 break-all'>
+                                                {message.text.content}
+                                            </p>
                                         </div>
                                         <div className='text-slate-400 flex items-ends'>
                                             {message.sentAt && (
                                                 // Extract hours and minutes from the Date object
                                                 <small className='self-end pb-1'>
-                                                    {new Date(message.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    {new Date(
+                                                        message.sentAt,
+                                                    ).toLocaleTimeString([], {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    })}
                                                 </small>
                                             )}
                                         </div>
@@ -211,7 +216,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
     // === Send message form ===
     const schema: ZodType<SendMessage> = z.object({
-        content: z.string().max(255, {
+        content: z.string().min(1).max(255, {
             message: 'message cannot be longer than 255 characters',
         }),
     });
@@ -254,7 +259,6 @@ export default function MessageRoom(props: { taskId: string }) {
                         className='flex flex-row gap-[8px]'
                         onSubmit={form.handleSubmit(submitData)}
                     >
-                        
                         <Form {...form}>
                             <FormField
                                 control={form.control}
@@ -275,7 +279,6 @@ export default function MessageRoom(props: { taskId: string }) {
                         <Button size='xs' className='py-[7px] px-[9px]'>
                             <Send size={28} />
                         </Button>
-                        
                     </form>
                 </div>
             )}
