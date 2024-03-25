@@ -52,15 +52,12 @@ export default function Profile() {
         try {
             const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
     
-            if (taskImageResponse.status === 404) {
-                return null;
-            }
+            if ('error' in taskImageResponse) return null;
     
             const taskImage = await taskImageResponse.data;
     
-            console.log(taskImage);
-    
             return taskImage;
+            
         } catch (error) {
             return null
         }
