@@ -2,9 +2,7 @@ FROM node:20-alpine as base
 
 WORKDIR /usr/src/app
 
-COPY /my-app/ ./my-app/
-
-WORKDIR /usr/src/app/my-app/
+COPY /my-app/ .
 
 FROM base as dev
 
