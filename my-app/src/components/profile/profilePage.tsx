@@ -26,6 +26,8 @@ export default function Profile() {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
+
+            console.log(responseData);
     
             if ('error' in responseData) return null;
     
@@ -97,9 +99,6 @@ export default function Profile() {
                 }
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
                 const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
-
-                console.log(userDataResponse);
-                console.log(userImageResponse);
 
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
