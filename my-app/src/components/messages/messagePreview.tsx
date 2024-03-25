@@ -19,6 +19,13 @@ export interface MessagePreviewInfo {
     sentAt: Date;
 }
 
+function trimMessage(message: string): string {
+    if (message.length > 32) {
+        return message.substring(0, 32) + '...';
+    }
+    return message;
+}
+
 export default function MessagePreviewBox(props: MessagePreview) {
     return (
         <Link
@@ -39,10 +46,7 @@ export default function MessagePreviewBox(props: MessagePreview) {
                     <p className='font-medium text-slate-600'>
                         {props.latestMessage?.senderName +
                             ': ' +
-                            (props.latestMessage?.message.length ?? 0 > 32
-                                ? props.latestMessage?.message.slice(0, 32) +
-                                  '...'
-                                : props.latestMessage?.message) +
+                            trimMessage(props.latestMessage?.message ?? '') +
                             ' · ' +
                             dayjs(
                                 props.latestMessage?.sentAt.toString(),
