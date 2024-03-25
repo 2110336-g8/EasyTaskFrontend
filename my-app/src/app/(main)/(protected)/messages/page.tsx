@@ -3,42 +3,11 @@ import MessagePreviewBox, {
     MessagePreview,
 } from '@/components/messages/messagePreview';
 import { instance } from '@/utils/axiosInstance';
-import { clientStorage } from '@/utils/storageService';
-import { useRef, useEffect, useState, useMemo } from 'react';
-import { Socket, io } from 'socket.io-client';
+import { useState, useMemo } from 'react';
 
 export default function Inbox() {
-    const socketRef = useRef<Socket | null>(null);
     const [activeRooms, setActiveRooms] = useState<MessagePreview[]>([]);
     const [archivedRooms, setArchivedRooms] = useState<MessagePreview[]>([]);
-
-    useEffect(() => {
-        const setupSocket = () => {
-            const socket = io(
-                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}messages`,
-                {
-                    auth: {
-                        token: clientStorage.get().token,
-                    },
-                },
-            );
-            socketRef.current = socket;
-
-            socket.on('chat_message', async () => {});
-
-            return () => {
-                socket.disconnect();
-            };
-        };
-
-        setupSocket();
-
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.disconnect();
-            }
-        };
-    }, []);
 
     useMemo(async () => {
         try {
