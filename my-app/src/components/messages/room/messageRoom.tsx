@@ -102,7 +102,10 @@ export default function MessageRoom(props: { taskId: string }) {
         }
     };
 
-    const renderMessageComponent = (message: Message) => {
+    const renderMessageComponent = (
+        message: Message,
+        nextMessage: Message | undefined,
+    ) => {
         const senderName: string =
             userInfo?.get(message.senderId ?? '')?.firstName ?? '';
         const senderImage: string | undefined = userInfo?.get(
@@ -118,16 +121,31 @@ export default function MessageRoom(props: { taskId: string }) {
                             : 'flex flex-row gap-x-[8px] p-[4px]'
                     }
                 >
-                    <Image
-                        className='size-[56px] rounded-full object-cover'
-                        src={senderImage ?? '/ProfilePicEmpty.png'}
-                        width={56}
-                        height={56}
-                        alt=''
-                        priority
-                    ></Image>
+                    {message.senderId !== nextMessage?.senderId ||
+                    dayjs(message.sentAt).format('DDMMYYYY') !==
+                        dayjs(nextMessage?.sentAt).format('DDMMYYYY') ? (
+                        <Image
+                            className='size-[56px] rounded-full object-cover'
+                            src={senderImage ?? '/ProfilePicEmpty.png'}
+                            width={56}
+                            height={56}
+                            alt=''
+                            priority
+                        ></Image>
+                    ) : (
+                        <div className='min-w-[56px]'></div>
+                    )}
                     <div className='flex flex-col'>
-                        {isSelf ? <div /> : <h4>{senderName}</h4>}
+                        {isSelf ||
+                        (message.senderId === nextMessage?.senderId &&
+                            dayjs(message.sentAt).format('DDMMYYYY') ==
+                                dayjs(nextMessage?.sentAt).format(
+                                    'DDMMYYYY',
+                                )) ? (
+                            <div />
+                        ) : (
+                            <p className='font-semibold'>{senderName}</p>
+                        )}
                         <div
                             className={
                                 isSelf
@@ -199,7 +217,11 @@ export default function MessageRoom(props: { taskId: string }) {
                         renderDivider = renderDateDivider(currentDate);
                     }
 
-                    const messageComponent = renderMessageComponent(message);
+                    const nextMessage = messages.at(index + 1);
+                    const messageComponent = renderMessageComponent(
+                        message,
+                        nextMessage,
+                    );
 
                     return (
                         <React.Fragment key={message._id + index}>
