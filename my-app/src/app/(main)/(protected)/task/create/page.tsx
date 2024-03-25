@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import AcceptTask from '@/components/task/acceptTask';
+import AcceptTask from '@/components/task/temp/acceptTask';
 import CreateTaskForm from '@/components/createTask/createTaskForm';
 import { Button } from 'react-day-picker';
 import { Layout } from 'lucide-react';
