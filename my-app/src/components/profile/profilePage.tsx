@@ -50,9 +50,15 @@ export default function Profile() {
 
     const fetchTaskImageById = async (taskId: string): Promise<String | null> => {
         try {
-            const response = await instance.get(`/v1/tasks/${taskId}/task-image`);
+            const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
+
+            if (taskImageResponse.status === 404) {
+                return null; 
+            }
     
-            return response.data;
+            const taskImage = taskImageResponse.data;
+
+            return taskImage;
 
         } catch (error) {
             
