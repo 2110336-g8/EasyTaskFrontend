@@ -182,15 +182,19 @@ export default function MessageRoom(props: { taskId: string }) {
                 </div>
             );
         } else {
-            <div className='w-full flex gap-x-[8px] p-[4px] items-center justify-center my-[8px]'>
-                <div className='flex flex-col justify-center w-fit px-[16px] py-[8px] gap-y-[8px] items-center bg-primary-100 rounded-sm inner-border-primary-500'>
-                    <div className='flex flex-row gap-x-[8px]'>
-                        <Megaphone size={24} />
-                        <p className='font-semibold'>{message.text.title}</p>
+            return (
+                <div className='w-full flex gap-x-[8px] p-[4px] items-center justify-center my-[8px]'>
+                    <div className='flex flex-col justify-center max-w-[70%] px-[16px] py-[8px] gap-y-[8px] items-center bg-primary-100 rounded-sm border-primary-500 border-[1px]'>
+                        <div className='flex flex-row gap-x-[8px]'>
+                            <Megaphone size={24} />
+                            <p className='font-semibold'>
+                                {message.text.title}
+                            </p>
+                        </div>
+                        <p className='break-all'>{message.text.content}</p>
                     </div>
-                    <p>{message.text.content}</p>
                 </div>
-            </div>;
+            );
         }
     };
 
