@@ -16,11 +16,11 @@ export default function JobCard(props: AdsCardProps) {
     function FunctionalButton() {
         // Dynamically set buttonText based on status prop
         let buttonText;
-        if (props.buttonFunc === 'offer') {
+        if (props.buttonFunc === 'Offering') {
             buttonText = 'Response';
-        } else if (props.buttonFunc == 'onGoing') {
-            buttonText = 'Go to chat';
-        }else {
+        } else if (props.buttonFunc == 'OnGoing') {
+            buttonText = 'Submission';
+        } else {
             return <div></div>;
         }
 
@@ -35,7 +35,7 @@ export default function JobCard(props: AdsCardProps) {
             <div className=''>
                 <img
                     className='w-[320px] h-[180px] object-cover'
-                    src={props.image || '/mocktask.png'}
+                    src={props.imageUrl || '/mocktask.png'}
                     alt={''}
                 />
             </div>

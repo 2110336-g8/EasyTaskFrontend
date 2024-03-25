@@ -159,12 +159,36 @@ export default function JobsList() {
                     </Button>
                 </div> */}
             </div>
-            <JobToggleList type='offer' adsList={jobOfferList} />
-            <JobToggleList type='onGoing' adsList={jobOnGoingList} />
-            <JobToggleList type='applied' adsList={jobAppliedList} />
-            <JobToggleList type='completed' adsList={jobCompletedList} />
-            <JobToggleList type='rejected' adsList={jobRejectedList} />
-            <JobToggleList type='notProceed' adsList={jobNotProceedList} />
+            <JobToggleList
+                type='Offering'
+                adsList={jobOfferList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='OnGoing'
+                adsList={jobOnGoingList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='Applied'
+                adsList={jobAppliedList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='Completed'
+                adsList={jobCompletedList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='Rejected'
+                adsList={jobRejectedList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='NotProceed'
+                adsList={jobNotProceedList}
+                userId={userId}
+            />
         </main>
     );
 }
