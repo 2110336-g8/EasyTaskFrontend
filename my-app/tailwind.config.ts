@@ -114,6 +114,9 @@ const config = {
                 small: ['14px', { lineHeight: '20px' }],
                 smaller: ['12px', { lineHeight: '16px' }],
                 button: ['20px', { lineHeight: '28px' }],
+                "button-xs": ['14px', { lineHeight: '18px' }],
+                "button-s": ['16px', { lineHeight: '24px' }],
+                "button-m": ['20px', { lineHeight: '28px' }],
             },
             fontWeight: {
                 h1: '600', //semibold
@@ -124,6 +127,9 @@ const config = {
                 small: '400', //regular
                 smaller: '400', //regular
                 button: '600',
+                "button-xs": '500',
+                "button-s": '600',
+                "button-m": '600',
             },
             letterSpacing: {
                 h1: '-0.012em',
@@ -134,6 +140,9 @@ const config = {
                 small: '0em',
                 smaller: '0em',
                 button: '-0.005em',
+                "button-xs": '-0.005em',
+                "button-s": '-0.005em',
+                "button-m": '-0.005em',
             },
         },
     },
