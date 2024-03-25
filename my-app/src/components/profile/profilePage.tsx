@@ -58,6 +58,8 @@ export default function Profile() {
     
             const taskImage = taskImageResponse.data;
 
+            console.log(taskImage);
+
             return taskImage;
 
         } catch (error) {
