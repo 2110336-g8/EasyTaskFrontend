@@ -55,7 +55,8 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            router.push('/messages');
+            console.log(error);
+            // router.push('/messages');
         }
     }, []);
 
@@ -79,7 +80,8 @@ export default function MessageRoom(props: { taskId: string }) {
             setPage(page + 1);
             if (oldMessagesHistory.length < limit) setHasMore(false);
         } catch (error) {
-            router.push('/messages');
+            console.log(error);
+            // router.push('/messages');
         }
     };
     const renderMessage = (): ReactNode => {
@@ -150,7 +152,7 @@ export default function MessageRoom(props: { taskId: string }) {
     useEffect(() => {
         const setupSocket = () => {
             const socket = io(
-                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}messages`,
                 {
                     auth: {
                         token: clientStorage.get().token,
