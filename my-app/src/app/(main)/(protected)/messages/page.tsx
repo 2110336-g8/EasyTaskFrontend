@@ -1,7 +1,7 @@
 'use client';
 import MessagePreviewBox, {
     MessagePreview,
-} from '@/components/inbox/messagePreview';
+} from '@/components/messages/messagePreview';
 import { instance } from '@/utils/axiosInstance';
 import { clientStorage } from '@/utils/storageService';
 import { useRef, useEffect, useState, useMemo } from 'react';
