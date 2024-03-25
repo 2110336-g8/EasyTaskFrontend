@@ -45,7 +45,6 @@ export default function Profile() {
     };
 
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
-        console.log(task)
         return {
             taskId: task._id,
             title: task.title,
