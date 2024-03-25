@@ -3,13 +3,13 @@ import MessagePreviewBox, {
     MessagePreview,
 } from '@/components/messages/messagePreview';
 import { instance } from '@/utils/axiosInstance';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function Inbox() {
     const [activeRooms, setActiveRooms] = useState<MessagePreview[]>([]);
     const [archivedRooms, setArchivedRooms] = useState<MessagePreview[]>([]);
 
-    useMemo(async () => {
+    const fetchRoomsData = async () => {
         try {
             const messagePreviewInfos = await instance.get(`/v1/messages/`);
             console.log(messagePreviewInfos.data);
@@ -20,6 +20,12 @@ export default function Inbox() {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    useEffect(() => {
+        fetchRoomsData();
+        const intervalId = setInterval(fetchRoomsData, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
     return (

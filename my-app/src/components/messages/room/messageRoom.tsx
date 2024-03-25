@@ -336,6 +336,8 @@ export default function MessageRoom(props: { taskId: string }) {
                                     <FormItem className='w-full'>
                                         <FormControl className='w-full'>
                                             <Input
+                                                type='search'
+                                                autoComplete='off'
                                                 {...form.register('content')}
                                                 placeholder='Messages...'
                                                 className='rounded-full h-[44px]'
