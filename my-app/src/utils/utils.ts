@@ -17,7 +17,7 @@ export function isUser(object: any): object is User {
         object.email !== undefined &&
         isString(object.email) &&
         (object.phoneNumber === undefined || isString(object.phoneNumber)) &&
-        (object.photoURL === undefined || isString(object.photoURL)) &&
+        (object.imageUrl === undefined || isString(object.imageUrl)) &&
         (object.bankId === undefined || isString(object.bankId)) &&
         (object.bankAccNo === undefined || isString(object.bankAccNo))
     );

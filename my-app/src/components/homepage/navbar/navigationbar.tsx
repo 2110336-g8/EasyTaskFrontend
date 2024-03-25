@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { clientStorage } from '@/utils/storageService';
 import LoginNavbar from './bar/LoginNavbar';
@@ -13,13 +13,8 @@ export default function Navbar() {
     }, []);
 
     return (
-        <div id="main-navbar">
-            {isLoggedIn ? (
-                <LoginNavbar />
-            ) : (
-                <LogoutNavbar />
-            )}
+        <div id='main-navbar'>
+            {isLoggedIn ? <LoginNavbar /> : <LogoutNavbar />}
         </div>
     );
 }
-
