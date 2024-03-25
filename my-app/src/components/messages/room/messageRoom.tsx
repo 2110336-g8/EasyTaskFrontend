@@ -56,8 +56,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            console.log(error);
-            // router.push('/messages');
+            router.push('/messages');
         }
     }, []);
 
@@ -81,8 +80,7 @@ export default function MessageRoom(props: { taskId: string }) {
             setPage(page + 1);
             if (oldMessagesHistory.length < limit) setHasMore(false);
         } catch (error) {
-            console.log(error);
-            // router.push('/messages');
+            router.push('/messages');
         }
     };
 
@@ -179,7 +177,6 @@ export default function MessageRoom(props: { taskId: string }) {
     };
 
     const renderMessage = (): ReactNode => {
-        console.log(messages);
         return (
             <>
                 {messages.map((message, index) => {
@@ -244,8 +241,6 @@ export default function MessageRoom(props: { taskId: string }) {
 
             // Receiving chat
             socket.on('chat_message', (text: Message) => {
-                console.log('Received message');
-                console.log(text);
                 setMessages(messages => [text, ...messages]);
             });
 
@@ -276,7 +271,6 @@ export default function MessageRoom(props: { taskId: string }) {
         },
     });
     const submitData = async (values: z.infer<typeof schema>) => {
-        console.log('Send message', values);
         if (!socketRef.current) return;
         socketRef.current.emit('send_message', {
             taskId: props.taskId,
@@ -287,12 +281,12 @@ export default function MessageRoom(props: { taskId: string }) {
     };
 
     return (
-        <div className='w-full h-fill'>
+        <div className='w-full flex flex-col'>
             <h1>{taskTitle}</h1>
             {isJoined && (
-                <div className='w-full h-fill flex flex-col gap-y-[16px]'>
+                <div className='w-full h-full flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse w-full h-[500px] overflow-y-auto gap-y-[16px]'
+                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto gap-y-[16px]'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
