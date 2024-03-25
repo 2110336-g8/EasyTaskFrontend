@@ -48,23 +48,26 @@ export default function Profile() {
         }
     };
 
-    const fetchTaskImageById = async (taskId: string): Promise<String | null> => {
+    const fetchTaskImageById = async (taskId: string): Promise<string | null> => {
         try {
             const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
-
+    
             if (taskImageResponse.status === 404) {
-                return null; 
+                return null;
             }
     
-            const taskImage = taskImageResponse.data;
-
+            const taskImage = await taskImageResponse.data;
+    
             console.log(taskImage);
-
+    
             return taskImage;
-
-        } catch (error) {
-            
-            return null;
+        } catch (error: any) {
+            if (error.response && error.response.status === 404) {
+                return null;
+            } else {
+                console.error('Error fetching task image:', error);
+                return null;
+            }
         }
     };
 
