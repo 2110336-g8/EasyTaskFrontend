@@ -33,3 +33,11 @@ export interface UserProfile {
     }>;
     ownedTasks: string[];
 }
+
+export interface UserCard {
+    firstName: string;
+    lastName: string;
+    email: string;
+    imageUrl?: string;
+    phoneNumber?: string;
+}

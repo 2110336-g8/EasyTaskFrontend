@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { clientStorage } from '@/utils/storageService';
 
 export const instance: AxiosInstance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
+    baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME || 'https://dev.api.easytask.vt.in.th'}`,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -32,9 +32,7 @@ instance.interceptors.request.use(
 
 export const instanceBinary: AxiosInstance = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
-    headers: {
-        
-    },
+    headers: {},
 });
 
 instanceBinary.interceptors.request.use(
