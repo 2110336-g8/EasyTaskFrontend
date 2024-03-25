@@ -14,6 +14,7 @@ import { Message, MessageRoomInfo } from '@/types/message';
 import { instance } from '@/utils/axiosInstance';
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroller';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface SendMessage {
     content: string;
@@ -66,7 +67,7 @@ export default function MessageRoom(props: { taskId: string }) {
     const [page, setPage] = useState<number>(0);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const fetchMessage = async () => {
-        const limit = 5;
+        const limit = 32;
         try {
             const oldMessagesHistory = (
                 await instance.get(`/v1/messages/${props.taskId}/history`, {
@@ -85,88 +86,136 @@ export default function MessageRoom(props: { taskId: string }) {
         }
     };
 
+    const renderDateDivider = (currentDate: Dayjs) => {
+        const currentDateString = currentDate.format('YYYY-MM-DD');
+        const todayDateString = dayjs().format('YYYY-MM-DD');
+        const yesterdayDateString = dayjs()
+            .subtract(1, 'day')
+            .format('YYYY-MM-DD');
+
+        if (currentDateString === todayDateString) {
+            return 'Today';
+        } else if (currentDateString === yesterdayDateString) {
+            return 'Yesterday';
+        } else if (currentDate.year() === dayjs().year()) {
+            return currentDate.format('ddd, DD/MM');
+        } else {
+            return currentDate.format('ddd, DD/MM/YYYY');
+        }
+    };
+
+    const renderMessageComponent = (message: Message) => {
+        const senderName: string =
+            userInfo?.get(message.senderId ?? '')?.firstName ?? '';
+        const senderImage: string | undefined = userInfo?.get(
+            message.senderId ?? '',
+        )?.imageUrl;
+        const isSelf = message.senderId === clientStorage.get().user._id;
+        if (message.senderType === 'user') {
+            return (
+                <div
+                    className={
+                        isSelf
+                            ? 'flex flex-row-reverse gap-x-[8px] p-[4px]'
+                            : 'flex flex-row gap-x-[8px] p-[4px]'
+                    }
+                >
+                    <Image
+                        className='size-[56px] rounded-full object-cover'
+                        src={senderImage ?? '/ProfilePicEmpty.png'}
+                        width={56}
+                        height={56}
+                        alt=''
+                        priority
+                    ></Image>
+                    <div className='flex flex-col'>
+                        {isSelf ? <div /> : <h4>{senderName}</h4>}
+                        <div
+                            className={
+                                isSelf
+                                    ? 'flex flex-row-reverse gap-[8px]'
+                                    : 'flex flex-row gap-[8px]'
+                            }
+                        >
+                            <div
+                                className={
+                                    isSelf
+                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit max-w-[70%]'
+                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit max-w-[70%]'
+                                }
+                            >
+                                <p className='text-slate-900 break-all'>
+                                    {message.text.content}
+                                </p>
+                            </div>
+                            <div className='text-slate-400 flex items-ends'>
+                                {message.sentAt && (
+                                    // Extract hours and minutes from the Date object
+                                    <small className='self-end pb-1'>
+                                        {new Date(
+                                            message.sentAt,
+                                        ).toLocaleTimeString([], {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </small>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            <div className='w-full flex gap-x-[8px] p-[4px] items-center justify-center my-[8px]'>
+                <div className='flex flex-col justify-center w-fit px-[16px] py-[8px] gap-y-[8px] items-center bg-primary-100 rounded-sm inner-border-primary-500'>
+                    <div className='flex flex-row gap-x-[8px]'>
+                        <Megaphone size={24} />
+                        <p className='font-semibold'>{message.text.title}</p>
+                    </div>
+                    <p>{message.text.content}</p>
+                </div>
+            </div>;
+        }
+    };
+
     const renderMessage = (): ReactNode => {
+        console.log(messages);
         return (
             <>
                 {messages.map((message, index) => {
-                    if (message.senderType === 'user') {
-                        const senderName: string =
-                            userInfo?.get(message.senderId ?? '')?.firstName ??
-                            '';
-                        const senderImage: string | undefined = userInfo?.get(
-                            message.senderId ?? '',
-                        )?.imageUrl;
-                        const isSelf =
-                            message.senderId === clientStorage.get().user._id;
-                        return (
-                            <div
-                                key={message._id + index}
-                                className={
-                                    isSelf
-                                        ? 'flex flex-row-reverse gap-x-[8px] p-[4px]'
-                                        : 'flex flex-row gap-x-[8px] p-[4px]'
-                                }
-                            >
-                                <Image
-                                    className='size-[56px] rounded-full object-cover'
-                                    src={senderImage ?? '/ProfilePicEmpty.png'}
-                                    width={56}
-                                    height={56}
-                                    alt=''
-                                    priority
-                                ></Image>
-                                <div className='flex flex-col'>
-                                    {isSelf ? <div /> : <h4>{senderName}</h4>}
-                                    <div
-                                        className={
-                                            isSelf
-                                                ? 'flex flex-row-reverse gap-[8px]'
-                                                : 'flex flex-row gap-[8px]'
-                                        }
-                                    >
-                                        <div
-                                            className={
-                                                isSelf
-                                                    ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit max-w-[70%]'
-                                                    : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit max-w-[70%]'
-                                            }
-                                        >
-                                            <p className='text-slate-900 break-all'>
-                                                {message.text.content}
-                                            </p>
-                                        </div>
-                                        <div className='text-slate-400 flex items-ends'>
-                                            {message.sentAt && (
-                                                // Extract hours and minutes from the Date object
-                                                <small className='self-end pb-1'>
-                                                    {new Date(
-                                                        message.sentAt,
-                                                    ).toLocaleTimeString([], {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                    })}
-                                                </small>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    } else {
-                        return (
-                            <div className='w-full flex gap-x-[8px] p-[4px] items-center justify-center'>
-                                <div className='flex flex-col justify-center w-fit px-[16px] py-[8px] gap-y-[8px] items-center bg-primary-100 rounded-sm'>
-                                    <div className='flex flex-row gap-x-[8px]'>
-                                        <Megaphone size={24} />
-                                        <p className='font-semibold'>
-                                            {message.text.title}
-                                        </p>
-                                    </div>
-                                    <p>{message.text.content}</p>
-                                </div>
-                            </div>
+                    let renderDivider = null;
+                    const currentDate = dayjs(message.sentAt);
+                    let nextDate: string | null = null;
+
+                    if (index < messages.length - 1) {
+                        nextDate = dayjs(messages[index + 1].sentAt).format(
+                            'YYYY-MM-DD',
                         );
                     }
+
+                    if (!nextDate) {
+                        renderDivider = renderDateDivider(currentDate);
+                    } else if (
+                        currentDate.format('DDMMYYYY') !==
+                        dayjs(nextDate).format('DDMMYYYY')
+                    ) {
+                        renderDivider = renderDateDivider(currentDate);
+                    }
+
+                    const messageComponent = renderMessageComponent(message);
+
+                    return (
+                        <React.Fragment key={message._id + index}>
+                            {messageComponent}
+                            {renderDivider && (
+                                <div className='flex items-center justify-center'>
+                                    <p className='text-xs font-medium text-primary-300 bg-primary-100 px-[12px] py-[4px] rounded-[20px]'>
+                                        {renderDivider}
+                                    </p>
+                                </div>
+                            )}
+                        </React.Fragment>
+                    );
                 })}
             </>
         );
@@ -243,7 +292,7 @@ export default function MessageRoom(props: { taskId: string }) {
             {isJoined && (
                 <div className='w-full h-fill flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse w-full h-[500px] overflow-y-auto'
+                        className='flex flex-col-reverse w-full h-[500px] overflow-y-auto gap-y-[16px]'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
