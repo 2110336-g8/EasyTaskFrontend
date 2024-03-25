@@ -14,6 +14,10 @@ import { TaskStateOptions } from '@/types/task';
 import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+interface TaskWithImage extends Task {
+    image?: string; 
+}
+
 
 export default function Profile() {
     const [userData, setUserData] = useState<UserProfile | null>(null);
@@ -26,8 +30,6 @@ export default function Profile() {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
-
-            console.log(responseData);
     
             if ('error' in responseData) return null;
 
@@ -35,15 +37,15 @@ export default function Profile() {
 
             console.log(taskImageResponse);
     
-            return {...responseData.task};
+            return responseData.task;
 
         } catch (error) {
             console.error('Error fetching task data:', error);
-            toast({
-                variant: 'destructive',
-                title: 'Error Fetching Task Data',
-                description: 'Failed to fetch task data. Please try again later.',
-            });
+            // toast({
+            //     variant: 'destructive',
+            //     title: 'Error Fetching Task Data',
+            //     description: 'Failed to fetch task data. Please try again later.',
+            // });
             return null;
         }
     };
