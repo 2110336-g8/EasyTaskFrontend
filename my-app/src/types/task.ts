@@ -175,6 +175,12 @@ export interface ApplyTaskResponse {
     
 }
 
+//*=================Jobs====================*//
+export interface GetUserJobsResponse {
+    tasks?: Task[];
+    error?: string;
+}
+
 //*=================Create Task====================*//
 
 export interface CreateTasksResponse {

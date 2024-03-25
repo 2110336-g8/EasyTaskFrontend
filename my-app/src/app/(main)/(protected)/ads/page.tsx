@@ -81,7 +81,7 @@ export default function AdsList() {
                     const formattedAdsList: AdsCardProps[] =
                         adsListData.tasks.map(task => ({
                             taskId: task._id,
-                            image: task.imageUrl,
+                            imageUrl: task.imageUrl,
                             title: task.title,
                             status: task.status,
                             startDate: dayjs(task.startDate).format(

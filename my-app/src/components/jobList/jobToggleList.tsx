@@ -7,26 +7,26 @@ import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 export default function JobToggleList({
     type,
     adsList,
-    managing,
 }: {
     type: keyof typeof names;
     adsList: AdsCardProps[];
-    managing: boolean;
 }) {
     const names = {
         offer: 'Offering',
         onGoing: 'Ongoing',
-        pending: 'Pending',
-        accomplished: 'Accomplished',
+        applied: 'Applied',
+        completed: 'Completed',
         rejected: 'Rejected',
         notProceed: 'Not Proceed',
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);
     const [buttonFuncType, setButtonFuncType] = useState<string>(type);
-    if (managing) {
-        setButtonFuncType('managing');
-    }
+
+    const handleToggleClick = (type: string) => {
+        console.log(`Clicked on ${type} toggle`);
+        // Add your logic here for handling the click event
+    };
 
     return (
         <div className='w-full flex flex-col gap-[20px]'>
