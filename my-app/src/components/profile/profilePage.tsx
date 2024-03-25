@@ -26,8 +26,6 @@ export default function Profile() {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
             const responseData = response.data;
-
-            console.log(response.data)
     
             if ('error' in responseData) return null;
     
@@ -45,6 +43,7 @@ export default function Profile() {
     };
 
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
+        console.log(task)
         return {
             taskId: task._id,
             title: task.title,
