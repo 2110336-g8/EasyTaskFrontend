@@ -16,8 +16,8 @@ export default function ProfileCard(props: UserCard) {
                                 <AvatarImage
                                     src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
                                     loading='lazy'
-                                    width={60}
-                                    height={60}
+                                    width={200}
+                                    height={200}
                                     alt='User Profile'
                                 />
                                 <AvatarFallback>Avatar</AvatarFallback>
