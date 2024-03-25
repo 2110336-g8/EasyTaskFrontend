@@ -105,7 +105,8 @@ export enum JobStateOptions {
 }
 
 export interface AdsDetailResponse extends TaskDetailResponse {
-    applicantInfo: Applicant[];
+    applicantsInfo?: (Applicant | User)[];
+    hiredWorkersInfo?: (Worker | User)[];
 }
 
 export interface GetCategoriesResponse {
@@ -139,10 +140,25 @@ export interface ViewTaskProps {
     workers: string;
     posted: string;
     customer?: {
+        _id: string;
         name: string;
         image?: string;
         phoneNumber?: string;
     };
+    applicants?: Array<{
+        _id: string;
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+        status: ApplicantStatusOptions;
+    }>;
+    hiredWorkers?: Array<{
+        _id: string;
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+        status: WorkerStatusOptions;
+    }>;
 }
 
 //*=================Ads====================*//

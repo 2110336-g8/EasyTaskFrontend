@@ -31,3 +31,8 @@ export const range = (start: number, end: number) => {
 export const numberWithCommas = (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+    const digits = phoneNumber.replace(/\D/g, ''); // Removes anything that's not a digit
+    return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+};

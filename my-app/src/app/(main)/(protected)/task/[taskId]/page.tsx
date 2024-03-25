@@ -1,9 +1,19 @@
 'use client';
-import ViewTask from '@/components/task/detailTask';
+import ViewTask from '@/components/task/taskDetail/detailTask';
 import { toast } from '@/components/ui/use-toast';
 import { getTaskDetail } from '@/lib/getTaskDetail';
-import { Task, TaskDetailResponse, ViewTaskProps } from '@/types/task';
+import {
+    AdsDetailResponse,
+    Applicant,
+    Worker,
+    JobDetailResponse,
+    Task,
+    ViewTaskProps,
+} from '@/types/task';
+import { User } from '@/types/user';
 import { dateNow, formatDateDuration } from '@/utils/datetime';
+import { clientStorage } from '@/utils/storageService';
+import { formatPhoneNumber } from '@/utils/utils';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 
@@ -12,16 +22,18 @@ export default function TaskDetailPage({
 }: {
     params: { taskId: string };
 }) {
-
     const [task, setTask] = useState<ViewTaskProps>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
     useEffect(() => {
+        const userId: string | null = clientStorage.get().user._id;
         const fetchData = async () => {
             getTaskDetail(params.taskId)
-                .then((taskData: TaskDetailResponse) => {
+                .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
                     const formattedTask: ViewTaskProps = {
+                        viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
                         title: task.title,
                         category: task.category,
@@ -29,19 +41,61 @@ export default function TaskDetailPage({
                         description: task.description,
                         location: task.location,
                         wages: task.wages.toLocaleString(),
-                        startDate: dayjs(task.startDate).format('DD MMM YYYY'),
-                        endDate: dayjs(task.endDate).format('DD MMM YYYY'),
+                        startDate: dayjs(task.startDate).format('DD/MM/YYYY'),
+                        endDate: dayjs(task.endDate).format('DD/MM/YYYY'),
                         workers: task.workers.toLocaleString(),
                         posted: formatDateDuration(task.createdAt, dateNow()),
-                        customer: {
-                            name:
-                                task.customerId.firstName +
-                                task.customerId.lastName,
-                            image: task.customerId.photoURL,
-                            phoneNumber: task.customerId.phoneNumber,
-                        },
                     };
+                    // console.log(taskData.customerInfo)
+                    if ('customerInfo' in taskData) {
+                        formattedTask.customer = {
+                            _id: taskData.customerInfo._id,
+                            name:
+                                taskData.customerInfo.firstName +
+                                ' ' +
+                                taskData.customerInfo.lastName,
+                            image: taskData.customerInfo.imageUrl,
+                            phoneNumber: formatPhoneNumber(
+                                taskData.customerInfo.phoneNumber || '',
+                            ),
+                        };
+                    }
+                    if ('applicantsInfo' in taskData) {
+                        formattedTask.applicants = taskData.applicantsInfo?.map(
+                            (applicant: Applicant | User) => ({
+                                _id: (applicant as User)._id,
+                                name:
+                                    (applicant as User).firstName +
+                                    ' ' +
+                                    (applicant as User).lastName,
+                                image: (applicant as User).imageUrl,
+                                phoneNumber: formatPhoneNumber(
+                                    (applicant as User).phoneNumber || '',
+                                ),
+                                status: (applicant as Applicant).status,
+                            }),
+                        );
+                    }
+                    if ('hiredWorkersInfo' in taskData) {
+                        formattedTask.hiredWorkers =
+                            taskData.hiredWorkersInfo?.map(
+                                (worker: Worker | User) => ({
+                                    _id: (worker as User)._id,
+                                    name:
+                                        (worker as User).firstName +
+                                        ' ' +
+                                        (worker as User).lastName,
+                                    image: (worker as User).imageUrl,
+                                    phoneNumber: formatPhoneNumber(
+                                        (worker as User).phoneNumber || '',
+                                    ),
+                                    status: (worker as Worker).status,
+                                }),
+                            );
+                    }
+
                     setTask(formattedTask);
+                    setIsLoading(false);
                 })
                 .catch(e => {
                     toast({
@@ -50,11 +104,16 @@ export default function TaskDetailPage({
                         description: 'There was a problem with your request.',
                     });
                     setError(e);
+                    setIsLoading(false);
                     console.error('Cannot fetch data. Error: ', e);
                 });
         };
         fetchData();
     }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return <div>{task ? <ViewTask {...task} /> : null}</div>;
 }
