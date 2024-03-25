@@ -32,6 +32,8 @@ export default function Profile() {
             const responseData = response.data;
     
             if ('error' in responseData) return null;
+
+            console.log({...responseData.task, image: fetchTaskImageById(taskId)});
     
             return {...responseData.task, image: fetchTaskImageById(taskId)};
 
@@ -49,8 +51,6 @@ export default function Profile() {
     const fetchTaskImageById = async (taskId: string): Promise<String | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}/task-image`);
-    
-            console.log("Task Image Data:", response.data);
     
             return response.data;
 
