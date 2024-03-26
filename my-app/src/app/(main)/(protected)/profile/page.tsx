@@ -36,9 +36,7 @@ export default function MyProfile() {
                     title: 'Error Fetching User Data',
                     description: 'Failed to fetch user data. Please try again later.',
                 });
-            } finally {
-                setLoading(false); 
-            }
+            } 
         };
 
         fetchUser();
