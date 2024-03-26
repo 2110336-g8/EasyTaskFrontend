@@ -1,8 +1,6 @@
-"use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
-import { Button } from '@/components/ui/button';
 import TaskCard from '../taskList/taskCard';
 import { instance } from "@/utils/axiosInstance";
 import { UserCard, UserProfile } from '@/types/user';
@@ -12,12 +10,11 @@ import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileLoading from './profileLoading';
 
-
-export default function Profile( data: UserProfile | null ) {
-    const [userData, setUserData] = useState(data);
+export default function Profile({ data }: { data: UserProfile | null }) {
+    const [userData, setUserData] = useState<UserProfile | null>(data);
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
-    const [loadingTasks, setLoadingTasks] = useState(false);
+    const [loadingTasks, setLoadingTasks] = useState(true); 
 
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
@@ -50,8 +47,6 @@ export default function Profile( data: UserProfile | null ) {
             const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
     
             if ('error' in taskImageResponse) return null;
-
-            if (taskImageResponse.status === 404) return null;
     
             const taskImage = await taskImageResponse.data;
     
@@ -78,7 +73,6 @@ export default function Profile( data: UserProfile | null ) {
     useEffect(() => {
         const fetchOwnedTasks = async () => {
             if (!userData || !userData.ownedTasks) return;
-            setLoadingTasks(true);
     
             try {
                 const tasksToFetch = userData.ownedTasks.filter(taskId => !pastTasks.some(task => task._id === taskId) && !openTasks.some(task => task._id === taskId));
@@ -98,17 +92,15 @@ export default function Profile( data: UserProfile | null ) {
             } catch (error) {
                 console.error('Error fetching owned tasks:', error);
             } finally {
-                setLoadingTasks(false);
+                setLoadingTasks(false); 
             }
         };
     
         fetchOwnedTasks();
-    }, [userData, openTasks, pastTasks]);
+    }, [userData]); 
 
     if (loadingTasks) {
-        return (
-            <ProfileLoading />
-        );
+        return <ProfileLoading />;
     }
 
     return (
