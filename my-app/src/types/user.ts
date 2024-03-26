@@ -35,6 +35,7 @@ export interface UserProfile {
 }
 
 export interface UserCard {
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
