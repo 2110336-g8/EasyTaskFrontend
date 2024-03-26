@@ -111,7 +111,7 @@ export default function MessageRoom(props: { taskId: string }) {
         const senderImage: string | undefined = userInfo?.get(
             message.senderId ?? '',
         )?.imageUrl;
-        const isSelf = message.senderId === clientStorage.get().user._id;
+        const isSelf = message.senderId !== clientStorage.get().user._id;
         if (message.senderType === 'user') {
             return (
                 <div
@@ -135,7 +135,7 @@ export default function MessageRoom(props: { taskId: string }) {
                     ) : (
                         <div className='min-w-[56px]'></div>
                     )}
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col max-w-[70%]'>
                         {isSelf ||
                         (message.senderId === nextMessage?.senderId &&
                             dayjs(message.sentAt).format('DDMMYYYY') ==
