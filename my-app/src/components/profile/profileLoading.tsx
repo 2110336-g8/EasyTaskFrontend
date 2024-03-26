@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const loadingMessages = [
     'Loading...',
@@ -12,9 +12,14 @@ const loadingMessages = [
     'One moment please...',
 ];
 
-const ProfileLoading = () => {
-    const randomIndex = Math.floor(Math.random() * loadingMessages.length);
-    const randomMessage = loadingMessages[randomIndex];
+export default function ProfileLoading() {
+    const [randomMessage, setRandomMessage] = useState('');
+
+    useEffect(() => {
+        const randomIndex = Math.floor(Math.random() * loadingMessages.length);
+        const randomMsg = loadingMessages[randomIndex];
+        setRandomMessage(randomMsg);
+    }, []);
 
     return (
         <div className="flex justify-center items-center h-screen gap-4">
@@ -24,5 +29,3 @@ const ProfileLoading = () => {
         </div>
     );
 };
-
-export default ProfileLoading;
