@@ -1,9 +1,10 @@
 'use client';
 
-import { ViewTaskProps } from '@/types/task';
+import { ViewAdsProps, ViewTaskProps } from '@/types/task';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 
-export default function AdsUser(props: ViewTaskProps) {
+export default function AdsUser(props: ViewAdsProps) {
+    console.log(props);
     return (
         <div className='flex flex-col gap-[16px]'>
             <h4>Candidate Applications ({props.applicants?.length})</h4>
@@ -15,7 +16,7 @@ export default function AdsUser(props: ViewTaskProps) {
                         style={{ width: '56px', height: '56px' }}
                     >
                         <AvatarImage
-                            src={props.customer?.image}
+                            src={applicant.image}
                             alt='@shadcn'
                         />
                         <AvatarFallback>?</AvatarFallback>
