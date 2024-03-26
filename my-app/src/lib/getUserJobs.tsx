@@ -9,7 +9,7 @@ export const getUserJobs = async function ({
     status: string;
 }): Promise<GetUserJobsResponse> {
     return instance
-        .get(`/v1/tasks/taskOf/${userId}/${status}`)
+        .get(`/v1/tasks/tasksOf/${userId}?status=${status}`)
         .then(response => {
             return response.data as GetUserJobsResponse;
         })
