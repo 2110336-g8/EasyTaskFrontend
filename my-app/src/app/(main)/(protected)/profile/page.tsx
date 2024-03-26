@@ -17,9 +17,11 @@ export default function MyProfile() {
                 if (!id) {
                     return;
                 }
+                console.log(id);
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
 
                 if (userDataResponse.data.user) {
+                    console.log(userDataResponse.data.user);
                     setUserData(userDataResponse.data.user);
                 } else {
                     toast({
