@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/use-toast";
 
 export default function MyProfile() {
     const id = clientStorage.get().user._id;
+    console.log(id);
     const [userData, setUserData] = useState<UserProfile | null>(null); 
 
     useEffect(() => {
