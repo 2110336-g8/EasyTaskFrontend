@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { instance } from "@/utils/axiosInstance";
 import ProfileError from "@/components/profile/profileError";
 import { UserProfile } from '@/types/user';
+import Profile from "@/components/profile/profilePage";
 
 interface UserRoute {
     params: {
@@ -42,8 +43,11 @@ export default function UserProfile({ params }: UserRoute) {
 
     return (
         <div>
-            <p>Post: {userId}</p>
-            <ProfileError />
+            { userData ? 
+                <Profile {...userData} /> 
+                :
+                <ProfileError />
+            }
         </div>
     );
 }
