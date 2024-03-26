@@ -54,13 +54,25 @@ export default function MessagePreviewBox(props: MessagePreview) {
                     </p>
                 </div>
             </div>
-            {props.unreadCount > 0 && (
-                <div className='min-w-[32px] h-[32px] flex items-center justify-center bg-primary-500 rounded-full'>
-                    <p className='text-white font-semibold'>
-                        {props.unreadCount}
-                    </p>
-                </div>
-            )}
+            {(() => {
+                if (props.unreadCount === 0) {
+                    return <></>;
+                }
+                if (props.unreadCount < 99) {
+                    return (
+                        <div className='min-w-[32px] h-[32px] flex items-center justify-center bg-primary-500 rounded-full'>
+                            <p className='text-white font-semibold'>
+                                {props.unreadCount}
+                            </p>
+                        </div>
+                    );
+                }
+                return (
+                    <div className='min-w-[44px] w-fit h-[32px] flex items-center justify-center bg-primary-500 rounded-full'>
+                        <p className='text-white font-semibold'>99+</p>
+                    </div>
+                );
+            })()}
         </Link>
     );
 }

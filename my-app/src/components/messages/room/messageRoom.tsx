@@ -111,7 +111,7 @@ export default function MessageRoom(props: { taskId: string }) {
         const senderImage: string | undefined = userInfo?.get(
             message.senderId ?? '',
         )?.imageUrl;
-        const isSelf = message.senderId === clientStorage.get().user._id;
+        const isSelf = message.senderId !== clientStorage.get().user._id;
         if (message.senderType === 'user') {
             return (
                 <div
@@ -135,7 +135,7 @@ export default function MessageRoom(props: { taskId: string }) {
                     ) : (
                         <div className='min-w-[56px]'></div>
                     )}
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col max-w-[70%]'>
                         {isSelf ||
                         (message.senderId === nextMessage?.senderId &&
                             dayjs(message.sentAt).format('DDMMYYYY') ==
@@ -156,11 +156,11 @@ export default function MessageRoom(props: { taskId: string }) {
                             <div
                                 className={
                                     isSelf
-                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start self-end h-fit max-w-[70%]'
-                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end self-end h-fit max-w-[70%]'
+                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit'
+                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit'
                                 }
                             >
-                                <p className='text-slate-900 break-all'>
+                                <p className='text-slate-900 text-wrap break-all'>
                                     {message.text.content}
                                 </p>
                             </div>
@@ -191,7 +191,9 @@ export default function MessageRoom(props: { taskId: string }) {
                                 {message.text.title}
                             </p>
                         </div>
-                        <p className='break-all'>{message.text.content}</p>
+                        {message.text.content && (
+                            <p className='break-all'>{message.text.content}</p>
+                        )}
                     </div>
                 </div>
             );
@@ -250,7 +252,7 @@ export default function MessageRoom(props: { taskId: string }) {
     useEffect(() => {
         const setupSocket = () => {
             const socket = io(
-                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}messages`,
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
                 {
                     auth: {
                         token: clientStorage.get().token,
