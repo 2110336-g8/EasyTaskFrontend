@@ -21,7 +21,6 @@ export default function MyProfile() {
 
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
-                    console.log(userData);
                 } else {
                     toast({
                         variant: 'destructive',

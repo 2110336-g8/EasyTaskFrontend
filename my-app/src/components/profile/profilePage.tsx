@@ -18,6 +18,8 @@ export default function Profile( data: UserProfile | null ) {
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
 
+    console.log(data)
+
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
@@ -110,9 +112,6 @@ export default function Profile( data: UserProfile | null ) {
 			<div className="w-full bg-indigo-300 rounded-md min-h-[160px] max-md:max-w-full" />
             <div className='flex z-10 -mt-10 max-w-full px-4 md:px-20'>
                 <ProfileCard {...userData as UserCard}/>
-                <Button className="justify-center text-base md:text-sm px-3 py-2 mt-12 ml-12 md:mt-0 border bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
-                    Edit Profile
-                </Button>
             </div>
             <Tabs defaultValue="open" className="flex flex-col items-center justify-center">
                 <TabsList className="flex gap-3 p-3 text-xl font-semibold tracking-normal leading-7 rounded-md bg-slate-100">
