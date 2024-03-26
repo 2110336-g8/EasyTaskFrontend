@@ -36,9 +36,9 @@ export default function ProfileCard(props: UserCard) {
                                             {props.firstName + " " + props.lastName}
                                         </div>
                                         {props._id === id && (
-                                            <button className="justify-center text-base px-3 py-2 border-2 border-solid bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
+                                            <Button className="justify-center text-base px-3 py-2 border-2 border-solid bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
                                                 Edit Profile
-                                            </button>
+                                            </Button>
                                         )}
                                     </div>
                                 ) : (
