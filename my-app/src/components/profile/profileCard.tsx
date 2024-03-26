@@ -51,10 +51,10 @@ export default function ProfileCard(props: UserCard) {
                                 {props.phoneNumber && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Phone /> 
-                                        <span>{props.phoneNumber.replace(
+                                        <a href={`tel:${props.phoneNumber}`}>{props.phoneNumber.replace(
                                             /(\d{3})(\d{3})(\d{4})/,
                                             '$1-$2-$3'
-                                        )}</span>
+                                        )}</a>
                                     </button>
                                 )}
                                 {props.email && (
