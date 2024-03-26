@@ -1,6 +1,5 @@
 import React from 'react';
 import { Phone, Mail } from 'lucide-react';
-import Image from 'next/image';
 import { UserCard } from '@/types/user';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from '@/components/ui/button';
