@@ -2,10 +2,13 @@ import React from 'react';
 import { Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { UserCard } from '@/types/user';
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { clientStorage } from "@/utils/storageService";
 
 export default function ProfileCard(props: UserCard) {
+    const id = clientStorage.get().user._id;
     return (
         <div className="flex flex-col justify-center items-start px-16 max-md:px-5">
             <div className="ml-36 max-w-full w-[647px]">
@@ -28,8 +31,15 @@ export default function ProfileCard(props: UserCard) {
                         <div className="flex flex-col self-stretch my-auto font-semibold leading-[150%] max-md:mt-10">
                             {
                                 (props.firstName || props.lastName) ? (
-                                    <div className="text-4xl tracking-tight text-slate-900">
-                                        {props.firstName + " " + props.lastName}
+                                    <div>
+                                        <div className="text-4xl tracking-tight text-slate-900">
+                                            {props.firstName + " " + props.lastName}
+                                        </div>
+                                        {props._id === id && (
+                                            <Button className="justify-center text-base px-3 py-2 bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
+                                                Edit Profile
+                                            </Button>
+                                        )}
                                     </div>
                                 ) : (
                                     <Skeleton className="h-8 w-[300px]" />
