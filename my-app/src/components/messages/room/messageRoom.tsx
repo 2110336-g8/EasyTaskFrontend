@@ -250,7 +250,7 @@ export default function MessageRoom(props: { taskId: string }) {
     useEffect(() => {
         const setupSocket = () => {
             const socket = io(
-                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}messages`,
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
                 {
                     auth: {
                         token: clientStorage.get().token,
