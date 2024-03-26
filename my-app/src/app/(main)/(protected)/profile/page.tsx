@@ -6,11 +6,12 @@ import { UserProfile } from '@/types/user';
 import { clientStorage } from "@/utils/storageService";
 import { instance } from "@/utils/axiosInstance";
 import { toast } from "@/components/ui/use-toast";
+import ProfileError from "@/components/profile/profileError";
 
 export default function MyProfile() {
-    const id = clientStorage.get().user._id;
-    console.log(id);
-    const [userData, setUserData] = useState<UserProfile | null>(null); 
+    const id: string | null = clientStorage.get().user._id;
+    const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); 
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -37,15 +38,23 @@ export default function MyProfile() {
                     title: 'Error Fetching User Data',
                     description: 'Failed to fetch user data. Please try again later.',
                 });
+            } finally {
+                setLoading(false); 
             }
         };
 
         fetchUser();
-    }, []);
+    }, [id]);
 
     return (
         <div>
-            <Profile {...userData as UserProfile} />
+            {loading ? (
+                <p>Loading...</p> 
+            ) : userData ? (
+                <Profile {...userData as UserProfile} />
+            ) : (
+                <ProfileError />
+            )}
         </div>
     );
 }
