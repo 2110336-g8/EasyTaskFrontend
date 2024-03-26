@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { clientStorage } from "@/utils/storageService";
 import Link from "next/link";
-import { useRouter } from 'next/router';
 
 export default function ProfileCard(props: UserCard) {
     const id = clientStorage.get().user._id;
