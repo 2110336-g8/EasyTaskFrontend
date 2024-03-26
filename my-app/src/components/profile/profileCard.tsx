@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { clientStorage } from "@/utils/storageService";
+import Link from "next/link"
 
 export default function ProfileCard(props: UserCard) {
     const id = clientStorage.get().user._id;
@@ -35,8 +36,8 @@ export default function ProfileCard(props: UserCard) {
                                         {props.firstName + " " + props.lastName}
                                     </div>
                                     {(props._id === id) && (
-                                        <Button className="text-base px-3 py-2 border-2 border-primary-500 bg-white text-primary-500 font-semibold hover:bg-primary-100">
-                                            Edit Profile
+                                        <Button asChild className="text-base px-3 py-2 border-2 border-primary-500 bg-white text-primary-500 font-semibold hover:bg-primary-100">
+                                            <Link href="/account">Edit Profile</Link>
                                         </Button>
                                     )}
                                 </div>
