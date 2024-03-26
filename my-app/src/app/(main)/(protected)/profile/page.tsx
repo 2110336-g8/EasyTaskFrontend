@@ -8,13 +8,12 @@ import { instance } from "@/utils/axiosInstance";
 import { toast } from "@/components/ui/use-toast";
 
 export default function MyProfile() {
+    const id = clientStorage.get().user._id;
     const [userData, setUserData] = useState<UserProfile | null>(null); 
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const id = clientStorage.get().user._id;
-                console.log(id);
                 if (!id) {
                     return;
                 }
@@ -41,7 +40,7 @@ export default function MyProfile() {
         };
 
         fetchUser();
-    }, [userData]);
+    }, []);
 
     return (
         <div>
