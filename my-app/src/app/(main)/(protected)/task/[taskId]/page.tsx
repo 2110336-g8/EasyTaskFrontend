@@ -9,6 +9,8 @@ import {
     JobDetailResponse,
     Task,
     ViewTaskProps,
+    ViewJobProps,
+    ViewAdsProps,
 } from '@/types/task';
 import { User } from '@/types/user';
 import { dateNow, formatDateDuration } from '@/utils/datetime';
@@ -22,7 +24,7 @@ export default function TaskDetailPage({
 }: {
     params: { taskId: string };
 }) {
-    const [task, setTask] = useState<ViewTaskProps>();
+    const [task, setTask] = useState<ViewJobProps | ViewTaskProps>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
@@ -48,7 +50,7 @@ export default function TaskDetailPage({
                     };
                     // console.log(taskData.customerInfo)
                     if ('customerInfo' in taskData) {
-                        formattedTask.customer = {
+                        (formattedTask as ViewJobProps).customer = {
                             _id: taskData.customerInfo._id,
                             name:
                                 taskData.customerInfo.firstName +
@@ -59,25 +61,27 @@ export default function TaskDetailPage({
                                 taskData.customerInfo.phoneNumber || '',
                             ),
                         };
+                        (formattedTask as ViewJobProps).status = taskData.status
                     }
                     if ('applicantsInfo' in taskData) {
-                        formattedTask.applicants = taskData.applicantsInfo?.map(
-                            (applicant: Applicant | User) => ({
-                                _id: (applicant as User)._id,
-                                name:
-                                    (applicant as User).firstName +
-                                    ' ' +
-                                    (applicant as User).lastName,
-                                image: (applicant as User).imageUrl,
-                                phoneNumber: formatPhoneNumber(
-                                    (applicant as User).phoneNumber || '',
-                                ),
-                                status: (applicant as Applicant).status,
-                            }),
-                        );
+                        (formattedTask as ViewAdsProps).applicants =
+                            taskData.applicantsInfo?.map(
+                                (applicant: Applicant | User) => ({
+                                    _id: (applicant as User)._id,
+                                    name:
+                                        (applicant as User).firstName +
+                                        ' ' +
+                                        (applicant as User).lastName,
+                                    image: (applicant as User).imageUrl,
+                                    phoneNumber: formatPhoneNumber(
+                                        (applicant as User).phoneNumber || '',
+                                    ),
+                                    status: (applicant as Applicant).status,
+                                }),
+                            );
                     }
                     if ('hiredWorkersInfo' in taskData) {
-                        formattedTask.hiredWorkers =
+                        (formattedTask as ViewAdsProps).hiredWorkers =
                             taskData.hiredWorkersInfo?.map(
                                 (worker: Worker | User) => ({
                                     _id: (worker as User)._id,

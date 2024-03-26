@@ -3,7 +3,7 @@
 import { toast } from '../../ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
 import { Button } from '@/components/ui/button';
-import { ViewTaskProps } from '@/types/task';
+import { ViewAdsProps, ViewJobProps, ViewTaskProps } from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -20,8 +20,10 @@ import Image from 'next/image';
 import FullWidthBar from '../../ui/hbar';
 import JobUser from './jobUser';
 import AdsUser from './adsUser';
+import AdsButtons from './adsButton';
+import JobButtons from './jobButtons';
 
-export default function ViewTask(props: ViewTaskProps) {
+export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
     // const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
     // const [hasApplied, setHasApplied] = useState(false);
 
@@ -188,7 +190,11 @@ export default function ViewTask(props: ViewTaskProps) {
                         ) : null}
                     </article>
                     <aside className='flex flex-col w-[320px] gap-[24px]'>
-                        {/* buttton section */}
+                            {props.viewType == 'job' ? (
+                                <JobButtons {...(props as ViewJobProps)} />
+                            ) : (
+                                <AdsButtons {...(props as ViewAdsProps)} />
+                            )}
                         {/* <Button
                             onClick={applyTaskHandler}
                             disabled={!isLoggedIn || hasApplied}
