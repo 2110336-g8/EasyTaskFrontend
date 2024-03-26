@@ -18,8 +18,6 @@ export default function Profile( data: UserProfile | null ) {
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
     const [loadingTasks, setLoadingTasks] = useState(false);
 
-    console.log(data)
-
     const fetchTaskById = async (taskId: string): Promise<Task | null> => {
         try {
             const response = await instance.get(`/v1/tasks/${taskId}`);
