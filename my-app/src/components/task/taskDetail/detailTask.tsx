@@ -83,7 +83,7 @@ export default function ViewTask({
                         ) : (
                             <AdsButtons {...(props as ViewAdsProps)} />
                         )}
-
+                        <FullWidthBar />
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />

@@ -146,6 +146,7 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
     posted: string;
+    status: TaskStateOptions;
 }
 
 export interface ViewJobProps extends ViewTaskProps {
@@ -155,17 +156,14 @@ export interface ViewJobProps extends ViewTaskProps {
         image?: string;
         phoneNumber?: string;
     };
-    status: JobStatusOptions;
+    jobStatus: JobStatusOptions;
 }
 
 export interface ViewAdsProps extends ViewTaskProps {
-    applicants?: Array<{
-        _id: string;
-        name: string;
-        image?: string;
-        phoneNumber?: string;
-        status: ApplicantStatusOptions;
-    }>;
+    applicants?: ApplicantProps[];
+    pendingApplicants?: ApplicantProps[];
+    acceptApplicants?: ApplicantProps[];
+    offeringApplicants?: ApplicantProps[];
     hiredWorkers?: Array<{
         _id: string;
         name: string;
@@ -173,6 +171,13 @@ export interface ViewAdsProps extends ViewTaskProps {
         phoneNumber?: string;
         status: WorkerStatusOptions;
     }>;
+}
+export interface ApplicantProps {
+    _id: string;
+    name: string;
+    image?: string;
+    phoneNumber?: string;
+    status: ApplicantStatusOptions;
 }
 
 //*=================Ads====================*//

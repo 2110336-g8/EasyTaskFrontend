@@ -17,7 +17,7 @@ export default function JobButtons({
     //=============APPLY=============//
     const ApplyButton = () => {
         return (
-            <Button onClick={applyTaskHandler} className='w-full text-white'>
+            <Button onClick={applyTaskHandler} className='w-full'>
                 Apply Now
             </Button>
         );
@@ -48,11 +48,11 @@ export default function JobButtons({
 
     //=============ACCEPT/REJECT OFFER=============//
     const AcceptButton = () => {
-        return <Button className='w-full text-white'>Accept</Button>;
+        return <Button className='w-full'>Accept</Button>;
     };
     const RejectedButton = () => {
         return (
-            <Button className='w-full text-white' variant='destructive'>
+            <Button className='w-full' variant='destructive'>
                 Rejected
             </Button>
         );
@@ -61,7 +61,7 @@ export default function JobButtons({
     //=============PENDING=============//
     const PendingButton = () => {
         return (
-            <Button className='w-full text-white' disabled={true}>
+            <Button className='w-full' disabled={true}>
                 Pending...
             </Button>
         );
@@ -69,12 +69,12 @@ export default function JobButtons({
 
     //=============SUBMIT+CHAT=============//
     const SubmitButton = () => {
-        return <Button className='w-full text-white'>Submit</Button>;
+        return <Button className='w-full'>Submit</Button>;
     };
     const ChatButton = () => {
         return (
             <Button
-                className='w-full text-primary-500'
+                className='w-full'
                 variant='outline'
                 asChild
             >
@@ -86,13 +86,13 @@ export default function JobButtons({
     //=========Disabled======//
     const DisabledButton = ({ text }: { text: string }) => {
         return (
-            <Button className='w-full text-white' variant='disabled'>
+            <Button className='w-full' variant='disabled'>
                 {text}
             </Button>
         );
     };
 
-    switch (props.status) {
+    switch (props.jobStatus) {
         //=============APPLY=============//
         case JobStatusOptions.OPEN:
             return <ApplyButton />;

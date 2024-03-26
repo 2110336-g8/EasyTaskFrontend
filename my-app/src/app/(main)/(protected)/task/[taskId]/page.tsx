@@ -47,6 +47,7 @@ export default function TaskDetailPage({
                         endDate: dayjs(task.endDate).format('DD/MM/YYYY'),
                         workers: task.workers.toLocaleString(),
                         posted: formatDateDuration(task.createdAt, dateNow()),
+                        status: task.status,
                     };
                     // console.log(taskData.customerInfo)
                     if ('customerInfo' in taskData) {
@@ -61,7 +62,8 @@ export default function TaskDetailPage({
                                 taskData.customerInfo.phoneNumber || '',
                             ),
                         };
-                        (formattedTask as ViewJobProps).status = taskData.status
+                        (formattedTask as ViewJobProps).jobStatus =
+                            taskData.status;
                     }
                     if ('applicantsInfo' in taskData) {
                         (formattedTask as ViewAdsProps).applicants =
@@ -119,5 +121,11 @@ export default function TaskDetailPage({
         return <div>Loading...</div>;
     }
 
-    return <div>{task ? <ViewTask props={task} setIsLoading={setIsLoading}/> : null}</div>;
+    return (
+        <div>
+            {task ? (
+                <ViewTask props={task} setIsLoading={setIsLoading} />
+            ) : null}
+        </div>
+    );
 }
