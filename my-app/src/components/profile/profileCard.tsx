@@ -49,8 +49,14 @@ export default function ProfileCard(props: UserCard) {
                             <div className="flex gap-2 mt-2 text-base tracking-normal text-white whitespace-nowrap">
                                 {props.phoneNumber && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
-                                        <Phone />
-                                        <div>{props.phoneNumber}</div>
+                                        <Phone /> 
+                                        <span>
+                                            {props.phoneNumber.replace(
+                                            /^(\d{0,3})(\d{0,3})(\d{0,4})$/,
+                                            (_, p1, p2, p3) =>
+                                                [p1, p2, p3].filter(Boolean).join('-')
+                                            )}
+                                        </span>
                                     </button>
                                 )}
                                 {props.email && (
