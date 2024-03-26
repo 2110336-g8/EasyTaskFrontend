@@ -41,7 +41,7 @@ export default function MyProfile() {
         };
 
         fetchUser();
-    }, []);
+    }, [userData]);
 
     return (
         <div>
