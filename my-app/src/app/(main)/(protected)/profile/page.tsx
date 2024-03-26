@@ -8,7 +8,7 @@ import { instance } from "@/utils/axiosInstance";
 import { toast } from "@/components/ui/use-toast";
 
 const ProfileComponent: React.FC = () => { 
-    const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [userData, setUserData] = useState<any>(null); // will change any later
 
     useEffect(() => {
         const fetchUser = async () => {

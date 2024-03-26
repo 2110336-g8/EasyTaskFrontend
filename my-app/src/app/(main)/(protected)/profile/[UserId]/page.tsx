@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { instance } from "@/utils/axiosInstance";
 import ProfileError from "@/components/profile/profileError";
-import { UserProfile } from '@/types/user';
 import Profile from "@/components/profile/profilePage";
 
 
@@ -15,7 +14,7 @@ interface UserRoute {
     
 export default function UserProfile({ params }: UserRoute) { 
     const userId = params.UserId; 
-    const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [userData, setUserData] = useState<any>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
