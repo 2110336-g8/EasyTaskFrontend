@@ -118,7 +118,7 @@ export default function Profile() {
                 const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
 
                 console.log(userDataResponse);
-                console.log(userImgResponse);
+                console.log(userImageResponse);
 
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
