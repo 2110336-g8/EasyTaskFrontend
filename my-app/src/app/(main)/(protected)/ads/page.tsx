@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import {
     AdsCardProps,
+    AdsStateOptions,
     GetUserAdsResponse,
     TaskStateOptions,
 } from '@/types/task';
@@ -98,22 +99,22 @@ export default function AdsList() {
 
                     setAdsPayList(
                         formattedAdsList.filter(
-                            task => task.status == TaskStateOptions.COMPLETED,
+                            task => task.status == AdsStateOptions.COMPLETED,
                         ),
                     );
                     setAdsOpenList(
                         formattedAdsList.filter(
-                            task => task.status == TaskStateOptions.OPEN,
+                            task => task.status == AdsStateOptions.OPEN,
                         ),
                     );
                     setAdsWorkList(
                         formattedAdsList.filter(
-                            task => task.status == TaskStateOptions.INPROGRESS,
+                            task => task.status == AdsStateOptions.INPROGRESS,
                         ),
                     );
                     setAdsClosedList(
                         formattedAdsList.filter(
-                            task => task.status == TaskStateOptions.CLOSED,
+                            task => task.status == AdsStateOptions.CLOSED,
                         ),
                     );
                 })

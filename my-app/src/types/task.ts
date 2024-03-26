@@ -24,6 +24,13 @@ export enum TaskStateOptions {
     COMPLETED = 'Completed',
 }
 
+export enum AdsStateOptions {
+    OPEN = 'Open',
+    INPROGRESS = 'InProgress',
+    CLOSED = 'Closed',
+    COMPLETED = 'Completed',
+}
+
 export interface GeographicLocation {
     name: string;
     latitude: number;
