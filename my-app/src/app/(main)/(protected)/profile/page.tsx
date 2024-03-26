@@ -20,8 +20,8 @@ export default function MyProfile() {
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
 
                 if (userDataResponse.data.user) {
-                    console.log(userDataResponse.data.user);
                     setUserData(userDataResponse.data.user);
+                    console.log(userData);
                 } else {
                     toast({
                         variant: 'destructive',
