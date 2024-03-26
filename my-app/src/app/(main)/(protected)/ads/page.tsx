@@ -81,7 +81,7 @@ export default function AdsList() {
                     const formattedAdsList: AdsCardProps[] =
                         adsListData.tasks.map(task => ({
                             taskId: task._id,
-                            image: task.image,
+                            imageUrl: task.imageUrl,
                             title: task.title,
                             status: task.status,
                             startDate: dayjs(task.startDate).format(
@@ -90,6 +90,7 @@ export default function AdsList() {
                             endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                             location: task.location?.name,
                             applications: task.workers.toLocaleString(),
+                            hiredworkersNumber: task.hiredWorkers.length,
                             wages: task.wages.toLocaleString(),
                             category: task.category,
                         }));
@@ -221,7 +222,7 @@ export default function AdsList() {
                         </Button>
                     )}
                     {/* Conditionally render Save or Manage button */}
-                    {isManaging ? (
+                    {/* {isManaging ? (
                         <ConfirmButton
                             confirmHandler={handleSave}
                             actionText='Save'
@@ -238,25 +239,25 @@ export default function AdsList() {
                             <PenSquareIcon />
                             Manage
                         </Button>
-                    )}
+                    )} */}
                 </div>
             </div>
             <AdsToggleList
-                type='pay'
+                type='open'
                 adsList={adsPayList}
                 managing={isManaging}
                 onAddToCancelList={handleAddToCancelList}
                 onRemoveFromCancelList={handleRemoveFromCancelList}
             />
             <AdsToggleList
-                type='open'
+                type='inprogress'
                 adsList={adsOpenList}
                 managing={isManaging}
                 onAddToCancelList={handleAddToCancelList}
                 onRemoveFromCancelList={handleRemoveFromCancelList}
             />
             <AdsToggleList
-                type='working'
+                type='completed'
                 adsList={adsWorkList}
                 managing={isManaging}
                 onAddToCancelList={handleAddToCancelList}

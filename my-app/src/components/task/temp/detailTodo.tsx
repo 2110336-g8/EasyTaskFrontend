@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from '../ui/use-toast';
+import { toast } from '../../ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
 import { Button } from '@/components/ui/button';
 import { Task, ViewTaskProps } from '@/types/task';
 import { ArrowLeftIcon } from 'lucide-react';
 import Map from '@/components/createTask/mapBox';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 
 const api = axios.create({
     baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',

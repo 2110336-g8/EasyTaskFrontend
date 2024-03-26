@@ -21,7 +21,7 @@ class ClientStorage {
     private static storageKey: string = 'EasyTaskSession';
 
     static new_key(values?: StorageKeys): StorageKeys {
-        if (typeof values === 'undefined')
+        if (typeof values === 'undefined') {
             return {
                 token: '',
                 user: {
@@ -32,10 +32,11 @@ class ClientStorage {
                     phoneNumber: '',
                     imageUrl: '',
                     bankId: '',
+                    bankAccName: '',
                     bankAccNo: '',
-                },
+                }
             };
-
+        }
         return values;
     }
 

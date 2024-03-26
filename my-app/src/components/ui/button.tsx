@@ -29,15 +29,15 @@ const buttonVariants = cva(
                 m: 'py-[12px] px-[24px]',
             },
             font: {
-                xs: 'font-medium text-[14px] leading-[18px] tracking tracking-[-0.005em]',
-                s: 'font-semibold text-[16px] leading-[24px] tracking tracking-[-0.005em]',
-                m: 'font-semibold text-[20px] leading-[28px] tracking tracking-[-0.005em]',
+                xs: 'text-button-xs font-button-xs tracking-button-xs',
+                s: 'text-button-s font-button-s tracking-button-s',
+                m: 'text-button-m font-button-m tracking-button-m',
             },
         },
         defaultVariants: {
             variant: 'default',
             size: 'm',
-            font: 'm'
+            font: 'm',
         },
     },
 );
@@ -49,11 +49,13 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
+    ({ className, variant, size, font, asChild = false, ...props }, ref) => {
         const Comp = asChild ? Slot : 'button';
         return (
             <Comp
-                className={cn(buttonVariants({ variant, size, className }))}
+                className={cn(
+                    buttonVariants({ variant, size, font, className }),
+                )}
                 ref={ref}
                 {...props}
             />

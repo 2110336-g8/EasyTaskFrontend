@@ -17,10 +17,10 @@ export default function AdsToggleList({
     onRemoveFromCancelList: (taskId: string) => void;
 }) {
     const names = {
-        pay: 'To Pay Deposit',
+        inprogress: 'In Progress',
         open: 'Open for Apply',
-        working: 'Working On',
-        closed: 'Closed',
+        completed: 'Completed',
+        closed: 'Dismissed',
     };
 
     const [isShow, setIsShow] = useState<boolean>(false);

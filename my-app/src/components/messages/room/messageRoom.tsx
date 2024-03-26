@@ -149,7 +149,7 @@ export default function MessageRoom(props: { taskId: string }) {
                         <div
                             className={
                                 isSelf
-                                    ? 'flex flex-row-reverse gap-[8px]'
+                                    ? 'flex flex-row-reverse gap-[8px] h-full'
                                     : 'flex flex-row gap-[8px]'
                             }
                         >
@@ -191,7 +191,9 @@ export default function MessageRoom(props: { taskId: string }) {
                                 {message.text.title}
                             </p>
                         </div>
-                        <p className='break-all'>{message.text.content}</p>
+                        {message.text.content && (
+                            <p className='break-all'>{message.text.content}</p>
+                        )}
                     </div>
                 </div>
             );
@@ -250,7 +252,7 @@ export default function MessageRoom(props: { taskId: string }) {
     useEffect(() => {
         const setupSocket = () => {
             const socket = io(
-                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}messages`,
+                `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}/messages`,
                 {
                     auth: {
                         token: clientStorage.get().token,
@@ -312,7 +314,7 @@ export default function MessageRoom(props: { taskId: string }) {
             {isJoined && (
                 <div className='w-full h-full flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto gap-y-[16px]'
+                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
@@ -348,7 +350,7 @@ export default function MessageRoom(props: { taskId: string }) {
                             />
                         </Form>
                         <Button size='xs' className='py-[7px] px-[9px]'>
-                            <Send size={28} />
+                            <Send size={28} className='stroke-white' />
                         </Button>
                     </form>
                 </div>
