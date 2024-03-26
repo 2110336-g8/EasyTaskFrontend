@@ -5,9 +5,11 @@ import { instance } from "@/utils/axiosInstance";
 import ProfileError from "@/components/profile/profileError";
 import Profile from "@/components/profile/profilePage";
 import type { UserProfile } from "@/types/user"; 
+import ProfileLoading from "@/components/profile/profileLoading";
 
 export default function ViewProfile({ params: { UserId } }: { params: { UserId: string } }) {
     const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -27,6 +29,8 @@ export default function ViewProfile({ params: { UserId } }: { params: { UserId: 
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 setUserData(null);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -35,11 +39,13 @@ export default function ViewProfile({ params: { UserId } }: { params: { UserId: 
 
     return (
         <div>
-            {userData ?
-                <Profile {...userData} />
-                :
+            {loading ? (
+                <ProfileLoading />
+            ) : userData ? (
+                <Profile {...userData as UserProfile} />
+            ) : (
                 <ProfileError />
-            }
+            )}
         </div>
     );
 }

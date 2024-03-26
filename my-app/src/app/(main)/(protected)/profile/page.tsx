@@ -7,10 +7,12 @@ import { clientStorage } from "@/utils/storageService";
 import { instance } from "@/utils/axiosInstance";
 import { toast } from "@/components/ui/use-toast";
 import ProfileError from "@/components/profile/profileError";
+import ProfileLoading from "@/components/profile/profileLoading";
 
 export default function MyProfile() {
     const id: string | null = clientStorage.get().user._id;
     const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -29,6 +31,7 @@ export default function MyProfile() {
                         description: 'You need to login first to view your profile.',
                     });
                 }
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 toast({
@@ -36,7 +39,10 @@ export default function MyProfile() {
                     title: 'Error Fetching User Data',
                     description: 'Failed to fetch user data. Please try again later.',
                 });
-            } 
+                
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchUser();
@@ -44,8 +50,9 @@ export default function MyProfile() {
 
     return (
         <div>
-            {
-            userData ? (
+            {loading ? (
+                <ProfileLoading />
+            ) : userData ? (
                 <Profile {...userData as UserProfile} />
             ) : (
                 <ProfileError />
