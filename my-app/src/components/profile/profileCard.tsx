@@ -31,14 +31,14 @@ export default function ProfileCard(props: UserCard) {
                         <div className="flex flex-col self-stretch my-auto font-semibold leading-[150%] max-md:mt-10">
                             {
                                 (props.firstName || props.lastName) ? (
-                                    <div>
+                                    <div className="flex items-center gap-4">
                                         <div className="text-4xl tracking-tight text-slate-900">
                                             {props.firstName + " " + props.lastName}
                                         </div>
                                         {props._id === id && (
-                                            <Button className="justify-center text-base px-3 py-2 bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
+                                            <button className="justify-center text-base px-3 py-2 border-2 border-solid bg-white text-primary-500 border-primary-500 font-semibold tracking-normal hover:bg-primary-100">
                                                 Edit Profile
-                                            </Button>
+                                            </button>
                                         )}
                                     </div>
                                 ) : (
