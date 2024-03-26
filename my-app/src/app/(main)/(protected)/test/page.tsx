@@ -1,9 +1,5 @@
 'use client';
-import EmployeeCard from '@/components/employeeSelection/employeeCard';
-import { EmployeeCardProp } from '@/types/task';
-import { useState } from 'react';
-import EmployeeSelectionCard from '@/components/employeeSelection/employeeSelectionCard';
 
 export default function Test() {
-    return <EmployeeSelectionCard />;
+    return <div>{'You can use this page to test render something.'}</div>;
 }

@@ -215,12 +215,25 @@ export interface GetUserAdsResponse {
     tasks: Task[];
 }
 
-export interface EmployeeCardProp {
-    userId?: string;
+export interface CandidatesOfTask {
+    taskId: string;
+    capacity: number;
+    vacancy: number;
+    candidates: {
+        pending: Array<CandidateInfo>;
+        offering: Array<CandidateInfo>;
+        accepted: Array<CandidateInfo>;
+    };
+}
+
+export interface CandidateInfo {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
     imageUrl?: string;
-    name: string;
-    tel?: string;
-    email?: string;
+    phoneNumber?: string;
+    appliedAt: Date;
 }
 
 export interface ApplyTaskResponse {

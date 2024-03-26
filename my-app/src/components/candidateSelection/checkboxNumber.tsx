@@ -15,7 +15,7 @@ export default function CheckboxNumber(props: {
 
     return (
         <div
-            className='w-[24px] h-[24px] border border-gray-300 rounded-[4px] cursor-default hover:cursor-pointer'
+            className='w-[24px] h-[24px] bg-background border border-gray-300 rounded-[4px] cursor-default hover:cursor-pointer'
             onClick={handleToggle}
         >
             <div className='flex justify-center items-center'>
