@@ -11,7 +11,6 @@ import ProfileError from "@/components/profile/profileError";
 export default function MyProfile() {
     const id: string | null = clientStorage.get().user._id;
     const [userData, setUserData] = useState<UserProfile | null>(null);
-    const [loading, setLoading] = useState<boolean>(true); 
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -22,7 +21,6 @@ export default function MyProfile() {
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
 
                 if (userDataResponse.data.user) {
-                    console.log(userDataResponse.data.user);
                     setUserData(userDataResponse.data.user);
                 } else {
                     toast({
@@ -48,9 +46,8 @@ export default function MyProfile() {
 
     return (
         <div>
-            {loading ? (
-                <p>Loading...</p> 
-            ) : userData ? (
+            {
+            userData ? (
                 <Profile {...userData as UserProfile} />
             ) : (
                 <ProfileError />
