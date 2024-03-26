@@ -6,6 +6,7 @@ import ProfileError from "@/components/profile/profileError";
 import { UserProfile } from '@/types/user';
 import Profile from "@/components/profile/profilePage";
 
+
 interface UserRoute {
     params: {
         UserId: string;
@@ -13,7 +14,7 @@ interface UserRoute {
 }
     
 export default function UserProfile({ params }: UserRoute) { 
-    const [userId, setUserId] = useState<string>(params.UserId); 
+    const userId = params.UserId; 
     const [userData, setUserData] = useState<UserProfile | null>(null);
 
     useEffect(() => {
