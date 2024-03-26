@@ -1,17 +1,17 @@
 'use client';
 
-import {
-    TaskStateOptions,
-    ViewAdsProps,
-} from '@/types/task';
+import { TaskStateOptions, ViewAdsProps } from '@/types/task';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function AdsButtons(props: ViewAdsProps) {
-    
     //=============OPEN=============//
     const SelectButton = () => {
-        return <Button className='w-full'>Select Employees</Button>;
+        return (
+            <Button className='w-full'>
+                <Link href={`/task/${props.taskId}/select`}>Select Employees</Link>
+            </Button>
+        );
     };
     const StartButton = ({ variant }: { variant: 'default' | 'outline' }) => {
         return (
