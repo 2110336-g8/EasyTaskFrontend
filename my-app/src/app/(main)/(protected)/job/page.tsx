@@ -68,74 +68,74 @@ export default function JobsList() {
         [],
     );
     const userId: string | null = clientStorage.get().user._id;
-    const fetchJobsFromStatus = async (jobStatus: string) => {
-        try {
-            const result = await getUserJobs({
-                userId: userId,
-                status: jobStatus,
-            });
-            if (result?.error) {
-                console.error('Fetch Jobs failed:', result.error);
-            } else if (result?.tasks) {
-                const formattedJobsList: AdsCardProps[] = result.tasks.map(
-                    task => ({
-                        taskId: task._id,
-                        imageUrl: task.imageUrl,
-                        title: task.title,
-                        status: task.status,
-                        startDate: dayjs(task.startDate).format('DD MMM YYYY'),
-                        endDate: dayjs(task.endDate).format('DD MMM YYYY'),
-                        location: task.location?.name,
-                        applications: task.workers.toLocaleString(),
-                        hiredworkersNumber: task.hiredWorkers.length,
-                        wages: task.wages.toLocaleString(),
-                        category: task.category,
-                    }),
-                );
-                switch (jobStatus) {
-                    case 'Applied':
-                        setJobAppliedList(formattedJobsList);
-                        break;
-                    case 'Offering':
-                        setJobOfferList(formattedJobsList);
-                        break;
-                    case 'Rejected':
-                        setJobRejectedList(formattedJobsList);
-                        break;
-                    case 'Accepted':
-                        setJobAppliedList(formattedJobsList);
-                        break;
-                    case 'NotProceed':
-                        setJobNotProceedList(formattedJobsList);
-                        break;
-                    case 'Ongoing':
-                        setJobOnGoingList(formattedJobsList);
-                        break;
-                    case 'Completed':
-                        setJobCompletedList(formattedJobsList);
-                        break;
-                }
-                console.log('feteched', jobStatus);
-            }
-        } catch (error) {
-            toast({
-                variant: 'destructive',
-                title: 'Uh oh! Something went wrong.',
-                description: 'There was a problem with your request.',
-            });
-            console.error('Error fetching jobs list', error);
-        }
-    };
-    useEffect(() => {
-        // Call handleToggleClick for each type when the component is mounted
-        fetchJobsFromStatus('Applied');
-        fetchJobsFromStatus('Offering');
-        fetchJobsFromStatus('Rejected');
-        fetchJobsFromStatus('Accepted');
-        fetchJobsFromStatus('NotProceed');
-        fetchJobsFromStatus('Ongoing');
-        fetchJobsFromStatus('Completed');
-    }, []); // Empty dependency array ensures this effect runs only once
+    // const fetchJobsFromStatus = async (jobStatus: string) => {
+    //     try {
+    //         const result = await getUserJobs({
+    //             userId: userId,
+    //             status: jobStatus,
+    //         });
+    //         if (result?.error) {
+    //             console.error('Fetch Jobs failed:', result.error);
+    //         } else if (result?.tasks) {
+    //             const formattedJobsList: AdsCardProps[] = result.tasks.map(
+    //                 task => ({
+    //                     taskId: task._id,
+    //                     imageUrl: task.imageUrl,
+    //                     title: task.title,
+    //                     status: task.status,
+    //                     startDate: dayjs(task.startDate).format('DD MMM YYYY'),
+    //                     endDate: dayjs(task.endDate).format('DD MMM YYYY'),
+    //                     location: task.location?.name,
+    //                     applications: task.workers.toLocaleString(),
+    //                     hiredworkersNumber: task.hiredWorkers.length,
+    //                     wages: task.wages.toLocaleString(),
+    //                     category: task.category,
+    //                 }),
+    //             );
+    //             switch (jobStatus) {
+    //                 case 'Applied':
+    //                     setJobAppliedList(formattedJobsList);
+    //                     break;
+    //                 case 'Offering':
+    //                     setJobOfferList(formattedJobsList);
+    //                     break;
+    //                 case 'Rejected':
+    //                     setJobRejectedList(formattedJobsList);
+    //                     break;
+    //                 case 'Accepted':
+    //                     setJobAppliedList(formattedJobsList);
+    //                     break;
+    //                 case 'NotProceed':
+    //                     setJobNotProceedList(formattedJobsList);
+    //                     break;
+    //                 case 'Ongoing':
+    //                     setJobOnGoingList(formattedJobsList);
+    //                     break;
+    //                 case 'Completed':
+    //                     setJobCompletedList(formattedJobsList);
+    //                     break;
+    //             }
+    //             console.log('feteched', jobStatus);
+    //         }
+    //     } catch (error) {
+    //         toast({
+    //             variant: 'destructive',
+    //             title: 'Uh oh! Something went wrong.',
+    //             description: 'There was a problem with your request.',
+    //         });
+    //         console.error('Error fetching jobs list', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     // Call handleToggleClick for each type when the component is mounted
+    //     fetchJobsFromStatus('Applied');
+    //     fetchJobsFromStatus('Offering');
+    //     fetchJobsFromStatus('Rejected');
+    //     fetchJobsFromStatus('Accepted');
+    //     fetchJobsFromStatus('Not Proceed');
+    //     fetchJobsFromStatus('Ongoing');
+    //     fetchJobsFromStatus('Completed');
+    // }, []); // Empty dependency array ensures this effect runs only once
     return (
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
@@ -161,32 +161,32 @@ export default function JobsList() {
             </div>
             <JobToggleList
                 type='Offering'
-                adsList={jobOfferList}
+                // adsList={jobOfferList}
                 userId={userId}
             />
             <JobToggleList
-                type='OnGoing'
-                adsList={jobOnGoingList}
+                type='Ongoing'
+                // adsList={jobOnGoingList}
                 userId={userId}
             />
             <JobToggleList
                 type='Applied'
-                adsList={jobAppliedList}
+                // adsList={jobAppliedList}
                 userId={userId}
             />
             <JobToggleList
                 type='Completed'
-                adsList={jobCompletedList}
+                // adsList={jobCompletedList}
                 userId={userId}
             />
             <JobToggleList
                 type='Rejected'
-                adsList={jobRejectedList}
+                // adsList={jobRejectedList}
                 userId={userId}
             />
             <JobToggleList
-                type='NotProceed'
-                adsList={jobNotProceedList}
+                type='Not Proceed'
+                // adsList={jobNotProceedList}
                 userId={userId}
             />
         </main>

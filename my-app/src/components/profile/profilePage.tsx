@@ -3,12 +3,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import TaskCard from '../taskList/taskCard';
 import { instance } from "@/utils/axiosInstance";
 import { clientStorage } from "@/utils/storageService";
 import { UserCard, UserProfile } from '@/types/user';
-import { Skeleton } from "@/components/ui/skeleton"
 import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 import ProfileCard from "./profileCard";
@@ -92,7 +90,7 @@ export default function Profile() {
                     if (task) {
                         if (task.status === TaskStateOptions.OPEN || task.status === TaskStateOptions.INPROGRESS) {
                             setOpenTasks([...openTasks, task]);
-                        } else if (task.status === TaskStateOptions.COMPLETED || task.status === TaskStateOptions.CLOSED) {
+                        } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
                         }
                     }
@@ -118,6 +116,9 @@ export default function Profile() {
                 }
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
                 const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
+
+                console.log(userDataResponse);
+                console.log(userImageResponse);
 
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);

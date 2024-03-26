@@ -70,7 +70,11 @@ export default function AdsCard({
             return <div></div>;
         }
 
-        return <Button variant='default'>{buttonText}</Button>;
+        return (
+            <Button size='m' font='m'>
+                {buttonText}
+            </Button>
+        );
     }
 
     return (
