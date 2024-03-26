@@ -82,10 +82,10 @@ export interface TaskDetailResponse {
 
 export interface JobDetailResponse extends TaskDetailResponse {
     customerInfo: User;
-    status: JobStateOptions;
+    status: JobStatusOptions;
 }
 
-export enum JobStateOptions {
+export enum JobStatusOptions {
     //========OPEN========//
     OPEN = 'Open',
     PENDING = 'Pending',
@@ -139,12 +139,18 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
     posted: string;
-    customer?: {
+}
+
+export interface ViewJobProps extends ViewTaskProps {
+    customer: {
         _id: string;
         name: string;
         image?: string;
         phoneNumber?: string;
     };
+    status: JobStatusOptions;
+}
+export interface ViewAdsProps extends ViewTaskProps {
     applicants?: Array<{
         _id: string;
         name: string;
@@ -178,20 +184,20 @@ export interface AdsCardProps {
     buttonFunc?: string;
 }
 
-export interface ViewAdsProps {
-    taskId: string;
-    title: string;
-    category: string;
-    image?: string;
-    description?: string;
-    wages: number;
-    workers: number;
-    location?: GeographicLocation;
-    startDate: Date;
-    endDate: Date;
-    createdAt: Date;
-    applicants: Array<Applicant>;
-}
+// export interface ViewAdsProps {
+//     taskId: string;
+//     title: string;
+//     category: string;
+//     image?: string;
+//     description?: string;
+//     wages: number;
+//     workers: number;
+//     location?: GeographicLocation;
+//     startDate: Date;
+//     endDate: Date;
+//     createdAt: Date;
+//     applicants: Array<Applicant>;
+// }
 
 export interface GetUserAdsResponse {
     count: number;
