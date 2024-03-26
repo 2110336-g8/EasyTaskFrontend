@@ -29,7 +29,7 @@ export default function UserProfile({ params }: UserRoute) {
                     setUserData(null);
                 }
 
-                console.log(userData);
+                console.log(userDataResponse.data.user);
 
             } catch (error) {
                 console.error('Error fetching user data:', error);
