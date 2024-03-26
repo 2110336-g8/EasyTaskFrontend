@@ -52,7 +52,7 @@ export default function MyProfile() {
         <div>
             {loading ? (
                 <ProfileLoading />
-            ) : userData ? (
+            ) : !userData ? (
                 <Profile {...userData as UserProfile} />
             ) : (
                 <ProfileError />
