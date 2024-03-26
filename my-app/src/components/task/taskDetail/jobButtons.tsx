@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { applyTask } from '@/lib/applyTask';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function JobButtons({
     props,
@@ -72,8 +73,12 @@ export default function JobButtons({
     };
     const ChatButton = () => {
         return (
-            <Button className='w-full text-primary-500' variant='outline'>
-                Go to Messages
+            <Button
+                className='w-full text-primary-500'
+                variant='outline'
+                asChild
+            >
+                <Link href={`/messages/${props.taskId}`}>Go to Messages</Link>
             </Button>
         );
     };
