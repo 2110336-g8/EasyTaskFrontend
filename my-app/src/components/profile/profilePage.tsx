@@ -12,7 +12,7 @@ import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
-export default function Profile( data ) {
+export default function Profile( data: UserProfile | null ) {
     const [userData, setUserData] = useState(data);
     const [pastTasks, setPastTasks] = useState<Task[]>([]);
     const [openTasks, setOpenTasks] = useState<Task[]>([]);
