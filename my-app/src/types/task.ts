@@ -2,22 +2,26 @@ import { User } from './user';
 
 export enum WorkerStatusOptions {
     INPROGRESS = 'InProgress',
+    SUBMITTED = 'Submitted',
+    REVISING = 'Revising',
+    RESUBMITTED = 'Resubmitted',
     COMPLETED = 'Completed',
-    CANCELED = 'Cancel',
+    DISMISSED = 'Dismissed',
 }
 
 export enum ApplicantStatusOptions {
     PENDING = 'Pending',
+    OFFERING = 'Offering',
     ACCEPTED = 'Accepted',
     REJECTED = 'Rejected',
-    CANCELED = 'Cancel',
+    NOTPROCEED = 'NotProceed',
 }
 
 export enum TaskStateOptions {
     OPEN = 'Open',
     INPROGRESS = 'InProgress',
+    DISMISSED = 'Dismissed',
     COMPLETED = 'Completed',
-    CLOSED = 'Closed',
 }
 
 export interface GeographicLocation {
@@ -52,7 +56,7 @@ export interface Task {
     startDate: Date;
     endDate: Date;
     workers: number;
-    customerId: User;
+    customerId: string;
     applicants: Applicant[];
     hiredWorkers: Worker[];
     createdAt: Date;
@@ -76,6 +80,35 @@ export interface TaskDetailResponse {
     task: Task;
 }
 
+export interface JobDetailResponse extends TaskDetailResponse {
+    customerInfo: User;
+    status: JobStateOptions;
+}
+
+export enum JobStateOptions {
+    //========OPEN========//
+    OPEN = 'Open',
+    PENDING = 'Pending',
+    OFFERING = 'Offering',
+    ACCEPTED = 'Accepted',
+    REJECTED = 'Rejected',
+    NOTPROCEED = 'NotProceed',
+    //========INPROGRESS========//
+    INPROGRESS = 'InProgress',
+    SUBMITTED = 'Submitted',
+    REVISING = 'Revising',
+    RESUBMITTED = 'Resubmitted',
+    //========DISMISSED========//
+    DISMISSED = 'Dismissed',
+    //========COMPLETED========//
+    COMPLETED = 'Completed',
+}
+
+export interface AdsDetailResponse extends TaskDetailResponse {
+    applicantsInfo?: (Applicant | User)[];
+    hiredWorkersInfo?: (Worker | User)[];
+}
+
 export interface GetCategoriesResponse {
     success: boolean;
     categories: string[];
@@ -94,6 +127,7 @@ export interface TaskCardProps {
 }
 
 export interface ViewTaskProps {
+    viewType: 'job' | 'ads';
     taskId: string;
     title: string;
     category: string;
@@ -105,11 +139,26 @@ export interface ViewTaskProps {
     endDate: string;
     workers: string;
     posted: string;
-    customer: {
+    customer?: {
+        _id: string;
         name: string;
         image?: string;
         phoneNumber?: string;
     };
+    applicants?: Array<{
+        _id: string;
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+        status: ApplicantStatusOptions;
+    }>;
+    hiredWorkers?: Array<{
+        _id: string;
+        name: string;
+        image?: string;
+        phoneNumber?: string;
+        status: WorkerStatusOptions;
+    }>;
 }
 
 //*=================Ads====================*//
