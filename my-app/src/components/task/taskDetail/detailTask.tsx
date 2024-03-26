@@ -1,9 +1,6 @@
 'use client';
 
-import { toast } from '../../ui/use-toast';
-import { clientStorage } from '@/utils/storageService';
-import { Button } from '@/components/ui/button';
-import { ViewAdsProps, ViewJobProps, ViewTaskProps } from '@/types/task';
+import { ViewAdsProps, ViewJobProps } from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -11,11 +8,7 @@ import {
     FoldersIcon,
     UsersIcon,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import MapReadOnly from '../../map/mapBoxReadOnly';
-import axios from 'axios';
-import { applyTask } from '@/lib/applyTask';
 import Image from 'next/image';
 import FullWidthBar from '../../ui/hbar';
 import JobUser from './jobUser';
@@ -24,119 +17,6 @@ import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
 
 export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
-    // const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
-    // const [hasApplied, setHasApplied] = useState(false);
-
-    // const api = axios.create({
-    //     baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
-    //     headers: {
-    //         'Content-Type': 'application/json', // change this to axios instance
-    //     },
-    // });
-
-    // useEffect(() => {
-    //     async function checkAppliedStatus() {
-    //         try {
-    //             const response = await api.get(`${props.taskId}/check`, {
-    //                 headers: {
-    //                     Authorization: `Bearer ${clientStorage.get().token}`,
-    //                 },
-    //             });
-
-    //             if (response.status === 200) {
-    //                 setHasApplied(response.data.hasApplied);
-    //             } else {
-    //                 console.error(
-    //                     'Error checking application status:',
-    //                     response.data.error,
-    //                 );
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking application status:', error);
-    //         }
-    //     }
-
-    //     if (isLoggedIn) {
-    //         checkAppliedStatus();
-    //     }
-    // }, [isLoggedIn, props.taskId]);
-
-    // const applyTaskHandler = async () => {
-    //     console.log(isLoggedIn);
-    //     if (!isLoggedIn) {
-    //         toast({
-    //             variant: 'destructive',
-    //             title: 'Login Required',
-    //             description: 'You need to login first to apply for this task.',
-    //         });
-    //         return;
-    //     }
-
-    //     try {
-    //         const response = await applyTask(
-    //             props.taskId,
-    //             clientStorage.get().token,
-    //         );
-    //         console.log(response.success);
-    //         if (response.success) {
-    //             console.log('applied task success');
-    //             toast({
-    //                 variant: 'default',
-    //                 title: 'Task Applied',
-    //                 description: 'You have successfully applied for this task.',
-    //             });
-    //             setHasApplied(true);
-    //         } else {
-    //             toast({
-    //                 variant: 'destructive',
-    //                 title: 'Application Error',
-    //                 description:
-    //                     response.error ||
-    //                     'An error occurred while applying for the task.',
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error applying for task:', error);
-    //         toast({
-    //             variant: 'destructive',
-    //             title: 'Application Error',
-    //             description:
-    //                 'An error occurred while applying for the task. Please try again later.',
-    //         });
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     async function checkAppliedStatus() {
-    //         try {
-    //             const response = await fetch(
-    //                 `http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/check`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${clientStorage.get().token}`,
-    //                     },
-    //                 },
-    //             );
-
-    //             if (response.ok) {
-    //                 const data = await response.json();
-    //                 setHasApplied(data.hasApplied);
-    //             } else {
-    //                 const errorData = await response.json();
-    //                 console.error(
-    //                     'Error checking application status:',
-    //                     errorData.error,
-    //                 );
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking application status:', error);
-    //         }
-    //     }
-
-    //     if (isLoggedIn) {
-    //         checkAppliedStatus();
-    //     }
-    // }, [isLoggedIn, props.taskId]);
 
     return (
         <main className='flex justify-center items-center'>
@@ -195,17 +75,6 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                             ) : (
                                 <AdsButtons {...(props as ViewAdsProps)} />
                             )}
-                        {/* <Button
-                            onClick={applyTaskHandler}
-                            disabled={!isLoggedIn || hasApplied}
-                            className='w-full'
-                        >
-                            {!isLoggedIn
-                                ? 'Please Login'
-                                : hasApplied
-                                  ? 'Applied'
-                                  : 'Apply Now'}
-                        </Button> */}
 
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
@@ -241,9 +110,9 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                         </section>
                         <FullWidthBar />
                         {props.viewType == 'job' ? (
-                            <JobUser {...props} />
+                            <JobUser {...props as ViewJobProps} />
                         ) : (
-                            <AdsUser {...props} />
+                            <AdsUser {...props as ViewAdsProps} />
                         )}
                     </aside>
                 </section>
