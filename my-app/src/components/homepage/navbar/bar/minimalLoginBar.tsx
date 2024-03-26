@@ -3,11 +3,6 @@
 import Image from 'next/image';
 import { clientStorage } from '@/utils/storageService';
 import { Briefcase, CircleUser, LogOut, Megaphone, Send } from 'lucide-react';
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-  } from "@/components/ui/hover-card"
 
 export default function MinLoginNavbar() {
     const handleLogout = () => {
