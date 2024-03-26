@@ -157,6 +157,7 @@ export interface ViewJobProps extends ViewTaskProps {
     };
     status: JobStatusOptions;
 }
+
 export interface ViewAdsProps extends ViewTaskProps {
     applicants?: Array<{
         _id: string;
@@ -214,6 +215,14 @@ export interface GetUserAdsResponse {
     tasks: Task[];
 }
 
+export interface EmployeeCardProp {
+    userId?: string;
+    imageUrl?: string;
+    name: string;
+    tel?: string;
+    email?: string;
+}
+
 export interface ApplyTaskResponse {
     success: boolean;
     result?: {
@@ -251,8 +260,8 @@ export interface JobsCardProps {
 }
 
 export interface UserJobsProps {
-    status: string
-    tasks: JobsCardProps[]
+    status: string;
+    tasks: JobsCardProps[];
 }
 
 export interface GetUserJobsResponse {
