@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
-import { Megaphone, Send } from 'lucide-react';
+import { Crown, Megaphone, Send } from 'lucide-react';
 import { Socket, io } from 'socket.io-client';
 import { clientStorage } from '@/utils/storageService';
 import { useRouter } from 'next/navigation';
@@ -112,6 +112,8 @@ export default function MessageRoom(props: { taskId: string }) {
             message.senderId ?? '',
         )?.imageUrl;
         const isSelf = message.senderId !== clientStorage.get().user._id;
+        const isCustomer =
+            userInfo?.get(message.senderId ?? '')?.type === 'customer';
         if (message.senderType === 'user') {
             return (
                 <div
@@ -144,7 +146,17 @@ export default function MessageRoom(props: { taskId: string }) {
                                 )) ? (
                             <div />
                         ) : (
-                            <p className='font-semibold'>{senderName}</p>
+                            <div className='flex flex-row gap-[8px]'>
+                                {isCustomer && (
+                                    <Crown
+                                        className='stroke-secondary-700 fill-secondary-500'
+                                        size={24}
+                                    />
+                                )}
+                                <p className='font-semibold'>
+                                    {senderName + (isCustomer && ' (Client)')}
+                                </p>
+                            </div>
                         )}
                         <div
                             className={
@@ -156,8 +168,8 @@ export default function MessageRoom(props: { taskId: string }) {
                             <div
                                 className={
                                     isSelf
-                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit'
-                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit'
+                                        ? 'bg-primary-100 rounded-xl p-2 flex flex-col items-start h-fit self-end'
+                                        : 'bg-primary-100 rounded-xl p-2 flex flex-col items-end h-fit self-end'
                                 }
                             >
                                 <p className='text-slate-900 text-wrap break-all'>
