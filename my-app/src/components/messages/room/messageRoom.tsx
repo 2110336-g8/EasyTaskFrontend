@@ -191,7 +191,9 @@ export default function MessageRoom(props: { taskId: string }) {
                                 {message.text.title}
                             </p>
                         </div>
-                        <p className='break-all'>{message.text.content}</p>
+                        {message.text.content && (
+                            <p className='break-all'>{message.text.content}</p>
+                        )}
                     </div>
                 </div>
             );
