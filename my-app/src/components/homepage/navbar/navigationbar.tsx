@@ -14,7 +14,7 @@ export default function Navbar() {
 
     return (
         <div id='main-navbar'>
-            {isLoggedIn ? <LoginNavbar /> : <LogoutNavbar />}
+            {!isLoggedIn ? <LoginNavbar /> : <LogoutNavbar />}
         </div>
     );
 }

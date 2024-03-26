@@ -18,9 +18,9 @@ export default function LoginNavbar() {
     };
 
     return (
-        <div className='fixed left-0 top-0 right-0 z-50 justify-center items-center px-16 py-4 text-base font-medium tracking-normal leading-6 text-indigo-600 bg-slate-100 max-md:px-5'>
-            <div className='flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full'>
-                <div className='flex gap-5 max-md:flex-wrap'>
+        <div className='fixed left-0 top-0 right-0 z-50 justify-center items-center px-4 md:px-16 py-4 text-base font-medium tracking-normal leading-6 text-indigo-600 bg-slate-100 max-md:px-5'>
+            <div className='flex flex-wrap justify-between w-full max-md:flex-no-wrap'>
+                <div className='flex gap-5'>
                     <a href='/'>
                         <Image
                             src='/logo.svg'
@@ -31,7 +31,7 @@ export default function LoginNavbar() {
                             className='shrink-0 my-auto aspect-[1.82] w-[58px]'
                         />
                     </a>
-                    <div className='flex flex-auto gap-4'>
+                    <div className='flex gap-4'>
                         <a
                             href='/job'
                             className='flex gap-1 justify-center p-2 whitespace-nowrap rounded-md hover:bg-primary-100'
