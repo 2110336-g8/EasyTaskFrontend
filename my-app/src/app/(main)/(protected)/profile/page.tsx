@@ -7,7 +7,7 @@ import { clientStorage } from "@/utils/storageService";
 import { instance } from "@/utils/axiosInstance";
 import { toast } from "@/components/ui/use-toast";
 
-const ProfileComponent: React.FC = () => { 
+export default function MyProfile() {
     const [userData, setUserData] = useState<UserProfile | null>(null); 
 
     useEffect(() => {
@@ -44,9 +44,7 @@ const ProfileComponent: React.FC = () => {
 
     return (
         <div>
-            <Profile {...userData} />
+            <Profile {...userData as UserProfile} />
         </div>
     );
 }
-
-export default ProfileComponent;
