@@ -25,7 +25,6 @@ export default function ViewProfile({ params: { UserId } }: { params: { UserId: 
                     setUserData(null);
                 }
 
-                console.log(userDataResponse.data.user);
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 setUserData(null);
