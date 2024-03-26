@@ -16,8 +16,13 @@ import AdsUser from './adsUser';
 import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
 
-export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
-
+export default function ViewTask({
+    props,
+    setIsLoading,
+}: {
+    props: ViewJobProps | ViewAdsProps;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
@@ -70,11 +75,14 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                         ) : null}
                     </article>
                     <aside className='flex flex-col w-[320px] gap-[24px]'>
-                            {props.viewType == 'job' ? (
-                                <JobButtons {...(props as ViewJobProps)} />
-                            ) : (
-                                <AdsButtons {...(props as ViewAdsProps)} />
-                            )}
+                        {props.viewType == 'job' ? (
+                            <JobButtons
+                                props={props as ViewJobProps}
+                                setIsLoading={setIsLoading}
+                            />
+                        ) : (
+                            <AdsButtons {...(props as ViewAdsProps)} />
+                        )}
 
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
@@ -110,9 +118,9 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                         </section>
                         <FullWidthBar />
                         {props.viewType == 'job' ? (
-                            <JobUser {...props as ViewJobProps} />
+                            <JobUser {...(props as ViewJobProps)} />
                         ) : (
-                            <AdsUser {...props as ViewAdsProps} />
+                            <AdsUser {...(props as ViewAdsProps)} />
                         )}
                     </aside>
                 </section>

@@ -113,11 +113,11 @@ export default function TaskDetailPage({
                 });
         };
         fetchData();
-    }, []);
+    }, [isLoading]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    return <div>{task ? <ViewTask {...task} /> : null}</div>;
+    return <div>{task ? <ViewTask props={task} setIsLoading={setIsLoading}/> : null}</div>;
 }

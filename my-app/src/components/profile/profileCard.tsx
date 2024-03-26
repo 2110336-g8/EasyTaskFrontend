@@ -5,7 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { clientStorage } from "@/utils/storageService";
-import Link from "next/link"
+import Link from "next/link";
+import { useRouter } from 'next/router';
 
 export default function ProfileCard(props: UserCard) {
     const id = clientStorage.get().user._id;
@@ -50,16 +51,16 @@ export default function ProfileCard(props: UserCard) {
                                 {props.phoneNumber && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Phone /> 
-                                        <span>{props.phoneNumber.replace(
+                                        <a href={`tel:${props.phoneNumber}`}>{props.phoneNumber.replace(
                                             /(\d{3})(\d{3})(\d{4})/,
                                             '$1-$2-$3'
-                                        )}</span>
+                                        )}</a>
                                     </button>
                                 )}
                                 {props.email && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Mail />
-                                        <div>{props.email}</div>
+                                        <a href={`mailto:${props.email}`}>{props.email}</a>
                                     </button>
                                     )
                                 }

@@ -2,8 +2,96 @@
 
 import { JobStatusOptions, ViewJobProps } from '@/types/task';
 import { Button } from '@/components/ui/button';
+import { applyTask } from '@/lib/applyTask';
+import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-export default function JobButtons(props: ViewJobProps) {
+export default function JobButtons({
+    props,
+    setIsLoading,
+}: {
+    props: ViewJobProps;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+    //=============APPLY=============//
+    const ApplyButton = () => {
+        return (
+            <Button onClick={applyTaskHandler} className='w-full text-white'>
+                Apply Now
+            </Button>
+        );
+    };
+
+    const applyTaskHandler = () => {
+        applyTask(props.taskId)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Task Applied',
+                    description: 'You have successfully applied for this task.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error applying for task:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Application Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'Unknown error occurred.',
+                });
+            });
+    };
+
+    //=============ACCEPT/REJECT OFFER=============//
+    const AcceptButton = () => {
+        return <Button className='w-full text-white'>Accept</Button>;
+    };
+    const RejectedButton = () => {
+        return (
+            <Button className='w-full text-white' variant='destructive'>
+                Rejected
+            </Button>
+        );
+    };
+
+    //=============PENDING=============//
+    const PendingButton = () => {
+        return (
+            <Button className='w-full text-white' disabled={true}>
+                Pending...
+            </Button>
+        );
+    };
+
+    //=============SUBMIT+CHAT=============//
+    const SubmitButton = () => {
+        return <Button className='w-full text-white'>Submit</Button>;
+    };
+    const ChatButton = () => {
+        return (
+            <Button
+                className='w-full text-primary-500'
+                variant='outline'
+                asChild
+            >
+                <Link href={`/messages/${props.taskId}`}>Go to Messages</Link>
+            </Button>
+        );
+    };
+
+    //=========Disabled======//
+    const DisabledButton = ({ text }: { text: string }) => {
+        return (
+            <Button className='w-full text-white' variant='disabled'>
+                {text}
+            </Button>
+        );
+    };
+
     switch (props.status) {
         //=============APPLY=============//
         case JobStatusOptions.OPEN:
@@ -58,50 +146,3 @@ export default function JobButtons(props: ViewJobProps) {
             return null;
     }
 }
-
-//=============APPLY=============//
-const ApplyButton = () => {
-    return <Button className='w-full text-white'>Apply Now</Button>;
-};
-
-//=============ACCEPT/REJECT OFFER=============//
-const AcceptButton = () => {
-    return <Button className='w-full text-white'>Accept</Button>;
-};
-const RejectedButton = () => {
-    return (
-        <Button className='w-full text-white' variant='destructive'>
-            Rejected
-        </Button>
-    );
-};
-
-//=============PENDING=============//
-const PendingButton = () => {
-    return (
-        <Button className='w-full text-white' disabled={true}>
-            Pending...
-        </Button>
-    );
-};
-
-//=============SUBMIT+CHAT=============//
-const SubmitButton = () => {
-    return <Button className='w-full text-white'>Submit</Button>;
-};
-const ChatButton = () => {
-    return (
-        <Button className='w-full text-primary-500' variant='outline'>
-            Go to Messages
-        </Button>
-    );
-};
-
-//=========Disabled======//
-const DisabledButton = ({ text }: { text: string }) => {
-    return (
-        <Button className='w-full text-white' variant='disabled'>
-            {text}
-        </Button>
-    );
-};

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
 import dayjs from 'dayjs';
-import { Button } from '@/components/ui/button';
 import TaskCard from '../taskList/taskCard';
 import { instance } from "@/utils/axiosInstance";
 import { UserCard, UserProfile } from '@/types/user';
