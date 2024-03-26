@@ -105,43 +105,7 @@ export default function Profile( data: UserProfile | null ) {
     
         fetchOwnedTasks();
     }, [userData, openTasks, pastTasks]);
-    
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const id = clientStorage.get().user._id;
-                if (!id) {
-                    return;
-                }
-                const userDataResponse = await instance.get(`/v1/users/${id}`);
-                const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
-
-                console.log(userDataResponse);
-                console.log(userImageResponse);
-
-                if (userDataResponse.data.user) {
-                    setUserData(userDataResponse.data.user);
-                    setUserImg(userImageResponse.data);
-                } else {
-                    toast({
-                        variant: 'destructive',
-                        title: 'Login Required',
-                        description: 'You need to login first to view your profile.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                toast({
-                    variant: 'destructive',
-                    title: 'Error Fetching User Data',
-                    description: 'Failed to fetch user data. Please try again later.',
-                });
-            }
-        };
-
-        fetchUser();
-    }, []);
 
     return (
 		<div className="flex flex-col self-stretch pb-10 text-xl font-semibold tracking-normal leading-7">
