@@ -24,19 +24,21 @@ export default function UserProfile({ params }: UserRoute) {
                 const userDataResponse = await instance.get(`/v1/users/${userId}`);
 
                 if (userDataResponse.data.user) {
-                    const userImageResponse = await instance.get(`/v1/users/${userId}/profile-image`);
+                    setUserData(userDataResponse.data.user);
+                } else {
+                    setUserData(null);
                 }
 
-                setUserData(userDataResponse.data.user);
+                console.log(userDataResponse.data.user);
 
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                setUserData(null); // Reset user data if an error occurs
+                setUserData(null);
             }
         };
 
         fetchUser();
-    }, [params.UserId]);
+    }, [userId]);
 
     return (
         <div>
