@@ -1,11 +1,14 @@
 import React from 'react';
 import { Phone, Mail } from 'lucide-react';
-import Image from 'next/image';
 import { UserCard } from '@/types/user';
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { clientStorage } from "@/utils/storageService";
+import Link from "next/link"
 
 export default function ProfileCard(props: UserCard) {
+    const id = clientStorage.get().user._id;
     return (
         <div className="flex flex-col justify-center items-start px-16 max-md:px-5">
             <div className="ml-36 max-w-full w-[647px]">
@@ -26,21 +29,31 @@ export default function ProfileCard(props: UserCard) {
                     </div>
                     <div className="flex flex-col ml-5 w-[67%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col self-stretch my-auto font-semibold leading-[150%] max-md:mt-10">
-                            {
-                                (props.firstName || props.lastName) ? (
-                                    <div className="text-4xl tracking-tight text-slate-900">
+                        {
+                            (props.firstName || props.lastName) ? (
+                                <div className="flex items-center gap-10">
+                                    <div className="flex-shrink-0 text-4xl tracking-tight text-slate-900 overflow-hidden whitespace-nowrap">
                                         {props.firstName + " " + props.lastName}
                                     </div>
-                                ) : (
-                                    <Skeleton className="h-8 w-[300px]" />
-                                )
-                            }
+                                    {(props._id === id) && (
+                                        <Button asChild className="text-base px-3 py-2 border-2 border-primary-500 bg-white text-primary-500 font-semibold hover:bg-primary-100">
+                                            <Link href="/account">Edit Profile</Link>
+                                        </Button>
+                                    )}
+                                </div>
+                            ) : (
+                                <Skeleton className="h-8 w-[300px]" />
+                            )
+                        }
 
                             <div className="flex gap-2 mt-2 text-base tracking-normal text-white whitespace-nowrap">
                                 {props.phoneNumber && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
-                                        <Phone />
-                                        <div>{props.phoneNumber}</div>
+                                        <Phone /> 
+                                        <span>{props.phoneNumber.replace(
+                                            /(\d{3})(\d{3})(\d{4})/,
+                                            '$1-$2-$3'
+                                        )}</span>
                                     </button>
                                 )}
                                 {props.email && (

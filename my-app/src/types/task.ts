@@ -24,6 +24,13 @@ export enum TaskStateOptions {
     COMPLETED = 'Completed',
 }
 
+export enum AdsStateOptions {
+    OPEN = 'Open',
+    INPROGRESS = 'InProgress',
+    CLOSED = 'Closed',
+    COMPLETED = 'Completed',
+}
+
 export interface GeographicLocation {
     name: string;
     latitude: number;
@@ -150,6 +157,7 @@ export interface ViewJobProps extends ViewTaskProps {
     };
     status: JobStatusOptions;
 }
+
 export interface ViewAdsProps extends ViewTaskProps {
     applicants?: Array<{
         _id: string;
@@ -207,6 +215,14 @@ export interface GetUserAdsResponse {
     tasks: Task[];
 }
 
+export interface EmployeeCardProp {
+    userId?: string;
+    imageUrl?: string;
+    name: string;
+    tel?: string;
+    email?: string;
+}
+
 export interface ApplyTaskResponse {
     success: boolean;
     result?: {
@@ -230,8 +246,26 @@ export interface ApplyTaskResponse {
 }
 
 //*=================Jobs====================*//
+export interface JobsCardProps {
+    taskId: string;
+    title: string;
+    category: string;
+    imageUrl?: string;
+    locationName?: string;
+    wages: string;
+    startDate: string;
+    endDate: string;
+    applicationsNumber: string;
+    taskStatus?: string;
+}
+
+export interface UserJobsProps {
+    status: string;
+    tasks: JobsCardProps[];
+}
+
 export interface GetUserJobsResponse {
-    tasks?: Task[];
+    enrolled_tasks?: UserJobsProps[];
     error?: string;
 }
 
