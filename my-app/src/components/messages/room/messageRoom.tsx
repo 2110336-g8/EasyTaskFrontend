@@ -111,7 +111,7 @@ export default function MessageRoom(props: { taskId: string }) {
         const senderImage: string | undefined = userInfo?.get(
             message.senderId ?? '',
         )?.imageUrl;
-        const isSelf = message.senderId !== clientStorage.get().user._id;
+        const isSelf = message.senderId === clientStorage.get().user._id;
         const isCustomer =
             userInfo?.get(message.senderId ?? '')?.type === 'customer';
         if (message.senderType === 'user') {
