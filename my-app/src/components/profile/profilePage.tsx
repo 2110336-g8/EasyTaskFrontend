@@ -10,6 +10,7 @@ import { Task, TaskCardProps } from '@/types/task';
 import { TaskStateOptions } from '@/types/task';
 import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import ProfileLoading from './profileLoading';
 
 
 export default function Profile( data: UserProfile | null ) {
@@ -104,6 +105,11 @@ export default function Profile( data: UserProfile | null ) {
         fetchOwnedTasks();
     }, [userData, openTasks, pastTasks]);
 
+    if (loadingTasks) {
+        return (
+            <ProfileLoading />
+        );
+    }
 
     return (
 		<div className="flex flex-col self-stretch pb-10 text-xl font-semibold tracking-normal leading-7">
