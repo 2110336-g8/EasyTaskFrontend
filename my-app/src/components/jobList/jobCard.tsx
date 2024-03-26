@@ -1,6 +1,6 @@
 'use client';
 
-import { AdsCardProps } from '@/types/task';
+import { AdsCardProps, JobsCardProps } from '@/types/task';
 import Link from 'next/link';
 import {
     ClockIcon,
@@ -11,15 +11,22 @@ import {
 // import { Button } from 'react-day-picker';
 import { Button } from '../ui/button';
 
-export default function JobCard(props: AdsCardProps) {
+export default function JobCard(props: JobsCardProps) {
     // Assuming you have a functional component
     function FunctionalButton() {
         // Dynamically set buttonText based on status prop
         let buttonText;
-        if (props.buttonFunc === 'Offering') {
+        if (props.taskStatus === 'Offering') {
             buttonText = 'Response';
-        } else if (props.buttonFunc == 'OnGoing') {
+        } else if (props.taskStatus == 'InProgress') {
             buttonText = 'Submission';
+        } else if (
+            props.taskStatus == 'Submitted' ||
+            props.taskStatus == 'Resubmitted'
+        ) {
+            buttonText = props.taskStatus;
+        } else if (props.taskStatus == 'Revising') {
+            buttonText = 'Resubmission';
         } else {
             return <div></div>;
         }
@@ -52,16 +59,16 @@ export default function JobCard(props: AdsCardProps) {
                             <CalendarDaysIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
                             {props.startDate} - {props.endDate}
                         </small>
-                        {props.location ? (
+                        {props.locationName ? (
                             <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
                                 <MapPinIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                {props.location}
+                                {props.locationName}
                             </small>
                         ) : null}
-                        {props.applications ? (
+                        {props.applicationsNumber ? (
                             <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
                                 <InboxIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                {props.applications} Applications
+                                {props.applicationsNumber} Applications
                             </small>
                         ) : null}
                     </div>
