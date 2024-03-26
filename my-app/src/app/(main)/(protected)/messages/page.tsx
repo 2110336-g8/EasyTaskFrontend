@@ -12,7 +12,6 @@ export default function Inbox() {
     const fetchRoomsData = async () => {
         try {
             const messagePreviewInfos = await instance.get(`/v1/messages/`);
-            console.log(messagePreviewInfos.data);
             setActiveRooms(messagePreviewInfos.data.messagesRooms.activeRooms);
             setArchivedRooms(
                 messagePreviewInfos.data.messagesRooms.archivedRooms,
