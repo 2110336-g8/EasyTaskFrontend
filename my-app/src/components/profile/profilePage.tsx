@@ -117,11 +117,12 @@ export default function Profile() {
                 const userDataResponse = await instance.get(`/v1/users/${id}`);
                 const userImageResponse = await instance.get(`/v1/users/${id}/profile-image`);
 
+                console.log(userDataResponse);
+                console.log(userImgResponse);
+
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
                     setUserImg(userImageResponse.data);
-                    console.log(userData);
-                    console.log(userImg);
                 } else {
                     toast({
                         variant: 'destructive',
