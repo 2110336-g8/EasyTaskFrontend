@@ -60,7 +60,7 @@ export default function ProfileCard(props: UserCard) {
                                 {props.email && (
                                     <button className="flex gap-2 px-4 py-2 bg-primary-500 rounded-3xl hover:bg-primary-300">
                                         <Mail />
-                                        <Link href={`mailto:${props.email}`}>{props.email}</Link>
+                                        <a href={`mailto:${props.email}`}>{props.email}</a>
                                     </button>
                                     )
                                 }
