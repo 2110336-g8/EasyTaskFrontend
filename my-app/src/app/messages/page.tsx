@@ -3,9 +3,11 @@ import MessagePreviewBox, {
     MessagePreview,
 } from '@/components/messages/messagePreview';
 import { instance } from '@/utils/axiosInstance';
+import { Loader } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 
 export default function Inbox() {
+    const [isLoading, setLoading] = useState(true);
     const [activeRooms, setActiveRooms] = useState<MessagePreview[]>([]);
     const [archivedRooms, setArchivedRooms] = useState<MessagePreview[]>([]);
 
@@ -16,6 +18,7 @@ export default function Inbox() {
             setArchivedRooms(
                 messagePreviewInfos.data.messagesRooms.archivedRooms,
             );
+            setLoading(false);
         } catch (error) {
             console.log(error);
         }
@@ -28,9 +31,14 @@ export default function Inbox() {
     }, []);
 
     return (
-        <div className='flex flex-col gap-y-[40px]'>
+        <div className='flex flex-col gap-y-[40px] w-full'>
             <h1>Messages</h1>
-            {activeRooms.length === 0 && (
+            {isLoading && (
+                <div className='w-full flex flex-row items-center justify-center'>
+                    <h4>Loading...</h4>
+                </div>
+            )}
+            {!isLoading && activeRooms.length === 0 && (
                 <h4 className='w-full text-center'>
                     You have no active message rooms yet.
                 </h4>
