@@ -58,7 +58,10 @@ export default function Profile( data: UserProfile | null ) {
             category: task.category,
             imageUrl: task.imageUrl ? task.imageUrl : undefined,
             location: task.location ? task.location.name : undefined,
-            wages: task.wages.toString(),
+            wages:
+            task.wages / 1000000 >= 1
+                ? (task.wages / 1000000).toFixed(0) + 'M+'
+                : task.wages.toLocaleString(),
             startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),
             endDate: dayjs(task.endDate).format('DD MMM YYYY').toString(),
             workers: task.workers.toString()
