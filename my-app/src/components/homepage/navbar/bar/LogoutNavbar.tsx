@@ -20,7 +20,7 @@ export default function LogoutNavbar() {
                 <div className="flex gap-4">
                     <a
                         href="/login"
-                        className="flex justify-center px-4 py-2 whitespace-nowrap rounded-md bg-white hover:bg-slate-50 border border-primary-500 text-primary-500"
+                        className="flex justify-center px-4 py-2 whitespace-nowrap rounded-md bg-white hover:bg-slate-50 border border-1.5] border-primary-500 text-primary-500"
                     >
                         Log in
                     </a>
