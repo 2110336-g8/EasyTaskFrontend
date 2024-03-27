@@ -46,7 +46,11 @@ export default function Profile( data: UserProfile | null ) {
     function beforeEndDate(date: Date | string): boolean {
         const currentDate = dayjs();
         const givenDate = dayjs(date);
-    
+
+        console.log(currentDate);
+        console.log(givenDate);
+        console.log(givenDate.isBefore(currentDate));
+
         return givenDate.isBefore(currentDate);
     }
 

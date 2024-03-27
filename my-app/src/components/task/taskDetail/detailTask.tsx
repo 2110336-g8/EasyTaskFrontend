@@ -135,10 +135,10 @@ export default function ViewTask({
                             </p>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <CalendarDaysIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
-                                <p className='text-slate-700'>Apply Period</p>
+                                <p className='text-slate-700'>Apply</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
-                                {props.startDate.format('DD/MM/YYYY')} -{' '}
+                                {props.startDate.format('DD/MM/YYYY')} - {' '}
                                 {props.endDate.format('DD/MM/YYYY')}
                             </p>
                         </section>
