@@ -25,14 +25,7 @@ export default function Profile( data: UserProfile | null ) {
     
             if ('error' in responseData) return null;
     
-            const image: string | null = await fetchTaskImageById(taskId);
-    
-            const updatedData: Task = {
-                ...responseData.task,
-                imageUrl: image,
-            };
-    
-            return updatedData;
+            return responseData.task;
         } catch (error) {
             // console.error('Error fetching task data:', error);
             // toast({
@@ -40,22 +33,6 @@ export default function Profile( data: UserProfile | null ) {
             //     title: 'Error Fetching Task Data',
             //     description: 'Failed to fetch task data. Please try again later.',
             // });
-            return null;
-        }
-    };
-
-    const fetchTaskImageById = async (taskId: string): Promise<string | null> => {
-        try {
-            const taskImageResponse = await instance.get(`/v1/tasks/${taskId}/task-image`);
-    
-            if ('error' in taskImageResponse) return null;
-
-            if (taskImageResponse.status === 404) return null;
-    
-            const taskImage = await taskImageResponse.data;
-    
-            return taskImage;
-        } catch (error) {
             return null;
         }
     };
