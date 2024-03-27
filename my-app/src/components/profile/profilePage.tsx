@@ -127,7 +127,7 @@ export default function Profile( data: UserProfile | null ) {
                     </div>
                 </TabsContent>
                 <TabsContent value="past">
-                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-4'>
+                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-3.5'>
                         {pastTasks.length > 0 ? (
                             pastTasks.map(task => (
                                 <TaskCard
