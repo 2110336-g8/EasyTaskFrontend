@@ -180,7 +180,8 @@ export default function MessageRoom(props: { taskId: string }) {
                                     />
                                 )}
                                 <p className='font-semibold'>
-                                    {senderName + (isCustomer && ' (Client)')}
+                                    {senderName +
+                                        (isCustomer ? ' (Client)' : '')}
                                 </p>
                             </div>
                         )}
