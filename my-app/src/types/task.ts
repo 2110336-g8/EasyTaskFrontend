@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs';
 import { User } from './user';
 
 export enum WorkerStatusOptions {
@@ -142,8 +143,8 @@ export interface ViewTaskProps {
     description?: string;
     location?: GeographicLocation;
     wages: string;
-    startDate: string;
-    endDate: string;
+    startDate: Dayjs;
+    endDate: Dayjs;
     workers: string;
     posted: string;
     status: TaskStateOptions;
@@ -168,8 +169,8 @@ export interface ViewAdsProps extends ViewTaskProps {
 }
 export interface ProfileProps {
     _id: string;
-    image: string;
     name: string;
+    image?: string;
     phoneNumber?: string;
 }
 

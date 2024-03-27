@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { dismissTask, startTask } from '@/lib/taskManagement';
 import { toast } from '@/components/ui/use-toast';
+import dayjs from 'dayjs';
 
 export default function AdsButtons({
     props,
@@ -16,7 +17,10 @@ export default function AdsButtons({
     //=============OPEN=============//
     const SelectButton = () => {
         return (
-            <Button className='w-full'>
+            <Button
+                className='w-full'
+                disabled={(props.pendingApplicants?.length || 0) <= 0}
+            >
                 <Link href={`/task/${props.taskId}/select`}>
                     Select Employees
                 </Link>
@@ -67,7 +71,11 @@ export default function AdsButtons({
     //=============DISMISS=============//
     const DismissButton = () => {
         return (
-            <Button onClick={dismissHandler} className='w-full' variant='outline'>
+            <Button
+                onClick={dismissHandler}
+                className='w-full'
+                variant='outline'
+            >
                 Dismiss Job
             </Button>
         );
@@ -99,12 +107,13 @@ export default function AdsButtons({
     switch (props.status) {
         //=============OPEN=============//
         case TaskStateOptions.OPEN:
-            const isFull: boolean = false;
-            const canApply: boolean = true;
+            const isFull: boolean =
+                (props.acceptApplicants?.length || 0) >=
+                parseInt(props.workers);
+            const canApply: boolean = dayjs(props.endDate).isAfter(dayjs());
 
             const canSelect: boolean = !isFull && canApply;
-            const canStart: boolean = true;
-            // const canStart: boolean = (props.acceptApplicants?.length ?? 0) > 0;
+            const canStart: boolean = (props.acceptApplicants?.length || 0) > 0;
 
             return (
                 <div className='flex flex-col gap-[8px]'>

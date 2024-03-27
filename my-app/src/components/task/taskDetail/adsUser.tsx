@@ -12,7 +12,7 @@ export default function AdsUser(props: ViewAdsProps) {
     return (
         <div className='flex flex-col gap-[24px]'>
             <PendingApplicants applicants={props.pendingApplicants || []} />
-            {havePending || haveOffering ? (
+            {/* {havePending || haveOffering ? ( */}
                 <>
                     <FullWidthBar />
                     <AcceptApplicants
@@ -20,7 +20,7 @@ export default function AdsUser(props: ViewAdsProps) {
                         applicants={props.acceptApplicants || []}
                     />
                 </>
-            ) : null}
+            {/* ) : null} */}
             {haveOffering ? (
                 <>
                     <FullWidthBar />
