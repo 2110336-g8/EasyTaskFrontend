@@ -42,7 +42,6 @@ export default function MessageRoom(props: { taskId: string }) {
 
             const self = clientStorage.get().user._id;
 
-            console.log(`Self: ${self}, Customer: ${roomInfo.task.customerId}`);
             const isCustomerSendable =
                 self === roomInfo.task.customerId &&
                 ['InProgress'].includes(roomInfo.task.status);
