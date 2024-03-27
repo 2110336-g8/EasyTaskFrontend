@@ -44,7 +44,6 @@ export default function MessagePreviewBox(props: MessagePreview) {
                 <div className='flex flex-col gap-y-[8px] justify-center'>
                     <h3>{props.taskTitle}</h3>
                     <p className='font-medium text-slate-600'>
-                        console.log(props.latestMessage);
                         {props.latestMessage?.senderName +
                             ': ' +
                             trimMessage(props.latestMessage?.message ?? '') +
