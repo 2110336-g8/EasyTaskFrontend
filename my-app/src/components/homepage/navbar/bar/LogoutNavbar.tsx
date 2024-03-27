@@ -25,7 +25,7 @@ export default function LogoutNavbar() {
                     </a>
                 </div>
                 <div className="flex gap-4">
-                    {isLoggedIn ? (
+                    {!isLoggedIn ? (
                         <>
                             <a
                                 href="/login"
