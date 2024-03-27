@@ -17,7 +17,7 @@ export default function ProfileCard(props: UserCard) {
                         <div className="flex justify-center items-center max-md:mt-10">
                             <Avatar className="size-[200px] rounded-full border-[4px] bg-white">
                                 <AvatarImage
-                                    src={props.imageUrl ? props.imageUrl : '/ProfilePicEmpty.png'}
+                                    src={props.imageUrl || '/ProfilePicEmpty.png'}
                                     loading='lazy'
                                     width={200}
                                     height={200}
