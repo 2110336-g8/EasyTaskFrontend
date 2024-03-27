@@ -148,14 +148,8 @@ export interface ViewTaskProps {
     posted: string;
     status: TaskStateOptions;
 }
-
 export interface ViewJobProps extends ViewTaskProps {
-    customer: {
-        _id: string;
-        name: string;
-        image?: string;
-        phoneNumber?: string;
-    };
+    customer: ProfileProps;
     jobStatus: JobStatusOptions;
 }
 
@@ -172,11 +166,14 @@ export interface ViewAdsProps extends ViewTaskProps {
         status: WorkerStatusOptions;
     }>;
 }
-export interface ApplicantProps {
+export interface ProfileProps {
     _id: string;
+    image: string;
     name: string;
-    image?: string;
     phoneNumber?: string;
+}
+
+export interface ApplicantProps extends ProfileProps {
     status: ApplicantStatusOptions;
 }
 
