@@ -121,7 +121,8 @@ export default function ViewTask({
                                 <p className='text-slate-700'>Apply Period</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
-                                {props.startDate} - {props.endDate}
+                                {props.startDate.format('DD/MM/YYYY')} -{' '}
+                                {props.endDate.format('DD/MM/YYYY')}
                             </p>
                         </section>
                         <FullWidthBar />
