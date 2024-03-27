@@ -18,9 +18,9 @@ export default function JobToggleList({
 }) {
     const names: { [key: string]: string[] } = {
         Applied: ['Pending'],
-        Offering: ['Offering'],
+        Offering: ['Offering', 'Accepted'],
         Rejected: ['Rejected'],
-        Accepted: ['Accepted'],
+        // Accepted: ['Accepted'],
         'Not Proceed': ['NotProceed'],
         Ongoing: ['InProgress', 'Submitted', 'Revising', 'Resubmitted'],
         Completed: ['Completed'],
@@ -61,11 +61,12 @@ export default function JobToggleList({
                             ),
                             endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                             locationName: task.locationName,
-                            applicationsNumber: task.applicationsNumber,
+                            applicationNumber: task.applicationNumber,
                             wages: task.wages.toLocaleString(),
                             category: task.category,
                             taskStatus: taskStatus,
                         }));
+                    console.log(formattedJobsList);
                     combinedJobList.push(...formattedJobsList);
                     console.log('fetched', jobStatus);
                 }

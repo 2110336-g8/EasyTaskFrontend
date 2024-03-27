@@ -247,7 +247,7 @@ export interface JobsCardProps {
     wages: string;
     startDate: string;
     endDate: string;
-    applicationsNumber: string;
+    applicationNumber: string;
     taskStatus?: string;
 }
 
