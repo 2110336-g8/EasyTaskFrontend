@@ -12,29 +12,16 @@ export function formatDateDuration(startDate: Date, endDate: Date): string {
     const dur = dayjs.duration(diff);
     let durationText = [];
 
-    if (dur.hours() > 23) {
-        if (dur.years() > 0) {
-            durationText.push(
-                `${dur.years()} year${dur.years() > 1 ? 's' : ''}`,
-            );
-        }
-        if (dur.months() > 0) {
-            durationText.push(
-                `${dur.months()} month${dur.months() > 1 ? 's' : ''}`,
-            );
-        }
-        if (dur.days() > 0) {
-            if (dur.hours() > 0) {
-                durationText.push(
-                    `${dur.days() + 1} day${dur.days() + 1 > 1 ? 's' : ''}`,
-                );
-            } else {
-                durationText.push(
-                    `${dur.days()} day${dur.days() > 1 ? 's' : ''}`,
-                );
-            }
-        }
-    } else {
+    if (dur.years() > 0) {
+        durationText.push(`${dur.years()} year${dur.years() > 1 ? 's' : ''}`);
+    }
+    if (dur.months() > 0) {
+        durationText.push(`${dur.months()} month${dur.months() > 1 ? 's' : ''}`);
+    }
+    if (dur.days() > 0) {
+        durationText.push(`${dur.days()} day${dur.days() > 1 ? 's' : ''}`);
+    }
+    if (dur.hours() > 0) {
         durationText.push(`${dur.hours()} hour${dur.hours() > 1 ? 's' : ''}`);
     }
 
