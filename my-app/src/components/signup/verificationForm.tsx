@@ -212,9 +212,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <CardContent>
-                            <div className='flex space-x-4 m-[20px]'>
+                            <div className='flex flex-row gap-[30px] h-[56px]'>
                                 {/* First Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp1'
@@ -222,7 +221,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -232,10 +231,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
 
                                 {/* Second Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp2'
@@ -243,7 +240,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         type='text'
                                                         pattern='[0-9]'
                                                         maxLength={1}
@@ -255,10 +252,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
 
                                 {/* Third Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp3'
@@ -266,7 +261,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         type='text'
                                                         pattern='[0-9]'
                                                         maxLength={1}
@@ -278,10 +273,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
 
                                 {/* Fourth Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp4'
@@ -289,7 +282,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -299,10 +292,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
 
                                 {/* Fifth Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp5'
@@ -310,7 +301,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -320,10 +311,8 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
 
                                 {/* Sixth Field */}
-                                <div className='flex flex-col space-y-1.5'>
                                     <FormField
                                         control={form.control}
                                         name='otp6'
@@ -331,7 +320,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
-                                                        className='text-p'
+                                                        className='text-p h-full w-[56px] text-center align-middle'
                                                         maxLength={1}
                                                         placeholder=''
                                                         {...field}
@@ -342,10 +331,9 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                                         )}
                                     />
                                 </div>
-                            </div>
                         </CardContent>
 
-                        <CardFooter className='grid w-full items-center gap-3 m-[20px]'>
+                        <CardFooter className='grid w-full items-center gap-3 mt-[40px]'>
                             {errors.invalidText ? (
                                 <FormMessage className='text-error-500 text-[16px]'>{`${errors.invalidText.message}`}</FormMessage>
                             ) : (
@@ -361,7 +349,7 @@ export default function VerificationForm({ setAuthType }: SignupFormProps) {
                             {showButtonA && (
                                 <Button
                                 onClick={handleResendCode}
-                                className={`w-full bg-primary-500 text-p font-extra-bold tracking-p text-white ${showCountdown ? 'w-full bg-slate-400 text-p font-extra-bold tracking-p text- cursor-not-allowed' : ''}`}
+                                className={`w-full bg-primary-500 text-p font-extra-bold tracking-p text-white ${showCountdown ? 'w-full bg-slate-400 text-p font-extra-bold tracking-p text-cursor-not-allowed' : ''}`}
                                 disabled={isButtonDisabled}
                                 >
                                 Resend code
