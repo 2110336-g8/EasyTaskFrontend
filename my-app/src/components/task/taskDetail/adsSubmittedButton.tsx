@@ -26,6 +26,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import dayjs from 'dayjs';
+import Warning from './warning';
 
 export default function AdsSubmittedButtons({
     props,
@@ -200,6 +201,9 @@ export default function AdsSubmittedButtons({
                 <div className='flex flex-col gap-[8px]'>
                     <DialogConfirm type='accept' variant='default' />
                     <DialogConfirm type='revise' variant='outline' />
+                    <Warning>
+                        You are allowed to request a revision only once.
+                    </Warning>
                 </div>
             );
 
@@ -215,7 +219,16 @@ export default function AdsSubmittedButtons({
             );
         //=============RESUBMITTED=============//
         case WorkerStatusOptions.RESUBMITTED:
-            return <DialogConfirm type='accept' variant='default' />;
+            return (
+                <>
+                    <DialogConfirm type='accept' variant='default' />
+                    <Warning>
+                        It will be automatically accepted the work one week
+                        after submission and promptly distribute wages to the
+                        employee.
+                    </Warning>
+                </>
+            );
 
         //=============COMPLETED=============//
         case WorkerStatusOptions.COMPLETED:
