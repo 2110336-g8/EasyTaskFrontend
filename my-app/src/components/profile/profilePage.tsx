@@ -35,11 +35,11 @@ export default function Profile( data: UserProfile | null ) {
             }
 
             console.error('Error fetching task data:', error);
-            toast({
-                variant: 'destructive',
-                title: 'Error Fetching Task Data',
-                description: 'Failed to fetch task data. Please try again later.',
-            });
+            // toast({
+            //     variant: 'destructive',
+            //     title: 'Error Fetching Task Data',
+            //     description: 'Failed to fetch task data. Please try again later.',
+            // }); // Suspected False Positive
             return null;
         }
     };
