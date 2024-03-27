@@ -186,7 +186,7 @@ export interface AdsCardProps {
     wages: string;
     startDate: string;
     endDate: string;
-    applications: string;
+    applications: Applicant[];
     hiredworkersNumber?: number;
     status: string;
     buttonFunc?: string;
