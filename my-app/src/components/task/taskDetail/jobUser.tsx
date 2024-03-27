@@ -8,9 +8,8 @@ export default function JobUser(props: ViewTaskProps) {
     return (
         <div className='flex flex-col gap-[16px]'>
             <h4>About the Client</h4>
-            <div className='flex flex-row items-center gap-[16px]'>
-                <Link href={`/profile/${props.customer?._id}`} legacyBehavior>
-                    <a>
+            <a href={`/profile/${props.customer?._id}`}>
+                <div className='flex flex-row items-center gap-[16px]'>
                     <Avatar key={props.customer?._id} style={{ width: '56px', height: '56px' }}>
                         <AvatarImage src={props.customer?.image} alt='@shadcn' />
                         <AvatarFallback>?</AvatarFallback>
@@ -21,9 +20,8 @@ export default function JobUser(props: ViewTaskProps) {
                             <p>{props.customer.phoneNumber}</p>
                         ) : null}
                     </div>
-                    </a>
-                </Link>
-            </div>
+                </div>
+            </a>
         </div>
     );
 }
