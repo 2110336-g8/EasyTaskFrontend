@@ -1,10 +1,17 @@
-import { AcceptOfferResponse, ApplyTaskResponse, DismissTaskResponse, RejectOfferResponse, StartTaskResponse, SubmitTaskResponse } from '@/types/task';
+import {
+    AcceptOfferResponse,
+    AcceptTaskResponse,
+    ApplyTaskResponse,
+    DismissTaskResponse,
+    RejectOfferResponse,
+    ReviseTaskResponse,
+    StartTaskResponse,
+    SubmitTaskResponse,
+} from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
 //======================JOB============================//
-export async function applyTask(
-    taskId: string,
-): Promise<ApplyTaskResponse> {
+export async function applyTask(taskId: string): Promise<ApplyTaskResponse> {
     return instance
         .post('/v1/tasks/' + taskId + '/apply')
         .then(res => {
@@ -44,9 +51,7 @@ export async function rejectOffer(
         });
 }
 
-export async function submitTask(
-    taskId: string,
-): Promise<SubmitTaskResponse> {
+export async function submitTask(taskId: string): Promise<SubmitTaskResponse> {
     return instance
         .post('/v1/tasks/' + taskId + '/submit')
         .then(res => {
@@ -60,9 +65,7 @@ export async function submitTask(
 
 //======================ADS==========================//
 
-export async function startTask(
-    taskId: string,
-): Promise<StartTaskResponse> {
+export async function startTask(taskId: string): Promise<StartTaskResponse> {
     return instance
         .post('/v1/tasks/' + taskId + '/start')
         .then(res => {
@@ -81,6 +84,36 @@ export async function dismissTask(
         .post('/v1/tasks/' + taskId + '/dismiss')
         .then(res => {
             const result: DismissTaskResponse = res.data;
+            return result;
+        })
+        .catch(error => {
+            return Promise.reject(error.response.data.error);
+        });
+}
+
+export async function acceptTask(
+    taskId: string,
+    employee: string,
+): Promise<AcceptTaskResponse> {
+    return instance
+        .post(`/v1/tasks/${taskId}/accept-task`, { employee })
+        .then(res => {
+            const result: AcceptTaskResponse = res.data;
+            return result;
+        })
+        .catch(error => {
+            return Promise.reject(error.response.data.error);
+        });
+}
+
+export async function reviseTask(
+    taskId: string,
+    employee: string,
+): Promise<ReviseTaskResponse> {
+    return instance
+        .post('/v1/tasks/' + taskId + '/revision', { employee })
+        .then(res => {
+            const result: ReviseTaskResponse = res.data;
             return result;
         })
         .catch(error => {

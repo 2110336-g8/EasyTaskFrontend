@@ -294,6 +294,18 @@ export interface DismissTaskResponse {
     error?: string;
 }
 
+export interface AcceptTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface ReviseTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
 //*=================Create Task====================*//
 
 export interface CreateTasksResponse {

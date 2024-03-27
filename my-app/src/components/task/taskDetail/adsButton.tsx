@@ -1,9 +1,19 @@
 'use client';
 
-import { TaskStateOptions, ViewAdsProps } from '@/types/task';
+import {
+    TaskStateOptions,
+    ViewAdsProps,
+    WorkerProps,
+    WorkerStatusOptions,
+} from '@/types/task';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { dismissTask, startTask } from '@/lib/taskManagement';
+import {
+    acceptTask,
+    dismissTask,
+    reviseTask,
+    startTask,
+} from '@/lib/taskManagement';
 import { toast } from '@/components/ui/use-toast';
 import {
     Dialog,
@@ -20,9 +30,11 @@ import dayjs from 'dayjs';
 export default function AdsButtons({
     props,
     setIsLoading,
+    checkWorker,
 }: {
     props: ViewAdsProps;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    checkWorker: WorkerProps | null;
 }) {
     //=============OPEN=============//
     const SelectButton = () => {
@@ -70,6 +82,54 @@ export default function AdsButtons({
         );
     };
 
+    const acceptHandler = () => {
+        acceptTask(props.taskId, checkWorker?._id)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Submission Accepted Successfully',
+                    description:
+                        'You have successfully accepted the submission.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error Accept submission:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Submission Accept Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'An unexpected error occurred. Please try again.',
+                });
+            });
+    };
+
+    const reviseHandler = () => {
+        reviseTask(props.taskId, checkWorker?._id)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Request Revised Submission Successfully',
+                    description:
+                        'You have successfully requested the revised submission.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error Request Revised Submission:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Request Revised Submission Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'An unexpected error occurred. Please try again.',
+                });
+            });
+    };
+
     //=============DISMISS=============//
     const dismissHandler = () => {
         dismissTask(props.taskId)
@@ -108,7 +168,7 @@ export default function AdsButtons({
         type,
         variant,
     }: {
-        type: 'start' | 'dismiss';
+        type: 'start' | 'dismiss' | 'accept' | 'revise';
         variant: 'default' | 'outline';
     }) => {
         return (
@@ -122,6 +182,14 @@ export default function AdsButtons({
                         <Button className='w-full' variant={variant}>
                             Dismiss Job
                         </Button>
+                    ) : type === 'accept' ? (
+                        <Button className='w-full' variant={variant}>
+                            Accept Work
+                        </Button>
+                    ) : type === 'revise' ? (
+                        <Button className='w-full' variant={variant}>
+                            Request Revision
+                        </Button>
                     ) : null}
                 </DialogTrigger>
                 <DialogContent className='rounded-[6px] border-slate-300'>
@@ -132,7 +200,11 @@ export default function AdsButtons({
                                     ? 'Are you absolutely sure to start job?'
                                     : type === 'dismiss'
                                       ? 'Are you absolutely sure to dismiss job?'
-                                      : null}
+                                      : type === 'accept'
+                                        ? 'Confirm the acceptance of the work?'
+                                        : type === 'revise'
+                                          ? 'Request a revision of the work?'
+                                          : null}
                             </h3>
                         </DialogTitle>
                         <DialogDescription>
@@ -143,7 +215,11 @@ export default function AdsButtons({
                                       ? props.status === TaskStateOptions.OPEN
                                           ? 'This action will immediately dismiss this job and notice all applicant about this job dismissing.'
                                           : 'This action will promptly notify all employees of the job dismissal. Thirty percent of the wages will be distributed among all employees, and the remaining leave will be transferred to you.'
-                                      : null}
+                                      : type === 'accept'
+                                        ? 'This action will notice the employee that their work has been accepted. The wages will be promptly distributed to the employee.'
+                                        : type === 'revise'
+                                          ? 'This action will notice the employee that their work has been requested a revision. Please note that you are only permitted to request a revision once.'
+                                          : null}
                             </p>
                         </DialogDescription>
                     </DialogHeader>
@@ -179,6 +255,24 @@ export default function AdsButtons({
                             >
                                 Dismiss Job
                             </Button>
+                        ) : type === 'accept' ? (
+                            <Button
+                                className='w-full'
+                                size='s'
+                                font='s'
+                                onClick={acceptHandler}
+                            >
+                                Confirm
+                            </Button>
+                        ) : type === 'revise' ? (
+                            <Button
+                                className='w-full'
+                                size='s'
+                                font='s'
+                                onClick={reviseHandler}
+                            >
+                                Confirm
+                            </Button>
                         ) : null}
                     </DialogFooter>
                 </DialogContent>
@@ -212,6 +306,16 @@ export default function AdsButtons({
 
         //=============INPROGRESS=============//
         case TaskStateOptions.INPROGRESS:
+            if (checkWorker)
+                return (
+                    <div className='flex flex-col gap-[8px]'>
+                        <DialogConfirm type='accept' variant='default' />
+                        {checkWorker.status ===
+                        WorkerStatusOptions.SUBMITTED ? (
+                            <DialogConfirm type='revise' variant='outline' />
+                        ) : null}
+                    </div>
+                );
             return (
                 <div className='flex flex-col gap-[8px]'>
                     <ChatButton />
