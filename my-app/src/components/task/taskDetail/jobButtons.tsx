@@ -2,7 +2,12 @@
 
 import { JobStatusOptions, ViewJobProps } from '@/types/task';
 import { Button } from '@/components/ui/button';
-import { acceptOffer, applyTask, rejectOffer, submitTask } from '@/lib/taskManagement';
+import {
+    acceptOffer,
+    applyTask,
+    rejectOffer,
+    submitTask,
+} from '@/lib/taskManagement';
 import { toast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import {
@@ -157,7 +162,7 @@ export default function JobButtons({
     const DialogConfirm = ({
         type,
     }: {
-        type: 'accept' | 'reject' | 'submit';
+        type: 'accept' | 'reject' | 'submit' | 'resubmit';
     }) => {
         return (
             <Dialog>
@@ -170,6 +175,8 @@ export default function JobButtons({
                         </Button>
                     ) : type === 'submit' ? (
                         <Button className='w-full'>Submit</Button>
+                    ) : type === 'resubmit' ? (
+                        <Button className='w-full'>Resubmit</Button>
                     ) : null}
                 </DialogTrigger>
                 <DialogContent className='rounded-[6px] border-slate-300'>
@@ -182,18 +189,22 @@ export default function JobButtons({
                                       ? 'Reject this job offer?'
                                       : type === 'submit'
                                         ? 'Individually submit the work?'
-                                        : null}
+                                        : type === 'resubmit'
+                                          ? 'Resubmit this work?'
+                                          : null}
                             </h3>
                         </DialogTitle>
                         <DialogDescription>
                             <p className='text-slate-500'>
                                 {type === 'accept'
-                                    ? 'This action will be immediately join this job chat.'
+                                    ? 'This action can be undone. You cannot later reject this offer.'
                                     : type === 'reject'
                                       ? 'This action cannot be undone. Are you absolutely sure to reject this job?'
                                       : type === 'submit'
                                         ? 'This action will notice your employer to check only your submission. The employer may be request a revision.'
-                                        : null}
+                                        : type === 'resubmit'
+                                          ? 'This action will notice your employer to check only your submission. You have done a great work!'
+                                          : null}
                             </p>
                         </DialogDescription>
                     </DialogHeader>
@@ -229,7 +240,7 @@ export default function JobButtons({
                             >
                                 Reject
                             </Button>
-                        ) : type === 'submit' ? (
+                        ) : type === 'submit' || type === 'resubmit' ? (
                             <Button
                                 className='w-full'
                                 size='s'
@@ -277,7 +288,7 @@ export default function JobButtons({
         case JobStatusOptions.REVISING:
             return (
                 <div className='flex flex-col gap-[12px]'>
-                    <DialogConfirm type='submit' />
+                    <DialogConfirm type='resubmit' />
                     <ChatButton />
                 </div>
             );

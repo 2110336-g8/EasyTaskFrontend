@@ -1,3 +1,5 @@
+import { Task } from './task';
+
 export interface Message {
     _id: string;
     taskId: string;
@@ -11,8 +13,7 @@ export interface Message {
 }
 
 export interface MessageRoomInfo {
-    taskId: string;
-    taskTitle: string;
+    task: Task;
     customer: {
         _id: string;
         name: string;

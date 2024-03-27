@@ -14,11 +14,13 @@ import {
     ApplicantStatusOptions,
 } from '@/types/task';
 import { User } from '@/types/user';
-import { dateNow, formatDateDuration, dateFromString } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import { formatPhoneNumber } from '@/utils/utils';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useEffect, useState } from 'react';
+
+dayjs.extend(relativeTime);
 
 export default function TaskDetailPage({
     params,
@@ -35,8 +37,6 @@ export default function TaskDetailPage({
             getTaskDetail(params.taskId)
                 .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
-                    console.log(formatDateDuration(task.createdAt, dateNow()));
-                    console.log(dayjs().diff(dayjs(task.createdAt)));
                     const formattedTask: ViewTaskProps = {
                         viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
@@ -49,7 +49,7 @@ export default function TaskDetailPage({
                         startDate: dayjs(task.startDate),
                         endDate: dayjs(task.endDate),
                         workers: task.workers.toLocaleString(),
-                        posted: formatDateDuration(task.createdAt, dateNow()),
+                        posted: dayjs(task.createdAt).fromNow().toString(),
                         status: task.status,
                     };
                     // console.log(taskData.customerInfo)
