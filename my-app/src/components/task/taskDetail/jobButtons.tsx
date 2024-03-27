@@ -56,9 +56,6 @@ export default function JobButtons({
     };
 
     //=============ACCEPT/REJECT OFFER=============//
-    const AcceptButton = () => {
-        return <DialogConfirm type='accept' />;
-    };
 
     const acceptHandler = () => {
         acceptOffer(props.taskId)
@@ -83,15 +80,11 @@ export default function JobButtons({
             });
     };
 
-    const RejectedButton = () => {
-        return <DialogConfirm type='reject' />;
-    };
-
     const rejectHandler = () => {
         rejectOffer(props.taskId)
             .then(response => {
                 toast({
-                    variant: 'default',
+                    variant: 'destructive',
                     title: 'Task Rejected Successfully',
                     description: 'You have successfully rejected the task.',
                 });
@@ -120,9 +113,7 @@ export default function JobButtons({
     };
 
     //=============SUBMIT+CHAT=============//
-    const SubmitButton = () => {
-        return <DialogConfirm type='submit' />;
-    };
+
     const ChatButton = () => {
         return (
             <Button className='w-full' variant='outline' asChild>
@@ -241,8 +232,8 @@ export default function JobButtons({
         case JobStatusOptions.OFFERING:
             return (
                 <div className='flex flex-col gap-[12px]'>
-                    <AcceptButton />
-                    <RejectedButton />
+                    <DialogConfirm type='accept' />
+                    <DialogConfirm type='reject' />
                 </div>
             );
 
@@ -256,7 +247,7 @@ export default function JobButtons({
         case JobStatusOptions.INPROGRESS:
             return (
                 <div className='flex flex-col gap-[12px]'>
-                    <SubmitButton />
+                    <DialogConfirm type='submit' />
                     <ChatButton />
                 </div>
             );
@@ -264,7 +255,7 @@ export default function JobButtons({
         case JobStatusOptions.REVISING:
             return (
                 <div className='flex flex-col gap-[12px]'>
-                    <SubmitButton />
+                    <DialogConfirm type='submit' />
                     <ChatButton />
                 </div>
             );

@@ -5,6 +5,16 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { dismissTask, startTask } from '@/lib/taskManagement';
 import { toast } from '@/components/ui/use-toast';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import dayjs from 'dayjs';
 
 export default function AdsButtons({
@@ -24,14 +34,6 @@ export default function AdsButtons({
                 <Link href={`/task/${props.taskId}/select`}>
                     Select Employees
                 </Link>
-            </Button>
-        );
-    };
-
-    const StartButton = ({ variant }: { variant: 'default' | 'outline' }) => {
-        return (
-            <Button onClick={startHandler} className='w-full' variant={variant}>
-                Start Job Now
             </Button>
         );
     };
@@ -69,23 +71,11 @@ export default function AdsButtons({
     };
 
     //=============DISMISS=============//
-    const DismissButton = () => {
-        return (
-            <Button
-                onClick={dismissHandler}
-                className='w-full'
-                variant='outline'
-            >
-                Dismiss Job
-            </Button>
-        );
-    };
-
     const dismissHandler = () => {
         dismissTask(props.taskId)
             .then(response => {
                 toast({
-                    variant: 'default',
+                    variant: 'destructive',
                     title: 'Task Dismissed Successfully',
                     description: 'You have successfully dismissed the task.',
                 });
@@ -104,6 +94,98 @@ export default function AdsButtons({
             });
     };
 
+    //=========Disabled======//
+    const DisabledButton = ({ text }: { text: string }) => {
+        return (
+            <Button className='w-full' variant='disabled'>
+                {text}
+            </Button>
+        );
+    };
+
+    //=========Dialog===========//
+    const DialogConfirm = ({
+        type,
+        variant,
+    }: {
+        type: 'start' | 'dismiss';
+        variant: 'default' | 'outline';
+    }) => {
+        return (
+            <Dialog>
+                <DialogTrigger type='button'>
+                    {type === 'start' ? (
+                        <Button className='w-full' variant={variant}>
+                            Start Job Now
+                        </Button>
+                    ) : type === 'dismiss' ? (
+                        <Button className='w-full' variant={variant}>
+                            Dismiss Job
+                        </Button>
+                    ) : null}
+                </DialogTrigger>
+                <DialogContent className='rounded-[6px] border-slate-300'>
+                    <DialogHeader className='flex flex-col text-left'>
+                        <DialogTitle>
+                            <h3 className='text-slate-900'>
+                                {type === 'start'
+                                    ? 'Are you absolutely sure to start job?'
+                                    : type === 'dismiss'
+                                      ? 'Are you absolutely sure to dismiss job?'
+                                      : null}
+                            </h3>
+                        </DialogTitle>
+                        <DialogDescription>
+                            <p className='text-slate-500'>
+                                {type === 'start'
+                                    ? 'This action will be notice all employees to start working on this job.'
+                                    : type === 'dismiss'
+                                      ? props.status === TaskStateOptions.OPEN
+                                          ? 'This action will immediately dismiss this job and notice all applicant about this job dismissing.'
+                                          : 'This action will promptly notify all employees of the job dismissal. Thirty percent of the wages will be distributed among all employees, and the remaining leave will be transferred to you.'
+                                      : null}
+                            </p>
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <DialogFooter className='w-full flex flex-row justify-end items-center self-stretch gap-[8px]'>
+                        <DialogClose asChild>
+                            <Button
+                                className='w-full border-[1px]'
+                                variant='outlineslate'
+                                size='s'
+                                font='s'
+                                type='button'
+                            >
+                                Cancel
+                            </Button>
+                        </DialogClose>
+                        {type === 'start' ? (
+                            <Button
+                                className='w-full'
+                                size='s'
+                                font='s'
+                                onClick={startHandler}
+                            >
+                                Confirm
+                            </Button>
+                        ) : type === 'dismiss' ? (
+                            <Button
+                                className='w-full'
+                                variant='destructive'
+                                size='s'
+                                font='s'
+                                onClick={dismissHandler}
+                            >
+                                Dismiss Job
+                            </Button>
+                        ) : null}
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        );
+    };
+
     switch (props.status) {
         //=============OPEN=============//
         case TaskStateOptions.OPEN:
@@ -119,11 +201,12 @@ export default function AdsButtons({
                 <div className='flex flex-col gap-[8px]'>
                     {canSelect ? <SelectButton /> : null}
                     {canStart ? (
-                        <StartButton
+                        <DialogConfirm
+                            type='start'
                             variant={canSelect ? 'outline' : 'default'}
                         />
                     ) : null}
-                    <DismissButton />
+                    <DialogConfirm type='dismiss' variant='outline' />
                 </div>
             );
 
@@ -132,9 +215,13 @@ export default function AdsButtons({
             return (
                 <div className='flex flex-col gap-[8px]'>
                     <ChatButton />
-                    <DismissButton />
+                    <DialogConfirm type='dismiss' variant='outline' />
                 </div>
             );
+
+        //=============DISMISSED=============//
+        case TaskStateOptions.DISMISSED:
+            return <DisabledButton text='Dismissed' />;
 
         default:
             return null;
