@@ -43,6 +43,17 @@ export default function Profile( data: UserProfile | null ) {
         }
     };
 
+    function beforeEndDate(date: Date | string): boolean {
+        const currentDate = dayjs();
+        const givenDate = dayjs(date);
+
+        console.log(currentDate);
+        console.log(givenDate);
+        console.log(givenDate.isBefore(currentDate));
+
+        return givenDate.isBefore(currentDate);
+    }
+
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
         return {
             taskId: task._id,
@@ -69,7 +80,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN) {
+                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
