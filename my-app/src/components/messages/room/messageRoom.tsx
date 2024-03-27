@@ -56,7 +56,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            router.push('/messages');
+            router.back();
         }
     }, []);
 
@@ -80,7 +80,7 @@ export default function MessageRoom(props: { taskId: string }) {
             setPage(page + 1);
             if (oldMessagesHistory.length < limit) setHasMore(false);
         } catch (error) {
-            router.push('/messages');
+            router.back();
         }
     };
 
