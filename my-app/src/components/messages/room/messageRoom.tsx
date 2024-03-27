@@ -31,13 +31,37 @@ export default function MessageRoom(props: { taskId: string }) {
 
     // === Rendering Task name and user data ===
     const [taskTitle, setTaskTitle] = useState<string>('');
+    const [isSendable, setSendable] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<Map<string, UserInfo>>();
     useMemo(async () => {
         try {
             const roomInfo: MessageRoomInfo = (
                 await instance.get(`/v1/messages/${props.taskId}/info`)
             ).data.info;
-            setTaskTitle(roomInfo.taskTitle);
+            setTaskTitle(roomInfo.task.title);
+
+            const self = clientStorage.get().user._id;
+
+            console.log(`Self: ${self}, Customer: ${roomInfo.task.customerId}`);
+            const isCustomerSendable =
+                self === roomInfo.task.customerId &&
+                ['InProgress'].includes(roomInfo.task.status);
+
+            const isWorkerSendable = roomInfo.task.hiredWorkers.some(worker => {
+                return (
+                    worker.userId === self &&
+                    [
+                        'InProgress',
+                        'Submitted',
+                        'Revising',
+                        'Resubmitted',
+                    ].includes(worker.status)
+                );
+            });
+
+            if (isCustomerSendable || isWorkerSendable) {
+                setSendable(true);
+            }
 
             const infos = new Map<string, UserInfo>();
             infos.set(roomInfo.customer._id, {
@@ -56,7 +80,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            router.back();
+            router.push('/messages');
         }
     }, []);
 
@@ -80,7 +104,7 @@ export default function MessageRoom(props: { taskId: string }) {
             setPage(page + 1);
             if (oldMessagesHistory.length < limit) setHasMore(false);
         } catch (error) {
-            router.back();
+            router.push('/messages');
         }
     };
 
@@ -350,10 +374,15 @@ export default function MessageRoom(props: { taskId: string }) {
                                     <FormItem className='w-full'>
                                         <FormControl className='w-full'>
                                             <Input
+                                                disabled={!isSendable}
                                                 type='search'
                                                 autoComplete='off'
                                                 {...form.register('content')}
-                                                placeholder='Messages...'
+                                                placeholder={
+                                                    isSendable
+                                                        ? 'Messages...'
+                                                        : 'You cannot send messages to this room'
+                                                }
                                                 className='rounded-full h-[44px]'
                                             ></Input>
                                         </FormControl>
@@ -361,7 +390,11 @@ export default function MessageRoom(props: { taskId: string }) {
                                 )}
                             />
                         </Form>
-                        <Button size='xs' className='py-[7px] px-[9px]'>
+                        <Button
+                            size='xs'
+                            className='py-[7px] px-[9px]'
+                            disabled={!isSendable}
+                        >
                             <Send size={28} className='stroke-white' />
                         </Button>
                     </form>
