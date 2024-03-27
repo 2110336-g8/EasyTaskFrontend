@@ -10,7 +10,6 @@ export interface MessagePreview {
     imageUrl?: string;
     latestMessage?: MessagePreviewInfo;
     unreadCount: number;
-    disabled: boolean;
 }
 
 export interface MessagePreviewInfo {
@@ -30,7 +29,7 @@ export default function MessagePreviewBox(props: MessagePreview) {
     return (
         <Link
             href={`messages/${props._id}`}
-            className={`w-full flex flex-row px-[16px] py-[4px] justify-between items-center ${props.disabled ? 'pointer-events-none' : ''}`}
+            className={`w-full flex flex-row px-[16px] py-[4px] justify-between items-center`}
         >
             <div className='flex flex-row gap-x-[16px]'>
                 <Image

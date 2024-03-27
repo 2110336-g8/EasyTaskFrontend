@@ -46,7 +46,6 @@ export default function Inbox() {
             <div className='flex flex-col gap-y-[16px]'>
                 {activeRooms.map(room => (
                     <MessagePreviewBox
-                        disabled={false}
                         key={room._id}
                         _id={room._id}
                         taskTitle={room.taskTitle}
@@ -64,7 +63,6 @@ export default function Inbox() {
                         {archivedRooms.map(room => {
                             return (
                                 <MessagePreviewBox
-                                    disabled={true}
                                     key={room._id}
                                     _id={room._id}
                                     taskTitle={room.taskTitle}
