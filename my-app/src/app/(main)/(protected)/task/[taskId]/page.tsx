@@ -17,7 +17,10 @@ import { User } from '@/types/user';
 import { clientStorage } from '@/utils/storageService';
 import { formatPhoneNumber } from '@/utils/utils';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useEffect, useState } from 'react';
+
+dayjs.extend(relativeTime);
 
 export default function TaskDetailPage({
     params,
