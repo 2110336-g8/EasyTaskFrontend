@@ -159,13 +159,7 @@ export interface ViewAdsProps extends ViewTaskProps {
     pendingApplicants?: ApplicantProps[];
     acceptApplicants?: ApplicantProps[];
     offeringApplicants?: ApplicantProps[];
-    hiredWorkers?: Array<{
-        _id: string;
-        name: string;
-        image?: string;
-        phoneNumber?: string;
-        status: WorkerStatusOptions;
-    }>;
+    hiredWorkers?: WorkerProps[];
 }
 export interface ProfileProps {
     _id: string;
@@ -176,6 +170,9 @@ export interface ProfileProps {
 
 export interface ApplicantProps extends ProfileProps {
     status: ApplicantStatusOptions;
+}
+export interface WorkerProps extends ProfileProps {
+    status: WorkerStatusOptions;
 }
 
 //*=================Ads====================*//
