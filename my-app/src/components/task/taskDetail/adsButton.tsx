@@ -323,6 +323,10 @@ export default function AdsButtons({
                 </div>
             );
 
+        //=============COMPLETE=============//
+        case TaskStateOptions.COMPLETED:
+            return <DisabledButton text='Completed' />;
+
         //=============DISMISSED=============//
         case TaskStateOptions.DISMISSED:
             return <DisabledButton text='Dismissed' />;

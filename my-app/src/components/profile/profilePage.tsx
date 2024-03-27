@@ -27,6 +27,7 @@ export default function Profile( data: UserProfile | null ) {
             if ('error' in responseData) return null;
     
             return responseData.task;
+
         } catch (error) {
             
             if ((error as AxiosError).response && (error as AxiosError).response!.status === 404) {
@@ -46,8 +47,8 @@ export default function Profile( data: UserProfile | null ) {
     function beforeEndDate(date: Date | string): boolean {
         const currentDate = dayjs();
         const givenDate = dayjs(date);
-    
-        return givenDate.isBefore(currentDate);
+
+        return currentDate.isBefore(givenDate);
     }
 
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
@@ -76,7 +77,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
+                        if (task.status === TaskStateOptions.OPEN) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
