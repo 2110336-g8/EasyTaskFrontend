@@ -15,14 +15,8 @@ import { useRouter } from 'next/navigation';
 
 export default function AdsCard({
     props,
-    buttonFunc,
-    onAddToCancelList,
-    onRemoveFromCancelList,
 }: {
     props: AdsCardProps;
-    buttonFunc: string;
-    onAddToCancelList: (taskId: string) => void;
-    onRemoveFromCancelList: (taskId: string) => void;
 }) {
     // Assuming you have a functional component
     const router = useRouter();
@@ -30,42 +24,32 @@ export default function AdsCard({
     const handleViewTask = () => {
         router.push('/task/' + props.taskId);
     };
-    const [isCanceled, setIsCanceled] = useState(false);
+    // const [isCanceled, setIsCanceled] = useState(false);
 
-    const handleCancelTask = (
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    ) => {
-        const eventObject = event as unknown as Event;
-        eventObject.stopPropagation();
-        if (!isCanceled) {
-            onAddToCancelList(props.taskId);
-            setIsCanceled(true);
-        } else {
-            onRemoveFromCancelList(props.taskId);
-            setIsCanceled(false);
-        }
-    };
+    // const handleCancelTask = (
+    //     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    // ) => {
+    //     const eventObject = event as unknown as Event;
+    //     eventObject.stopPropagation();
+    //     if (!isCanceled) {
+    //         onAddToCancelList(props.taskId);
+    //         setIsCanceled(true);
+    //     } else {
+    //         onRemoveFromCancelList(props.taskId);
+    //         setIsCanceled(false);
+    //     }
+    // };
 
     function FunctionalButton() {
         // Dynamically set buttonText based on status prop
         let buttonText;
-        if (buttonFunc === 'open') {
+        if (props.status === 'Open') {
             buttonText = 'Select Employees';
             if (props.hiredworkersNumber && props.hiredworkersNumber > 0) {
                 buttonText = 'Start Job Now';
             }
-        } else if (buttonFunc == 'inprogress') {
+        } else if (props.status == 'InProgress') {
             buttonText = 'Go to Messages';
-        } else if (buttonFunc == 'managing') {
-            buttonText = isCanceled ? 'Canceled' : 'Cancel Task';
-            return (
-                <Button
-                    variant={isCanceled ? 'gray' : 'destructive'}
-                    onClick={handleCancelTask}
-                >
-                    {buttonText}
-                </Button>
-            );
         } else {
             return <div></div>;
         }

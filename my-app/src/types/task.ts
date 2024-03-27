@@ -208,8 +208,9 @@ export interface AdsCardProps {
 // }
 
 export interface GetUserAdsResponse {
-    count: number;
-    success: boolean;
+    count?: number;
+    success?: boolean;
+    error?:boolean
     // page: number;
     // limit: number;
     tasks: Task[];
