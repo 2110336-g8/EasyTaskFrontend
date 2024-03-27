@@ -1,4 +1,4 @@
-import { AcceptOfferResponse, ApplyTaskResponse, DismissTaskResponse, RejectOfferResponse, StartTaskResponse } from '@/types/task';
+import { AcceptOfferResponse, ApplyTaskResponse, DismissTaskResponse, RejectOfferResponse, StartTaskResponse, SubmitTaskResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 
 //======================JOB============================//
@@ -37,6 +37,20 @@ export async function rejectOffer(
         .post('/v1/tasks/' + taskId + '/reject-offer')
         .then(res => {
             const result: RejectOfferResponse = res.data;
+            return result;
+        })
+        .catch(error => {
+            return Promise.reject(error.response.data.error);
+        });
+}
+
+export async function submitTask(
+    taskId: string,
+): Promise<SubmitTaskResponse> {
+    return instance
+        .post('/v1/tasks/' + taskId + '/submit')
+        .then(res => {
+            const result: SubmitTaskResponse = res.data;
             return result;
         })
         .catch(error => {

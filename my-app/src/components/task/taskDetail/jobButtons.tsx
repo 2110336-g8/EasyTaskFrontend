@@ -2,7 +2,7 @@
 
 import { JobStatusOptions, ViewJobProps } from '@/types/task';
 import { Button } from '@/components/ui/button';
-import { acceptOffer, applyTask, rejectOffer } from '@/lib/taskManagement';
+import { acceptOffer, applyTask, rejectOffer, submitTask } from '@/lib/taskManagement';
 import { toast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import {
@@ -113,6 +113,28 @@ export default function JobButtons({
     };
 
     //=============SUBMIT+CHAT=============//
+    const submitHandler = () => {
+        submitTask(props.taskId)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Task Submitted Successfully',
+                    description: 'You have successfully submitted the task.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error Submit task:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Task Submission Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'An unexpected error occurred. Please try again.',
+                });
+            });
+    };
 
     const ChatButton = () => {
         return (
@@ -212,7 +234,7 @@ export default function JobButtons({
                                 className='w-full'
                                 size='s'
                                 font='s'
-                                // onClick={submitHandler}
+                                onClick={submitHandler}
                             >
                                 Confirm
                             </Button>

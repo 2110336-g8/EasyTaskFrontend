@@ -276,6 +276,11 @@ export interface RejectOfferResponse {
     error?: string;
 }
 
+export interface SubmitTaskResponse {
+    success: boolean;
+    error?: string;
+}
+
 export interface StartTaskResponse {
     success: boolean;
     result?: Task;
