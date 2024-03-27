@@ -35,8 +35,6 @@ export default function TaskDetailPage({
             getTaskDetail(params.taskId)
                 .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
-                    console.log(formatDateDuration(task.createdAt, dateNow()));
-                    console.log(dayjs().diff(dayjs(task.createdAt)));
                     const formattedTask: ViewTaskProps = {
                         viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
@@ -49,7 +47,7 @@ export default function TaskDetailPage({
                         startDate: dayjs(task.startDate),
                         endDate: dayjs(task.endDate),
                         workers: task.workers.toLocaleString(),
-                        posted: formatDateDuration(task.createdAt, dateNow()),
+                        posted: dayjs(task.createdAt).fromNow().toString(),
                         status: task.status,
                     };
                     // console.log(taskData.customerInfo)
