@@ -40,7 +40,7 @@ export default function ViewTask({
                     <h1 className='text-slate-900 text-balance break-words '>
                         {props.title}
                     </h1>
-                    <p className='text-slate-400'>Posted {props.posted} </p>
+                    <p className='text-slate-400'>Posted {props.posted} ago</p>
                 </header>
                 <section className='w-full flex flex-row justify-between gap-[40px]'>
                     <article className='flex flex-col w-[640px] gap-[24px]'>
@@ -121,7 +121,7 @@ export default function ViewTask({
                                 <p className='text-slate-700'>Apply Period</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
-                                {props.startDate.format('DD/MM/YYYY')} - {props.endDate.format('DD/MM/YYYY')}
+                                {props.startDate} - {props.endDate}
                             </p>
                         </section>
                         <FullWidthBar />
