@@ -77,7 +77,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN) {
+                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
