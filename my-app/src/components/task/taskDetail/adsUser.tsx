@@ -20,7 +20,7 @@ export default function AdsUser({
     setSideState,
 }: {
     props: ViewAdsProps;
-    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
 }) {
     switch (props.status) {
@@ -153,7 +153,7 @@ const Workers = ({
     setSideState,
 }: {
     workers: WorkerProps[];
-    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
 }) => {
     return (
