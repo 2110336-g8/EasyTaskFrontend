@@ -3,7 +3,9 @@
 import { clientStorage } from '@/utils/storageService';
 import LoginNavbar from './bar/LoginNavbar';
 import LogoutNavbar from './bar/LogoutNavbar';
+import EmptyNavbar from './bar/EmptyNavbar';
 import { useState, useEffect } from 'react';
+
 
 export default function Navbar() {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +20,7 @@ export default function Navbar() {
     return (
         <div id='main-navbar'>
             {isLoading ? (
-                <div>Loading...</div>
+                <EmptyNavbar />
             ) : (
                 isLoggedIn ? <LoginNavbar /> : <LogoutNavbar />
             )}
