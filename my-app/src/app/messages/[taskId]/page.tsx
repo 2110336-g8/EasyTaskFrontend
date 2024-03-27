@@ -13,7 +13,10 @@ export default function MessageRoomPage({
 
     return (
         <div className='w-full h-full flex flex-row gap-x-[40px]'>
-            <a onClick={() => router.back()} className='pt-[8px]'>
+            <a
+                onClick={() => router.back()}
+                className='pt-[8px] cursor-pointer'
+            >
                 <ArrowLeft size={40}></ArrowLeft>
             </a>
             <MessageRoom taskId={params.taskId}></MessageRoom>
