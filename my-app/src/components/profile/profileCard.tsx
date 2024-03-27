@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { clientStorage } from "@/utils/storageService";
 import Link from "next/link";
-import { useRouter } from 'next/router';
 
 export default function ProfileCard(props: UserCard) {
     const id = clientStorage.get().user._id;
@@ -32,7 +31,7 @@ export default function ProfileCard(props: UserCard) {
                         <div className="flex flex-col self-stretch my-auto font-semibold leading-[150%] max-md:mt-10">
                         {
                             (props.firstName || props.lastName) ? (
-                                <div className="flex items-center gap-10">
+                                <div className="flex items-center gap-4">
                                     <div className="flex-shrink-0 text-4xl tracking-tight text-slate-900 overflow-hidden whitespace-nowrap">
                                         {props.firstName + " " + props.lastName}
                                     </div>
