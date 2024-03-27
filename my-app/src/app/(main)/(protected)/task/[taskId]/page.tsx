@@ -50,8 +50,7 @@ export default function TaskDetailPage({
                         startDate: dayjs(task.startDate),
                         endDate: dayjs(task.endDate),
                         workers: task.workers.toLocaleString(),
-                        posted: dayjs().diff(dayjs(task.createdAt)).toString(),
-
+                        posted: formatDateDuration(task.createdAt, dateNow()),
                         status: task.status,
                     };
                     // console.log(taskData.customerInfo)
