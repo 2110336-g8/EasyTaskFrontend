@@ -1,36 +1,53 @@
 'use client';
 
-import { ApplicantProps, ViewAdsProps, ViewTaskProps } from '@/types/task';
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
+import {
+    ApplicantProps,
+    TaskStateOptions,
+    ViewAdsProps,
+    WorkerProps,
+    WorkerStatusOptions,
+} from '@/types/task';
 import FullWidthBar from '@/components/ui/hbar';
-import UserProfile, { AvatarProfile } from '@/components/ui/userProfile';
+import UserProfile, {
+    AvatarProfile,
+    WorkerProfile,
+} from '@/components/ui/userProfile';
+import { Button } from '@/components/ui/button';
 
 export default function AdsUser(props: ViewAdsProps) {
-    console.log(props);
-    const havePending = (props.pendingApplicants?.length || 0) > 0;
-    const haveOffering = (props.offeringApplicants?.length || 0) > 0;
-    return (
-        <div className='flex flex-col gap-[24px]'>
-            <PendingApplicants applicants={props.pendingApplicants || []} />
-            {/* {havePending || haveOffering ? ( */}
-                <>
-                    <FullWidthBar />
-                    <AcceptApplicants
-                        isPending={haveOffering}
-                        applicants={props.acceptApplicants || []}
+    switch (props.status) {
+        case TaskStateOptions.OPEN:
+            const havePending = (props.pendingApplicants?.length || 0) > 0;
+            const haveOffering = (props.offeringApplicants?.length || 0) > 0;
+            return (
+                <div className='flex flex-col gap-[24px]'>
+                    <PendingApplicants
+                        applicants={props.pendingApplicants || []}
                     />
-                </>
-            {/* ) : null} */}
-            {haveOffering ? (
-                <>
-                    <FullWidthBar />
-                    <OfferingApplicants
-                        applicants={props.offeringApplicants || []}
-                    />
-                </>
-            ) : null}
-        </div>
-    );
+                    {/* {havePending || haveOffering ? ( */}
+                    <>
+                        <FullWidthBar />
+                        <AcceptApplicants
+                            isPending={haveOffering}
+                            applicants={props.acceptApplicants || []}
+                        />
+                    </>
+                    {/* ) : null} */}
+                    {haveOffering ? (
+                        <>
+                            <FullWidthBar />
+                            <OfferingApplicants
+                                applicants={props.offeringApplicants || []}
+                            />
+                        </>
+                    ) : null}
+                </div>
+            );
+        case TaskStateOptions.INPROGRESS:
+            return <Workers workers={props.hiredWorkers || []} />;
+        default:
+            return null;
+    }
 }
 
 const PendingApplicants = ({
@@ -69,7 +86,9 @@ const AcceptApplicants = ({
             <h4>Employees ({applicants?.length})</h4>
             {applicants?.length > 0 ? (
                 <div className='flex flex-col gap-[16px]'>
-                    {applicants?.map(applicant => <UserProfile {...applicant} />)}
+                    {applicants?.map(applicant => (
+                        <UserProfile {...applicant} />
+                    ))}
                 </div>
             ) : (
                 <p className='text-slate-400'>
@@ -98,7 +117,26 @@ const OfferingApplicants = ({
             <div className='flex flex-col gap-[16px]'>
                 <h4>Pending for Response ({applicants?.length})</h4>
                 <div className='flex flex-col gap-[16px]'>
-                    {applicants?.map(applicant => <UserProfile {...applicant} />)}
+                    {applicants?.map(applicant => (
+                        <UserProfile {...applicant} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const Workers = ({ workers }: { workers: WorkerProps[] }) => {
+    return (
+        <div>
+            <div className='flex flex-col gap-[16px]'>
+                <h4>Employees ({workers?.length})</h4>
+                <div className='flex flex-col gap-[16px]'>
+                    {workers?.map(worker => (
+                        <div className='flex flex-col gap-[2px]'>
+                            <WorkerProfile {...worker} />
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
