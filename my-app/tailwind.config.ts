@@ -121,14 +121,14 @@ const config = {
             fontWeight: {
                 h1: '600', //semibold
                 h2: '500', //medium
-                h3: '600', //semibold
+                h3: '500', //medium
                 h4: '500', //medium
                 p: '400', //regular
                 small: '400', //regular
                 smaller: '400', //regular
                 button: '600',
                 "button-xs": '500',
-                "button-s": '600',
+                "button-s": '500',
                 "button-m": '500',
             },
             letterSpacing: {
