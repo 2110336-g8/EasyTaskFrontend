@@ -20,6 +20,7 @@ import {
     DialogDescription,
     DialogClose,
 } from '@/components/ui/dialog';
+import Warning from './warning';
 
 export default function JobButtons({
     props,
@@ -272,9 +273,32 @@ export default function JobButtons({
 
         //=============PENDING=============//
         case JobStatusOptions.PENDING: //pending for offering
+            return (
+                <div className='flex flex-col gap-[12px]'>
+                    <PendingButton />
+                    <Warning>
+                        You are required to await the client's response to your
+                        application.
+                    </Warning>
+                </div>
+            );
         case JobStatusOptions.ACCEPTED: //pending for start task
+            return (
+                <div className='flex flex-col gap-[12px]'>
+                    <PendingButton />
+                    <Warning>
+                        This task may be delayed by up to one week after the
+                        application period ends.
+                    </Warning>
+                </div>
+            );
         case JobStatusOptions.SUBMITTED: //pending for check submission
-            return <PendingButton />;
+            return (
+                <div className='flex flex-col gap-[12px]'>
+                    <PendingButton />
+                    <Warning>The employer may request a revision.</Warning>
+                </div>
+            );
 
         //=============SUBMIT+CHAT=============//
         case JobStatusOptions.INPROGRESS:
