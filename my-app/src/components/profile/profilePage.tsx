@@ -27,6 +27,7 @@ export default function Profile( data: UserProfile | null ) {
             if ('error' in responseData) return null;
     
             return responseData.task;
+            
         } catch (error) {
             
             if ((error as AxiosError).response && (error as AxiosError).response!.status === 404) {
