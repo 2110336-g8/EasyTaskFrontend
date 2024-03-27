@@ -344,20 +344,15 @@ export default function MessageRoom(props: { taskId: string }) {
     };
 
     return (
-        <div className='w-full flex flex-col'>
+        <div className='w-full h-full flex flex-col'>
             <h1>{taskTitle}</h1>
             {isJoined && (
-                <div className='w-full h-full flex flex-col gap-y-[16px]'>
+                <div className='w-full flex-1 max-h-[calc(100%-56px)] flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto'
+                        className='flex flex-col-reverse flex-1 overflow-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
-                        loader={
-                            <div className='loader' key={0}>
-                                Loading ...
-                            </div>
-                        }
                     >
                         {renderMessage()}
                     </InfiniteScroll>
