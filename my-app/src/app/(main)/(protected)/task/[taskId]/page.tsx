@@ -11,9 +11,10 @@ import {
     ViewTaskProps,
     ViewJobProps,
     ViewAdsProps,
+    ApplicantStatusOptions,
 } from '@/types/task';
 import { User } from '@/types/user';
-import { dateNow, formatDateDuration } from '@/utils/datetime';
+import { dateNow, formatDateDuration, dateFromString } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import { formatPhoneNumber } from '@/utils/utils';
 import dayjs from 'dayjs';
@@ -34,6 +35,9 @@ export default function TaskDetailPage({
             getTaskDetail(params.taskId)
                 .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
+                    console.log(task.createdAt);
+                    console.log(formatDateDuration(task.createdAt, dateNow()));
+                    console.log(dayjs(task.createdAt).fromNow());
                     const formattedTask: ViewTaskProps = {
                         viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
@@ -43,10 +47,12 @@ export default function TaskDetailPage({
                         description: task.description,
                         location: task.location,
                         wages: task.wages.toLocaleString(),
-                        startDate: dayjs(task.startDate).format('DD/MM/YYYY'),
-                        endDate: dayjs(task.endDate).format('DD/MM/YYYY'),
+                        startDate: dayjs(task.startDate),
+                        endDate: dayjs(task.endDate),
                         workers: task.workers.toLocaleString(),
                         posted: formatDateDuration(task.createdAt, dateNow()),
+
+                        status: task.status,
                     };
                     // console.log(taskData.customerInfo)
                     if ('customerInfo' in taskData) {
@@ -61,7 +67,8 @@ export default function TaskDetailPage({
                                 taskData.customerInfo.phoneNumber || '',
                             ),
                         };
-                        (formattedTask as ViewJobProps).status = taskData.status
+                        (formattedTask as ViewJobProps).jobStatus =
+                            taskData.status;
                     }
                     if ('applicantsInfo' in taskData) {
                         (formattedTask as ViewAdsProps).applicants =
@@ -79,6 +86,27 @@ export default function TaskDetailPage({
                                     status: (applicant as Applicant).status,
                                 }),
                             );
+                        (formattedTask as ViewAdsProps).pendingApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.PENDING,
+                        );
+                        (formattedTask as ViewAdsProps).acceptApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.ACCEPTED,
+                        );
+                        (formattedTask as ViewAdsProps).offeringApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.OFFERING,
+                        );
                     }
                     if ('hiredWorkersInfo' in taskData) {
                         (formattedTask as ViewAdsProps).hiredWorkers =
@@ -113,11 +141,17 @@ export default function TaskDetailPage({
                 });
         };
         fetchData();
-    }, []);
+    }, [isLoading]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    return <div>{task ? <ViewTask {...task} /> : null}</div>;
+    return (
+        <div>
+            {task ? (
+                <ViewTask props={task} setIsLoading={setIsLoading} />
+            ) : null}
+        </div>
+    );
 }

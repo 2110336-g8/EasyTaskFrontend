@@ -1,9 +1,6 @@
 'use client';
 
-import { toast } from '../../ui/use-toast';
-import { clientStorage } from '@/utils/storageService';
-import { Button } from '@/components/ui/button';
-import { ViewAdsProps, ViewJobProps, ViewTaskProps } from '@/types/task';
+import { ViewAdsProps, ViewJobProps } from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -11,139 +8,32 @@ import {
     FoldersIcon,
     UsersIcon,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import MapReadOnly from '../../map/mapBoxReadOnly';
-import axios from 'axios';
-import { applyTask } from '@/lib/applyTask';
 import Image from 'next/image';
 import FullWidthBar from '../../ui/hbar';
 import JobUser from './jobUser';
 import AdsUser from './adsUser';
 import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
+import { useRouter } from 'next/navigation';
 
-export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
-    // const [isLoggedIn, setIsLoggedIn] = useState(!!clientStorage.get().token);
-    // const [hasApplied, setHasApplied] = useState(false);
-
-    // const api = axios.create({
-    //     baseURL: 'http://api.easytask.vt.in.th/v1/tasks/',
-    //     headers: {
-    //         'Content-Type': 'application/json', // change this to axios instance
-    //     },
-    // });
-
-    // useEffect(() => {
-    //     async function checkAppliedStatus() {
-    //         try {
-    //             const response = await api.get(`${props.taskId}/check`, {
-    //                 headers: {
-    //                     Authorization: `Bearer ${clientStorage.get().token}`,
-    //                 },
-    //             });
-
-    //             if (response.status === 200) {
-    //                 setHasApplied(response.data.hasApplied);
-    //             } else {
-    //                 console.error(
-    //                     'Error checking application status:',
-    //                     response.data.error,
-    //                 );
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking application status:', error);
-    //         }
-    //     }
-
-    //     if (isLoggedIn) {
-    //         checkAppliedStatus();
-    //     }
-    // }, [isLoggedIn, props.taskId]);
-
-    // const applyTaskHandler = async () => {
-    //     console.log(isLoggedIn);
-    //     if (!isLoggedIn) {
-    //         toast({
-    //             variant: 'destructive',
-    //             title: 'Login Required',
-    //             description: 'You need to login first to apply for this task.',
-    //         });
-    //         return;
-    //     }
-
-    //     try {
-    //         const response = await applyTask(
-    //             props.taskId,
-    //             clientStorage.get().token,
-    //         );
-    //         console.log(response.success);
-    //         if (response.success) {
-    //             console.log('applied task success');
-    //             toast({
-    //                 variant: 'default',
-    //                 title: 'Task Applied',
-    //                 description: 'You have successfully applied for this task.',
-    //             });
-    //             setHasApplied(true);
-    //         } else {
-    //             toast({
-    //                 variant: 'destructive',
-    //                 title: 'Application Error',
-    //                 description:
-    //                     response.error ||
-    //                     'An error occurred while applying for the task.',
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error applying for task:', error);
-    //         toast({
-    //             variant: 'destructive',
-    //             title: 'Application Error',
-    //             description:
-    //                 'An error occurred while applying for the task. Please try again later.',
-    //         });
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     async function checkAppliedStatus() {
-    //         try {
-    //             const response = await fetch(
-    //                 `http://api.easytask.vt.in.th/v1/tasks/${props.taskId}/check`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${clientStorage.get().token}`,
-    //                     },
-    //                 },
-    //             );
-
-    //             if (response.ok) {
-    //                 const data = await response.json();
-    //                 setHasApplied(data.hasApplied);
-    //             } else {
-    //                 const errorData = await response.json();
-    //                 console.error(
-    //                     'Error checking application status:',
-    //                     errorData.error,
-    //                 );
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking application status:', error);
-    //         }
-    //     }
-
-    //     if (isLoggedIn) {
-    //         checkAppliedStatus();
-    //     }
-    // }, [isLoggedIn, props.taskId]);
-
+export default function ViewTask({
+    props,
+    setIsLoading,
+}: {
+    props: ViewJobProps | ViewAdsProps;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+    const router = useRouter();
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
                 <div className='absolute'>
-                    <a className='relative right-[80px]' href='/task'>
-                        <ArrowLeftIcon className='w-[40px] h-[40px]' />
+                    <a
+                        className='relative right-[80px] cursor-pointer'
+                        onClick={() => router.back()}
+                    >
+                        <ArrowLeftIcon className='w-[40px] h-[52px]' />
                     </a>
                 </div>
                 <header className='w-full flex flex-col gap-[2px]'>
@@ -190,23 +80,18 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                         ) : null}
                     </article>
                     <aside className='flex flex-col w-[320px] gap-[24px]'>
-                            {props.viewType == 'job' ? (
-                                <JobButtons {...(props as ViewJobProps)} />
-                            ) : (
-                                <AdsButtons {...(props as ViewAdsProps)} />
-                            )}
-                        {/* <Button
-                            onClick={applyTaskHandler}
-                            disabled={!isLoggedIn || hasApplied}
-                            className='w-full'
-                        >
-                            {!isLoggedIn
-                                ? 'Please Login'
-                                : hasApplied
-                                  ? 'Applied'
-                                  : 'Apply Now'}
-                        </Button> */}
-
+                        {props.viewType == 'job' ? (
+                            <JobButtons
+                                props={props as ViewJobProps}
+                                setIsLoading={setIsLoading}
+                            />
+                        ) : (
+                            <AdsButtons
+                                props={props as ViewAdsProps}
+                                setIsLoading={setIsLoading}
+                            />
+                        )}
+                        <FullWidthBar />
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
@@ -236,14 +121,14 @@ export default function ViewTask(props: ViewJobProps | ViewAdsProps) {
                                 <p className='text-slate-700'>Apply Period</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
-                                {props.startDate} - {props.endDate}
+                                {props.startDate.format('DD/MM/YYYY')} - {props.endDate.format('DD/MM/YYYY')}
                             </p>
                         </section>
                         <FullWidthBar />
                         {props.viewType == 'job' ? (
-                            <JobUser {...props} />
+                            <JobUser {...(props as ViewJobProps)} />
                         ) : (
-                            <AdsUser {...props} />
+                            <AdsUser {...(props as ViewAdsProps)} />
                         )}
                     </aside>
                 </section>

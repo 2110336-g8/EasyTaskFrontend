@@ -11,6 +11,7 @@ export interface User {
 }
 
 export interface UserProfile {
+    _id: string; // need for testing / validating in profile
     firstName: string;
     lastName: string;
     email: string;
@@ -35,6 +36,7 @@ export interface UserProfile {
 }
 
 export interface UserCard {
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;

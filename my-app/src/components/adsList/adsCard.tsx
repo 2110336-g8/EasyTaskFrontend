@@ -129,7 +129,7 @@ export default function AdsCard({
                         </div>
                     </div>
                 </div>
-                <div className='flex item-centers justify-between pt-[40px] mr-[5px]'>
+                <div className='flex item-centers justify-between p-[38px] mr-[5px]'>
                     {FunctionalButton()}
                 </div>
             </div>

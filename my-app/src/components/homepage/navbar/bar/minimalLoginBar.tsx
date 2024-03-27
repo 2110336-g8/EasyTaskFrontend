@@ -3,11 +3,6 @@
 import Image from 'next/image';
 import { clientStorage } from '@/utils/storageService';
 import { Briefcase, CircleUser, LogOut, Megaphone, Send } from 'lucide-react';
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-  } from "@/components/ui/hover-card"
 
 export default function MinLoginNavbar() {
     const handleLogout = () => {
@@ -19,7 +14,7 @@ export default function MinLoginNavbar() {
 
     return (
         <div key="loginNavbar" className='fixed left-0 top-0 right-0 items-center w-full px-5 bg-slate-100 text-indigo-600 '>
-            <div className="flex justify-between items-center py-4 max-w-[1328px] mx-auto">
+            <div className="flex justify-between items-center py-4 mx-auto">
                 <a href="/" className="shrink-0">
                     <Image src="/logo.svg" alt="Logo" width={58} height={32} loading="lazy" />
                 </a>

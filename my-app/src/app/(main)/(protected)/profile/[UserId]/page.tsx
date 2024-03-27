@@ -3,25 +3,21 @@
 import { useEffect, useState } from "react";
 import { instance } from "@/utils/axiosInstance";
 import ProfileError from "@/components/profile/profileError";
-import { UserProfile } from '@/types/user';
+import Profile from "@/components/profile/profilePage";
+import type { UserProfile } from "@/types/user"; 
+import ProfileLoading from "@/components/profile/profileLoading";
 
-interface UserRoute {
-    params: {
-        UserId: string;
-    };
-}
-    
-export default function UserProfile({ params }: UserRoute) { 
-    const [userId, setUserId] = useState<string>(params.UserId); 
+export default function ViewProfile({ params: { UserId } }: { params: { UserId: string } }) {
     const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                if (!userId) {
+                if (!UserId) {
                     return;
                 }
-                const userDataResponse = await instance.get(`/v1/users/${userId}`);
+                const userDataResponse = await instance.get(`/v1/users/${UserId}`);
 
                 if (userDataResponse.data.user) {
                     setUserData(userDataResponse.data.user);
@@ -29,21 +25,26 @@ export default function UserProfile({ params }: UserRoute) {
                     setUserData(null);
                 }
 
-                console.log(userDataResponse.data.user);
-
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 setUserData(null);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchUser();
-    }, [userId]);
+    }, [UserId]);
 
     return (
         <div>
-            <p>Post: {userId}</p>
-            <ProfileError />
+            {loading ? (
+                <ProfileLoading />
+            ) : userData ? (
+                <Profile {...userData as UserProfile} />
+            ) : (
+                <ProfileError />
+            )}
         </div>
     );
 }

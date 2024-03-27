@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs';
 import { User } from './user';
 
 export enum WorkerStatusOptions {
@@ -142,29 +143,22 @@ export interface ViewTaskProps {
     description?: string;
     location?: GeographicLocation;
     wages: string;
-    startDate: string;
-    endDate: string;
+    startDate: Dayjs;
+    endDate: Dayjs;
     workers: string;
     posted: string;
+    status: TaskStateOptions;
+}
+export interface ViewJobProps extends ViewTaskProps {
+    customer: ProfileProps;
+    jobStatus: JobStatusOptions;
 }
 
-export interface ViewJobProps extends ViewTaskProps {
-    customer: {
-        _id: string;
-        name: string;
-        image?: string;
-        phoneNumber?: string;
-    };
-    status: JobStatusOptions;
-}
 export interface ViewAdsProps extends ViewTaskProps {
-    applicants?: Array<{
-        _id: string;
-        name: string;
-        image?: string;
-        phoneNumber?: string;
-        status: ApplicantStatusOptions;
-    }>;
+    applicants?: ApplicantProps[];
+    pendingApplicants?: ApplicantProps[];
+    acceptApplicants?: ApplicantProps[];
+    offeringApplicants?: ApplicantProps[];
     hiredWorkers?: Array<{
         _id: string;
         name: string;
@@ -172,6 +166,16 @@ export interface ViewAdsProps extends ViewTaskProps {
         phoneNumber?: string;
         status: WorkerStatusOptions;
     }>;
+}
+export interface ProfileProps {
+    _id: string;
+    name: string;
+    image?: string;
+    phoneNumber?: string;
+}
+
+export interface ApplicantProps extends ProfileProps {
+    status: ApplicantStatusOptions;
 }
 
 //*=================Ads====================*//
@@ -214,26 +218,25 @@ export interface GetUserAdsResponse {
     tasks: Task[];
 }
 
-export interface ApplyTaskResponse {
-    success: boolean;
-    result?: {
-        _id: string;
-        title: string;
-        category: string;
-        description: string;
-        location: GeographicLocation;
-        status: TaskStateOptions;
-        wages: number;
-        workers: number; //
-        startDate: Date;
-        endDate: Date;
-        customerId: string;
-        imageKeys?: string[];
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
+export interface CandidatesOfTask {
+    taskId: string;
+    capacity: number;
+    vacancy: number;
+    candidates: {
+        pending: Array<CandidateInfo>;
+        offering: Array<CandidateInfo>;
+        accepted: Array<CandidateInfo>;
     };
-    error?: string;
+}
+
+export interface CandidateInfo {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    imageUrl?: string;
+    phoneNumber?: string;
+    appliedAt: Date;
 }
 
 //*=================Jobs====================*//
@@ -251,12 +254,40 @@ export interface JobsCardProps {
 }
 
 export interface UserJobsProps {
-    status: string
-    tasks: JobsCardProps[]
+    status: string;
+    tasks: JobsCardProps[];
 }
 
 export interface GetUserJobsResponse {
     enrolled_tasks?: UserJobsProps[];
+    error?: string;
+}
+
+//==========Task Management==============//
+export interface ApplyTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface AcceptOfferResponse {
+    success: boolean;
+    error?: string;
+}
+export interface RejectOfferResponse {
+    success: boolean;
+    error?: string;
+}
+
+export interface StartTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface DismissTaskResponse {
+    success: boolean;
+    result?: Task;
     error?: string;
 }
 

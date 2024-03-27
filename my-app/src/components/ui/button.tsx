@@ -9,16 +9,19 @@ const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default: 'bg-primary-500 text-white hover:opacity-95 disabled:bg-primary-300',
+                default:
+                    'bg-primary-500 text-white hover:opacity-95 disabled:bg-primary-300',
                 gray: 'bg-slate-500 hover:bg-slate-700 text-white',
                 destructive:
                     'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline:
-                    'border-[1.5px] border-primary-500 bg-transparent hover:bg-accent',
+                    'border-[1.5px] text-primary-500 border-primary-500 bg-transparent hover:bg-accent',
+                outlineslate:
+                    'border-[1.5px] text-slate-500 border-slate-500 bg-transparent hover:bg-accent',
                 secondary:
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
-                disabled: "bg-slate-400 pointer-events-none",
+                disabled: 'bg-slate-400 pointer-events-none text-white',
                 link: 'text-primary underline-offset-4 hover:underline',
             },
             size: {
@@ -30,9 +33,9 @@ const buttonVariants = cva(
                 m: 'py-[12px] px-[24px]',
             },
             font: {
-                xs: 'text-button-xs font-button-xs tracking-button-xs',
-                s: 'text-button-s font-button-s tracking-button-s',
-                m: 'text-button-m font-button-m tracking-button-m',
+                xs: 'text-[14px] leading-[18px] font-button-xs tracking-button-xs',
+                s: 'text-[16px] leading-[24px] font-button-s tracking-button-s',
+                m: 'text-[20px] leading-[28px] font-button-m tracking-button-m',
             },
         },
         defaultVariants: {
