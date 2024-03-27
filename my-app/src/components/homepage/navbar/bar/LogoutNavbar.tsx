@@ -40,7 +40,9 @@ export default function LogoutNavbar() {
                                 Sign up
                             </a>
                         </>
-                    ) : null}
+                    ) : (
+                        <></>
+                    )}
                 </div>
             </div>
         </div>
