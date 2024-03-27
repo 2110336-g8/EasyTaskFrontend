@@ -1,4 +1,5 @@
 'use client';
+import { isTokenExpired } from '@/lib/userLogIn';
 import { clientStorage } from '@/utils/storageService';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -15,6 +16,12 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
             router.push('/login');
             return;
         }
+        if (isTokenExpired(token)) {
+            clientStorage.remove();
+            router.push('/login');
+            return;
+        }
+
         setLoading(false);
     }, []);
     return isLoading ? null : children;
