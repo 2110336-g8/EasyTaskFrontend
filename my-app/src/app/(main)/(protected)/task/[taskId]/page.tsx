@@ -14,7 +14,7 @@ import {
     ApplicantStatusOptions,
 } from '@/types/task';
 import { User } from '@/types/user';
-import { dateNow, formatDateDuration } from '@/utils/datetime';
+import { dateNow, formatDateDuration, dateFromString } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import { formatPhoneNumber } from '@/utils/utils';
 import dayjs from 'dayjs';
@@ -36,6 +36,7 @@ export default function TaskDetailPage({
                 .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
                     console.log(task.createdAt);
+                    console.log(formatDateDuration(task.createdAt, dateNow()));
                     const formattedTask: ViewTaskProps = {
                         viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
