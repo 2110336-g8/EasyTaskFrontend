@@ -241,28 +241,6 @@ export interface CandidateInfo {
     appliedAt: Date;
 }
 
-export interface ApplyTaskResponse {
-    success: boolean;
-    result?: {
-        _id: string;
-        title: string;
-        category: string;
-        description: string;
-        location: GeographicLocation;
-        status: TaskStateOptions;
-        wages: number;
-        workers: number; //
-        startDate: Date;
-        endDate: Date;
-        customerId: string;
-        imageKeys?: string[];
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-    };
-    error?: string;
-}
-
 //*=================Jobs====================*//
 export interface JobsCardProps {
     taskId: string;
@@ -284,6 +262,34 @@ export interface UserJobsProps {
 
 export interface GetUserJobsResponse {
     enrolled_tasks?: UserJobsProps[];
+    error?: string;
+}
+
+//==========Task Management==============//
+export interface ApplyTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface AcceptOfferResponse {
+    success: boolean;
+    error?: string;
+}
+export interface RejectOfferResponse {
+    success: boolean;
+    error?: string;
+}
+
+export interface StartTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface DismissTaskResponse {
+    success: boolean;
+    result?: Task;
     error?: string;
 }
 

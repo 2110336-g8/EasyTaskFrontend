@@ -11,6 +11,7 @@ import {
     ViewTaskProps,
     ViewJobProps,
     ViewAdsProps,
+    ApplicantStatusOptions,
 } from '@/types/task';
 import { User } from '@/types/user';
 import { dateNow, formatDateDuration } from '@/utils/datetime';
@@ -81,6 +82,27 @@ export default function TaskDetailPage({
                                     status: (applicant as Applicant).status,
                                 }),
                             );
+                        (formattedTask as ViewAdsProps).pendingApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.PENDING,
+                        );
+                        (formattedTask as ViewAdsProps).acceptApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.ACCEPTED,
+                        );
+                        (formattedTask as ViewAdsProps).offeringApplicants = (
+                            formattedTask as ViewAdsProps
+                        ).applicants?.filter(
+                            applicant =>
+                                applicant.status ===
+                                ApplicantStatusOptions.OFFERING,
+                        );
                     }
                     if ('hiredWorkersInfo' in taskData) {
                         (formattedTask as ViewAdsProps).hiredWorkers =

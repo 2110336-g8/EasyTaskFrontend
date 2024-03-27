@@ -3,22 +3,56 @@
 import { TaskStateOptions, ViewAdsProps } from '@/types/task';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { dismissTask, startTask } from '@/lib/taskManagement';
+import { toast } from '@/components/ui/use-toast';
 
-export default function AdsButtons(props: ViewAdsProps) {
+export default function AdsButtons({
+    props,
+    setIsLoading,
+}: {
+    props: ViewAdsProps;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
     //=============OPEN=============//
     const SelectButton = () => {
         return (
             <Button className='w-full'>
-                <Link href={`/task/${props.taskId}/select`}>Select Employees</Link>
+                <Link href={`/task/${props.taskId}/select`}>
+                    Select Employees
+                </Link>
             </Button>
         );
     };
+
     const StartButton = ({ variant }: { variant: 'default' | 'outline' }) => {
         return (
-            <Button className='w-full' variant={variant}>
+            <Button onClick={startHandler} className='w-full' variant={variant}>
                 Start Job Now
             </Button>
         );
+    };
+
+    const startHandler = () => {
+        startTask(props.taskId)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Task Started Successfully',
+                    description: 'You have successfully started the task.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error Starting for task:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Task Start Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'An unexpected error occurred. Please try again.',
+                });
+            });
     };
 
     //=============INPROGRESS=============//
@@ -33,10 +67,33 @@ export default function AdsButtons(props: ViewAdsProps) {
     //=============DISMISS=============//
     const DismissButton = () => {
         return (
-            <Button className='w-full' variant='outline'>
+            <Button onClick={dismissHandler} className='w-full' variant='outline'>
                 Dismiss Job
             </Button>
         );
+    };
+
+    const dismissHandler = () => {
+        dismissTask(props.taskId)
+            .then(response => {
+                toast({
+                    variant: 'default',
+                    title: 'Task Dismissed Successfully',
+                    description: 'You have successfully dismissed the task.',
+                });
+                setIsLoading(true);
+            })
+            .catch(error => {
+                console.error('Error Dismiss for task:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Task Dismiss Error',
+                    description:
+                        typeof error === 'string'
+                            ? error
+                            : 'An unexpected error occurred. Please try again.',
+                });
+            });
     };
 
     switch (props.status) {

@@ -86,7 +86,10 @@ export default function ViewTask({
                                 setIsLoading={setIsLoading}
                             />
                         ) : (
-                            <AdsButtons {...(props as ViewAdsProps)} />
+                            <AdsButtons
+                                props={props as ViewAdsProps}
+                                setIsLoading={setIsLoading}
+                            />
                         )}
                         <FullWidthBar />
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
