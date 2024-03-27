@@ -33,7 +33,7 @@ export default function ViewTask({
                         className='relative right-[80px] cursor-pointer'
                         onClick={() => router.back()}
                     >
-                        <ArrowLeftIcon className='w-[40px] h-[54px]' />
+                        <ArrowLeftIcon className='w-[40px] h-[52px]' />
                     </a>
                 </div>
                 <header className='w-full flex flex-col gap-[2px]'>
