@@ -35,8 +35,6 @@ export default function TaskDetailPage({
             getTaskDetail(params.taskId)
                 .then((taskData: JobDetailResponse | AdsDetailResponse) => {
                     const task: Task = taskData.task;
-                    console.log(formatDateDuration(task.createdAt, dateNow()));
-                    console.log(dayjs(task.createdAt).fromNow());
                     const formattedTask: ViewTaskProps = {
                         viewType: userId == task.customerId ? 'ads' : 'job',
                         taskId: task._id,
