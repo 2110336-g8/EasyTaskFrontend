@@ -97,35 +97,37 @@ export default function AccountDeletion() {
                         <DialogTitle className='text-h3'>
                             Are you absolutely sure?
                         </DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription className='text-error-500'>
-                        After this action your account will be permanently
-                        deleted and CANNOT be undone.
-                    </DialogDescription>
-                    <Form {...form}>
-                        <div className='w-full flex flex-col gap-y-[8px]'>
-                            <FormField
-                                control={form.control}
-                                name='password'
-                                render={({ field }) => (
-                                    <FormItem className='w-full gap-[16px] items-center'>
-                                        <FormControl>
-                                            <Input
-                                                type='password'
-                                                placeholder='Enter your password to delete account'
-                                                {...form.register('password')}
-                                            ></Input>
-                                        </FormControl>
-                                    </FormItem>
+                        <DialogDescription className='text-error-500'>
+                            After this action your account will be permanently
+                            deleted and CANNOT be undone.
+                        </DialogDescription>
+                        <Form {...form}>
+                            <div className='w-full flex flex-col gap-y-[8px]'>
+                                <FormField
+                                    control={form.control}
+                                    name='password'
+                                    render={({ field }) => (
+                                        <FormItem className='w-full gap-[16px] items-center'>
+                                            <FormControl>
+                                                <Input
+                                                    type='password'
+                                                    placeholder='Enter your password to delete account'
+                                                    {...form.register(
+                                                        'password',
+                                                    )}
+                                                ></Input>
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                {form.formState.errors.password && (
+                                    <p className='text-error-500'>
+                                        {form.formState.errors.password.message}
+                                    </p>
                                 )}
-                            />
-                            {form.formState.errors.password && (
-                                <p className='text-error-500'>
-                                    {form.formState.errors.password.message}
-                                </p>
-                            )}
-                        </div>
-                    </Form>
+                            </div>
+                        </Form>
+                    </DialogHeader>
                     <DialogFooter className='flex flex-row justify-end gap-[8px]'>
                         <DialogClose asChild>
                             <Button variant='secondary' size='sm' type='button'>

@@ -1,4 +1,4 @@
-import { WageRange } from '@/app/(main)/task/page';
+import { WageRange } from '@/app/(main)/(protected)/task/page';
 import { AllTasksResponse, GetCategoriesResponse } from '@/types/task';
 import { instance } from '@/utils/axiosInstance';
 

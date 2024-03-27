@@ -11,6 +11,7 @@ export interface User {
 }
 
 export interface UserProfile {
+    _id: string; // need for testing / validating in profile
     firstName: string;
     lastName: string;
     email: string;
@@ -28,13 +29,14 @@ export interface UserProfile {
     }>;
     tasks: Array<{
         taskId: string;
-        status: 'In Progress' | 'Completed' | 'Cancel';
+        status: 'InProgress' | 'Completed' | 'Cancel';
         createdAt: Date;
     }>;
     ownedTasks: string[];
 }
 
 export interface UserCard {
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;

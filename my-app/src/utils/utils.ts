@@ -17,7 +17,7 @@ export function isUser(object: any): object is User {
         object.email !== undefined &&
         isString(object.email) &&
         (object.phoneNumber === undefined || isString(object.phoneNumber)) &&
-        (object.photoURL === undefined || isString(object.photoURL)) &&
+        (object.imageUrl === undefined || isString(object.imageUrl)) &&
         (object.bankId === undefined || isString(object.bankId)) &&
         (object.bankAccNo === undefined || isString(object.bankAccNo))
     );
@@ -30,4 +30,9 @@ export const range = (start: number, end: number) => {
 
 export const numberWithCommas = (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+    const digits = phoneNumber.replace(/\D/g, ''); // Removes anything that's not a digit
+    return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 };

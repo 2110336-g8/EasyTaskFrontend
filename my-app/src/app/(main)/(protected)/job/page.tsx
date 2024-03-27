@@ -12,6 +12,7 @@ import { toast } from '@/components/ui/use-toast';
 import { clientStorage } from '@/utils/storageService';
 import { getUserAds } from '@/lib/getUserAds';
 import JobToggleList from '@/components/jobList/jobToggleList';
+import { getUserJobs } from '@/lib/getUserJobs';
 
 export type WageRange = [number | null, number | null];
 
@@ -54,87 +55,87 @@ export type WageRange = [number | null, number | null];
 //     },
 // ];
 
-export default function AdsList() {
+export default function JobsList() {
     const router = useRouter();
     const [jobOfferList, setJobOfferList] = useState<AdsCardProps[]>([]);
     const [jobOnGoingList, setJobOnGoingList] = useState<AdsCardProps[]>([]);
     const [jobAppliedList, setJobAppliedList] = useState<AdsCardProps[]>([]);
-    const [jobCompletedList, setJobCompletedList] = useState<AdsCardProps[]>([]);
-    const [jobRejectedList, setRejectedList] = useState<AdsCardProps[]>([]);
-    const [isManaging, setIsManaging] = useState(false);
-
-    useEffect(() => {
-        const userId: string | null = clientStorage.get().user._id;
-        if (!userId) {
-            router.push('/login');
-        }
-        // console.log(userId);
-        // const userId: string | null = '65eff56288030343046799b0';
-        const fetchAdsList = async () => {
-            getUserAds({
-                userId,
-            })
-                .then((jobListData: GetUserAdsResponse) => {
-                    const formattedJobList: AdsCardProps[] =
-                        jobListData.tasks.map(task => ({
-                            taskId: task._id,
-                            image: task.image,
-                            title: task.title,
-                            status: task.status,
-                            startDate: dayjs(task.startDate).format(
-                                'DD MMM YYYY',
-                            ),
-                            endDate: dayjs(task.endDate).format('DD MMM YYYY'),
-                            location: task.location?.name,
-                            applications: task.workers.toLocaleString(),
-                            wages: task.wages.toLocaleString(),
-                            category: task.category,
-                        }));
-                    console.log(jobListData);
-
-                    setJobOfferList(
-                        formattedJobList.filter(
-                            task => task.status == TaskStateOptions.COMPLETED, //edit here after backend done the state
-                        ),
-                    );
-                    setJobOnGoingList(
-                        formattedJobList.filter(
-                            task => task.status == TaskStateOptions.OPEN,
-                        ),
-                    );
-                    setJobAppliedList(
-                        formattedJobList.filter(
-                            task => task.status == TaskStateOptions.INPROGRESS,
-                        ),
-                    );
-                    setJobCompletedList(
-                        formattedJobList.filter(
-                            task => task.status == TaskStateOptions.CLOSED,
-                        ),
-                    );
-                    setRejectedList(
-                        formattedJobList.filter(
-                            task => task.status == TaskStateOptions.CLOSED,
-                        ),
-                    );
-                })
-                .catch(e => {
-                    toast({
-                        variant: 'destructive',
-                        title: 'Uh oh! Something went wrong.',
-                        description: 'There was a problem with your request.',
-                    });
-                    console.error('Error fetching ads list', e);
-                });
-        };
-        fetchAdsList();
-    }, []);
-
-    // Function to set isManaging to true
-    const handleManage = () => {
-        setIsManaging(true);
-    };
-
+    const [jobCompletedList, setJobCompletedList] = useState<AdsCardProps[]>(
+        [],
+    );
+    const [jobRejectedList, setJobRejectedList] = useState<AdsCardProps[]>([]);
+    const [jobNotProceedList, setJobNotProceedList] = useState<AdsCardProps[]>(
+        [],
+    );
+    const userId: string | null = clientStorage.get().user._id;
+    // const fetchJobsFromStatus = async (jobStatus: string) => {
+    //     try {
+    //         const result = await getUserJobs({
+    //             userId: userId,
+    //             status: jobStatus,
+    //         });
+    //         if (result?.error) {
+    //             console.error('Fetch Jobs failed:', result.error);
+    //         } else if (result?.tasks) {
+    //             const formattedJobsList: AdsCardProps[] = result.tasks.map(
+    //                 task => ({
+    //                     taskId: task._id,
+    //                     imageUrl: task.imageUrl,
+    //                     title: task.title,
+    //                     status: task.status,
+    //                     startDate: dayjs(task.startDate).format('DD MMM YYYY'),
+    //                     endDate: dayjs(task.endDate).format('DD MMM YYYY'),
+    //                     location: task.location?.name,
+    //                     applications: task.workers.toLocaleString(),
+    //                     hiredworkersNumber: task.hiredWorkers.length,
+    //                     wages: task.wages.toLocaleString(),
+    //                     category: task.category,
+    //                 }),
+    //             );
+    //             switch (jobStatus) {
+    //                 case 'Applied':
+    //                     setJobAppliedList(formattedJobsList);
+    //                     break;
+    //                 case 'Offering':
+    //                     setJobOfferList(formattedJobsList);
+    //                     break;
+    //                 case 'Rejected':
+    //                     setJobRejectedList(formattedJobsList);
+    //                     break;
+    //                 case 'Accepted':
+    //                     setJobAppliedList(formattedJobsList);
+    //                     break;
+    //                 case 'NotProceed':
+    //                     setJobNotProceedList(formattedJobsList);
+    //                     break;
+    //                 case 'Ongoing':
+    //                     setJobOnGoingList(formattedJobsList);
+    //                     break;
+    //                 case 'Completed':
+    //                     setJobCompletedList(formattedJobsList);
+    //                     break;
+    //             }
+    //             console.log('feteched', jobStatus);
+    //         }
+    //     } catch (error) {
+    //         toast({
+    //             variant: 'destructive',
+    //             title: 'Uh oh! Something went wrong.',
+    //             description: 'There was a problem with your request.',
+    //         });
+    //         console.error('Error fetching jobs list', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     // Call handleToggleClick for each type when the component is mounted
+    //     fetchJobsFromStatus('Applied');
+    //     fetchJobsFromStatus('Offering');
+    //     fetchJobsFromStatus('Rejected');
+    //     fetchJobsFromStatus('Accepted');
+    //     fetchJobsFromStatus('Not Proceed');
+    //     fetchJobsFromStatus('Ongoing');
+    //     fetchJobsFromStatus('Completed');
+    // }, []); // Empty dependency array ensures this effect runs only once
     return (
         <main className='flex flex-col gap-[40px] items-center '>
             <div className='w-full flex justify-between'>
@@ -159,29 +160,34 @@ export default function AdsList() {
                 </div> */}
             </div>
             <JobToggleList
-                type='offer'
-                adsList={jobOfferList}
-                managing={isManaging}
+                type='Offering'
+                // adsList={jobOfferList}
+                userId={userId}
             />
             <JobToggleList
-                type='onGoing'
-                adsList={jobOnGoingList}
-                managing={isManaging}
+                type='Ongoing'
+                // adsList={jobOnGoingList}
+                userId={userId}
             />
             <JobToggleList
-                type='applied'
-                adsList={jobAppliedList}
-                managing={isManaging}
+                type='Applied'
+                // adsList={jobAppliedList}
+                userId={userId}
             />
             <JobToggleList
-                type='completed'
-                adsList={jobCompletedList}
-                managing={isManaging}
+                type='Completed'
+                // adsList={jobCompletedList}
+                userId={userId}
             />
             <JobToggleList
-                type='rejected'
-                adsList={jobRejectedList}
-                managing={isManaging}
+                type='Rejected'
+                // adsList={jobRejectedList}
+                userId={userId}
+            />
+            <JobToggleList
+                type='Not Proceed'
+                // adsList={jobNotProceedList}
+                userId={userId}
             />
         </main>
     );
