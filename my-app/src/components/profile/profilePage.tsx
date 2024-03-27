@@ -34,12 +34,12 @@ export default function Profile( data: UserProfile | null ) {
     
             return updatedData;
         } catch (error) {
-            console.error('Error fetching task data:', error);
-            toast({
-                variant: 'destructive',
-                title: 'Error Fetching Task Data',
-                description: 'Failed to fetch task data. Please try again later.',
-            });
+            // console.error('Error fetching task data:', error);
+            // toast({
+            //     variant: 'destructive',
+            //     title: 'Error Fetching Task Data',
+            //     description: 'Failed to fetch task data. Please try again later.',
+            // });
             return null;
         }
     };
