@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { numberWithCommas } from '@/utils/utils';
 import MapReadOnly from '@/components/map/mapBoxReadOnly';
+import { dateToString } from '@/utils/datetime';
 
 dayjs.extend(relativeTime);
 
@@ -153,15 +154,9 @@ export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
                                     </div>
                                     <div className='flex flex-2 w-2/3 items-center justify-self-start'>
                                         <p className='text-slate-700 justify-self-start'>
-                                            {dateToString(
-                                                props.startDate,
-                                                'DD/MM/YYYY',
-                                            )}{' '}
-                                            -{' '}
-                                            {dateToString(
-                                                props.endDate,
-                                                'DD/MM/YYYY',
-                                            )}
+                                            {dayjs(props.startDate).format('DD/MM/YYYY').toString()}
+                                            {' '}-{' '}
+                                            {dayjs(props.endDate).format('DD/MM/YYYY').toString()}
                                         </p>
                                     </div>
                                 </div>
