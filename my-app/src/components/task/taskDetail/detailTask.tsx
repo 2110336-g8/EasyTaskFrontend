@@ -1,6 +1,6 @@
 'use client';
 
-import { ViewAdsProps, ViewJobProps } from '@/types/task';
+import { ViewAdsProps, ViewJobProps, WorkerProps } from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -16,6 +16,8 @@ import AdsUser from './adsUser';
 import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import UserProfile from '@/components/ui/userProfile';
 
 export default function ViewTask({
     props,
@@ -25,6 +27,10 @@ export default function ViewTask({
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     const router = useRouter();
+    const [sideState, setSideState] = useState<'general' | 'submitted'>(
+        'general',
+    );
+    const [checkWorker, setCheckWorker] = useState<WorkerProps | null>(null);
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
@@ -40,7 +46,7 @@ export default function ViewTask({
                     <h1 className='text-slate-900 text-balance break-words '>
                         {props.title}
                     </h1>
-                    <p className='text-slate-400'>Posted {props.posted} ago</p>
+                    <p className='text-slate-400'>Posted {props.posted}</p>
                 </header>
                 <section className='w-full flex flex-row justify-between gap-[40px]'>
                     <article className='flex flex-col w-[640px] gap-[24px]'>
@@ -86,18 +92,29 @@ export default function ViewTask({
                                 setIsLoading={setIsLoading}
                             />
                         ) : (
-                            <AdsButtons
-                                props={props as ViewAdsProps}
-                                setIsLoading={setIsLoading}
-                            />
+                            <>
+                                {checkWorker && sideState == 'submitted' ? (
+                                    <div className='flex flex-col gap-[8px]'>
+                                        <small className='text-slate-400'>
+                                            Individual work from
+                                        </small>
+                                        <UserProfile {...checkWorker} />
+                                    </div>
+                                ) : null}
+                                <AdsButtons
+                                    props={props as ViewAdsProps}
+                                    setIsLoading={setIsLoading}
+                                    checkWorker={checkWorker}
+                                />
+                            </>
                         )}
                         <FullWidthBar />
-                        <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
+                        <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[2px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
-                            <div className='col-span-5 flex '>
+                            <div className='col-span-5 flex'>
                                 <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
                                     {props.category}
                                 </div>
@@ -118,17 +135,22 @@ export default function ViewTask({
                             </p>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <CalendarDaysIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
-                                <p className='text-slate-700'>Apply Period</p>
+                                <p className='text-slate-700'>Apply</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
-                                {props.startDate} - {props.endDate}
+                                {props.startDate.format('DD/MM/YYYY')} - {' '}
+                                {props.endDate.format('DD/MM/YYYY')}
                             </p>
                         </section>
                         <FullWidthBar />
                         {props.viewType == 'job' ? (
                             <JobUser {...(props as ViewJobProps)} />
                         ) : (
-                            <AdsUser {...(props as ViewAdsProps)} />
+                            <AdsUser
+                                props={props as ViewAdsProps}
+                                setCheckWorker={setCheckWorker}
+                                setSideState={setSideState}
+                            />
                         )}
                     </aside>
                 </section>

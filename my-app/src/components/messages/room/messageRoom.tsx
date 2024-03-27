@@ -15,6 +15,7 @@ import { instance } from '@/utils/axiosInstance';
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroller';
 import dayjs, { Dayjs } from 'dayjs';
+import Link from 'next/link';
 
 interface SendMessage {
     content: string;
@@ -31,13 +32,36 @@ export default function MessageRoom(props: { taskId: string }) {
 
     // === Rendering Task name and user data ===
     const [taskTitle, setTaskTitle] = useState<string>('');
+    const [isSendable, setSendable] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<Map<string, UserInfo>>();
     useMemo(async () => {
         try {
             const roomInfo: MessageRoomInfo = (
                 await instance.get(`/v1/messages/${props.taskId}/info`)
             ).data.info;
-            setTaskTitle(roomInfo.taskTitle);
+            setTaskTitle(roomInfo.task.title);
+
+            const self = clientStorage.get().user._id;
+
+            const isCustomerSendable =
+                self === roomInfo.task.customerId &&
+                ['InProgress'].includes(roomInfo.task.status);
+
+            const isWorkerSendable = roomInfo.task.hiredWorkers.some(worker => {
+                return (
+                    worker.userId === self &&
+                    [
+                        'InProgress',
+                        'Submitted',
+                        'Revising',
+                        'Resubmitted',
+                    ].includes(worker.status)
+                );
+            });
+
+            if (isCustomerSendable || isWorkerSendable) {
+                setSendable(true);
+            }
 
             const infos = new Map<string, UserInfo>();
             infos.set(roomInfo.customer._id, {
@@ -56,7 +80,7 @@ export default function MessageRoom(props: { taskId: string }) {
 
             setUserInfo(infos);
         } catch (error) {
-            router.back();
+            router.push('/messages');
         }
     }, []);
 
@@ -80,7 +104,7 @@ export default function MessageRoom(props: { taskId: string }) {
             setPage(page + 1);
             if (oldMessagesHistory.length < limit) setHasMore(false);
         } catch (error) {
-            router.back();
+            router.push('/messages');
         }
     };
 
@@ -126,14 +150,16 @@ export default function MessageRoom(props: { taskId: string }) {
                     {message.senderId !== nextMessage?.senderId ||
                     dayjs(message.sentAt).format('DDMMYYYY') !==
                         dayjs(nextMessage?.sentAt).format('DDMMYYYY') ? (
-                        <Image
-                            className='size-[56px] rounded-full object-cover'
-                            src={senderImage ?? '/ProfilePicEmpty.png'}
-                            width={56}
-                            height={56}
-                            alt=''
-                            priority
-                        ></Image>
+                        <Link href={`/profile/${message.senderId}`}>
+                            <Image
+                                className='size-[56px] rounded-full object-cover'
+                                src={senderImage ?? '/ProfilePicEmpty.png'}
+                                width={56}
+                                height={56}
+                                alt=''
+                                priority
+                            ></Image>
+                        </Link>
                     ) : (
                         <div className='min-w-[56px]'></div>
                     )}
@@ -321,20 +347,17 @@ export default function MessageRoom(props: { taskId: string }) {
     };
 
     return (
-        <div className='w-full flex flex-col'>
-            <h1>{taskTitle}</h1>
+        <div className='w-full h-full flex flex-col gap-y-[40px]'>
+            <Link href={`/task/${props.taskId}`}>
+                <h1>{taskTitle}</h1>
+            </Link>
             {isJoined && (
-                <div className='w-full h-full flex flex-col gap-y-[16px]'>
+                <div className='w-full flex-1 max-h-[calc(100%-96px)] flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto'
+                        className='flex flex-col-reverse flex-1 overflow-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
-                        loader={
-                            <div className='loader' key={0}>
-                                Loading ...
-                            </div>
-                        }
                     >
                         {renderMessage()}
                     </InfiniteScroll>
@@ -350,10 +373,15 @@ export default function MessageRoom(props: { taskId: string }) {
                                     <FormItem className='w-full'>
                                         <FormControl className='w-full'>
                                             <Input
+                                                disabled={!isSendable}
                                                 type='search'
                                                 autoComplete='off'
                                                 {...form.register('content')}
-                                                placeholder='Messages...'
+                                                placeholder={
+                                                    isSendable
+                                                        ? 'Messages...'
+                                                        : 'You cannot send messages to this room'
+                                                }
                                                 className='rounded-full h-[44px]'
                                             ></Input>
                                         </FormControl>
@@ -361,7 +389,11 @@ export default function MessageRoom(props: { taskId: string }) {
                                 )}
                             />
                         </Form>
-                        <Button size='xs' className='py-[7px] px-[9px]'>
+                        <Button
+                            size='xs'
+                            className='py-[7px] px-[9px]'
+                            disabled={!isSendable}
+                        >
                             <Send size={28} className='stroke-white' />
                         </Button>
                     </form>

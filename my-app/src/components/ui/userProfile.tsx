@@ -26,7 +26,54 @@ export default function UserProfile(props: ProfileProps) {
     );
 }
 
-export function WorkerProfile(props: WorkerProps) {
+export function WorkerProfile({
+    props,
+    setCheckWorker,
+    setSideState
+}: {
+    props: WorkerProps;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
+
+}) {
+    const WorkerStatus = () => {
+        const statusTextMap: { [key in WorkerStatusOptions]: string } = {
+            [WorkerStatusOptions.INPROGRESS]: 'Working On',
+            [WorkerStatusOptions.SUBMITTED]: 'Submitted',
+            [WorkerStatusOptions.REVISING]: 'Revision Pending',
+            [WorkerStatusOptions.RESUBMITTED]: 'Resubmitted',
+            [WorkerStatusOptions.COMPLETED]: 'Completed',
+            [WorkerStatusOptions.DISMISSED]: 'Not Proceed',
+        };
+
+        const statusText: string = statusTextMap[props.status];
+
+        return (
+            <Button
+                className='w-fit rounded-[26px]'
+                size='xs'
+                font='xs'
+                variant={
+                    props.status === WorkerStatusOptions.SUBMITTED ||
+                    props.status === WorkerStatusOptions.RESUBMITTED
+                        ? 'default'
+                        : 'disabled'
+                }
+                onClick={() => {
+                    if (
+                        props.status === WorkerStatusOptions.SUBMITTED ||
+                        props.status === WorkerStatusOptions.RESUBMITTED
+                    ) {
+                        setCheckWorker(props);
+                        setSideState("submitted");
+                    }
+                }}
+            >
+                {statusText}
+            </Button>
+        );
+    };
+
     return (
         <div className='flex flex-row items-center gap-[16px]'>
             <AvatarProfile {...props} />
@@ -46,40 +93,11 @@ export function WorkerProfile(props: WorkerProps) {
                         </div>
                     </div>
                 </a>
-                <WorkerStatus status={props.status} />
+                <WorkerStatus />
             </div>
         </div>
     );
 }
-
-const WorkerStatus = ({ status }: { status: WorkerStatusOptions }) => {
-    const statusTextMap: { [key in WorkerStatusOptions]: string } = {
-        [WorkerStatusOptions.INPROGRESS]: 'Working On',
-        [WorkerStatusOptions.SUBMITTED]: 'Submitted',
-        [WorkerStatusOptions.REVISING]: 'Revision Pending',
-        [WorkerStatusOptions.RESUBMITTED]: 'Resubmitted',
-        [WorkerStatusOptions.COMPLETED]: 'Completed',
-        [WorkerStatusOptions.DISMISSED]: 'Dismissed',
-    };
-
-    const statusText: string = statusTextMap[status];
-
-    return (
-        <Button
-            className='w-fit rounded-[26px]'
-            size='xs'
-            font='xs'
-            variant={
-                status === WorkerStatusOptions.SUBMITTED ||
-                status === WorkerStatusOptions.RESUBMITTED
-                    ? 'default'
-                    : 'disabled'
-            }
-        >
-            {statusText}
-        </Button>
-    );
-};
 
 export function AvatarProfile(props: ProfileProps) {
     return (

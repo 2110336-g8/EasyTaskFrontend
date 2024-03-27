@@ -35,7 +35,7 @@ const buttonVariants = cva(
             font: {
                 xs: 'text-[14px] leading-[18px] font-button-xs tracking-button-xs',
                 s: 'text-[16px] leading-[24px] font-button-s tracking-button-s',
-                m: 'text-[20px] leading-[28px] font-button-m tracking-button-m',
+                m: 'text-[18px] leading-[24px] font-button-m tracking-button-m',
             },
         },
         defaultVariants: {

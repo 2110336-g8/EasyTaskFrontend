@@ -10,6 +10,7 @@ import { TaskStateOptions } from '@/types/task';
 import ProfileCard from "./profileCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileLoading from './profileLoading';
+import { AxiosError } from 'axios';
 
 
 export default function Profile( data: UserProfile | null ) {
@@ -26,16 +27,29 @@ export default function Profile( data: UserProfile | null ) {
             if ('error' in responseData) return null;
     
             return responseData.task;
+
         } catch (error) {
-            // console.error('Error fetching task data:', error);
-            // toast({
-            //     variant: 'destructive',
-            //     title: 'Error Fetching Task Data',
-            //     description: 'Failed to fetch task data. Please try again later.',
-            // });
+            
+            if ((error as AxiosError).response && (error as AxiosError).response!.status === 404) {
+                return null; 
+            }
+
+            console.error('Error fetching task data:', error);
+            toast({
+                variant: 'destructive',
+                title: 'Error Fetching Task Data',
+                description: 'Failed to fetch task data. Please try again later.',
+            });
             return null;
         }
     };
+
+    function beforeEndDate(date: Date | string): boolean {
+        const currentDate = dayjs();
+        const givenDate = dayjs(date);
+
+        return currentDate.isBefore(givenDate);
+    }
 
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
         return {
@@ -63,7 +77,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN) {
+                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);

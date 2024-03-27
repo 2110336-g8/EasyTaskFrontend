@@ -14,8 +14,17 @@ import UserProfile, {
 } from '@/components/ui/userProfile';
 import { Button } from '@/components/ui/button';
 
-export default function AdsUser(props: ViewAdsProps) {
+export default function AdsUser({
+    props,
+    setCheckWorker,
+    setSideState,
+}: {
+    props: ViewAdsProps;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
+}) {
     switch (props.status) {
+        //=============OPEN=============//
         case TaskStateOptions.OPEN:
             const havePending = (props.pendingApplicants?.length || 0) > 0;
             const haveOffering = (props.offeringApplicants?.length || 0) > 0;
@@ -43,8 +52,20 @@ export default function AdsUser(props: ViewAdsProps) {
                     ) : null}
                 </div>
             );
+
+        //=============INPROGRESS=============//
         case TaskStateOptions.INPROGRESS:
-            return <Workers workers={props.hiredWorkers || []} />;
+        //=============COMPLETE=============//
+        case TaskStateOptions.COMPLETED:
+        //=============DISMISSED=============//
+        case TaskStateOptions.DISMISSED:
+            return (
+                <Workers
+                    workers={props.hiredWorkers || []}
+                    setCheckWorker={setCheckWorker}
+                    setSideState={setSideState}
+                />
+            );
         default:
             return null;
     }
@@ -126,7 +147,15 @@ const OfferingApplicants = ({
     );
 };
 
-const Workers = ({ workers }: { workers: WorkerProps[] }) => {
+const Workers = ({
+    workers,
+    setCheckWorker,
+    setSideState,
+}: {
+    workers: WorkerProps[];
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
+}) => {
     return (
         <div>
             <div className='flex flex-col gap-[16px]'>
@@ -134,7 +163,11 @@ const Workers = ({ workers }: { workers: WorkerProps[] }) => {
                 <div className='flex flex-col gap-[16px]'>
                     {workers?.map(worker => (
                         <div className='flex flex-col gap-[2px]'>
-                            <WorkerProfile {...worker} />
+                            <WorkerProfile
+                                props={worker}
+                                setCheckWorker={setCheckWorker}
+                                setSideState={setSideState}
+                            />
                         </div>
                     ))}
                 </div>
