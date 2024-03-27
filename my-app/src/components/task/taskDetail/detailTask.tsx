@@ -109,12 +109,12 @@ export default function ViewTask({
                             </>
                         )}
                         <FullWidthBar />
-                        <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[1px]'>
+                        <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
-                            <div className='col-span-5 flex'>
+                            <div className='col-span-3 flex'>
                                 <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
                                     {props.category}
                                 </div>
@@ -123,21 +123,21 @@ export default function ViewTask({
                                 <UsersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Team</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
+                            <p className='col-span-3 text-slate-700'>
                                 {props.workers} people
                             </p>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <BanknoteIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Wages</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
+                            <p className='col-span-3 text-slate-700'>
                                 {props.wages} Baht/person
                             </p>
                             <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <CalendarDaysIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Apply</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
+                            <p className='col-span-3 text-slate-700'>
                                 {props.startDate.format('DD/MM/YYYY')} - {' '}
                                 {props.endDate.format('DD/MM/YYYY')}
                             </p>
