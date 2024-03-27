@@ -52,7 +52,7 @@ const config = {
                     DEFAULT: 'hsl(var(--secondary))',
                     foreground: 'hsl(var(--secondary-foreground))',
                     100: '#FEF3C7',
-                    500: '#F7B60E',
+                    500: '#F58D13',
                     700: '#B56D17',
                     900: '#814B24',
                 },
@@ -114,9 +114,9 @@ const config = {
                 small: ['14px', { lineHeight: '20px' }],
                 smaller: ['12px', { lineHeight: '16px' }],
                 button: ['20px', { lineHeight: '28px' }],
-                "button-xs": ['14px', { lineHeight: '18px' }],
-                "button-s": ['16px', { lineHeight: '24px' }],
-                "button-m": ['18px', { lineHeight: '24px' }],
+                'button-xs': ['14px', { lineHeight: '18px' }],
+                'button-s': ['16px', { lineHeight: '24px' }],
+                'button-m': ['18px', { lineHeight: '24px' }],
             },
             fontWeight: {
                 h1: '600', //semibold
@@ -127,9 +127,9 @@ const config = {
                 small: '400', //regular
                 smaller: '400', //regular
                 button: '600',
-                "button-xs": '500',
-                "button-s": '500',
-                "button-m": '500',
+                'button-xs': '500',
+                'button-s': '500',
+                'button-m': '500',
             },
             letterSpacing: {
                 h1: '-0.012em',
@@ -140,9 +140,9 @@ const config = {
                 small: '0em',
                 smaller: '0em',
                 button: '-0.005em',
-                "button-xs": '-0.005em',
-                "button-s": '-0.005em',
-                "button-m": '-0.005em',
+                'button-xs': '-0.005em',
+                'button-s': '-0.005em',
+                'button-m': '-0.005em',
             },
         },
     },
