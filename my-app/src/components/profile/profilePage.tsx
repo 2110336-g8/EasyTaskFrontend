@@ -47,7 +47,7 @@ export default function Profile( data: UserProfile | null ) {
         const currentDate = dayjs();
         const givenDate = dayjs(date);
 
-        return givenDate.isBefore(currentDate);
+        return currentDate.isBefore(givenDate);
     }
 
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
@@ -76,7 +76,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN && !beforeEndDate(task.endDate)) {
+                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
