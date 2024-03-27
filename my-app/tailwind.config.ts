@@ -116,7 +116,7 @@ const config = {
                 button: ['20px', { lineHeight: '28px' }],
                 "button-xs": ['14px', { lineHeight: '18px' }],
                 "button-s": ['16px', { lineHeight: '24px' }],
-                "button-m": ['20px', { lineHeight: '28px' }],
+                "button-m": ['18px', { lineHeight: '24px' }],
             },
             fontWeight: {
                 h1: '600', //semibold
@@ -129,7 +129,7 @@ const config = {
                 button: '600',
                 "button-xs": '500',
                 "button-s": '600',
-                "button-m": '600',
+                "button-m": '500',
             },
             letterSpacing: {
                 h1: '-0.012em',
