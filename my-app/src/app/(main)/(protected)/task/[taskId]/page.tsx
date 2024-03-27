@@ -47,7 +47,8 @@ export default function TaskDetailPage({
                         startDate: dayjs(task.startDate),
                         endDate: dayjs(task.endDate),
                         workers: task.workers.toLocaleString(),
-                        posted: formatDateDuration(task.createdAt, dateNow()),
+                        posted: dayjs(task.createdAt.toString()).fromNow().toString(),
+
                         status: task.status,
                     };
                     // console.log(taskData.customerInfo)
