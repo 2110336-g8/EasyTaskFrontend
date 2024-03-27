@@ -15,6 +15,7 @@ import { instance } from '@/utils/axiosInstance';
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroller';
 import dayjs, { Dayjs } from 'dayjs';
+import Link from 'next/link';
 
 interface SendMessage {
     content: string;
@@ -149,14 +150,16 @@ export default function MessageRoom(props: { taskId: string }) {
                     {message.senderId !== nextMessage?.senderId ||
                     dayjs(message.sentAt).format('DDMMYYYY') !==
                         dayjs(nextMessage?.sentAt).format('DDMMYYYY') ? (
-                        <Image
-                            className='size-[56px] rounded-full object-cover'
-                            src={senderImage ?? '/ProfilePicEmpty.png'}
-                            width={56}
-                            height={56}
-                            alt=''
-                            priority
-                        ></Image>
+                        <Link href={`/profile/${message.senderId}`}>
+                            <Image
+                                className='size-[56px] rounded-full object-cover'
+                                src={senderImage ?? '/ProfilePicEmpty.png'}
+                                width={56}
+                                height={56}
+                                alt=''
+                                priority
+                            ></Image>
+                        </Link>
                     ) : (
                         <div className='min-w-[56px]'></div>
                     )}
@@ -344,20 +347,17 @@ export default function MessageRoom(props: { taskId: string }) {
     };
 
     return (
-        <div className='w-full flex flex-col'>
-            <h1>{taskTitle}</h1>
+        <div className='w-full h-full flex flex-col gap-y-[40px]'>
+            <Link href={`/task/${props.taskId}`}>
+                <h1>{taskTitle}</h1>
+            </Link>
             {isJoined && (
-                <div className='w-full h-full flex flex-col gap-y-[16px]'>
+                <div className='w-full flex-1 max-h-[calc(100%-96px)] flex flex-col gap-y-[16px]'>
                     <InfiniteScroll
-                        className='flex flex-col-reverse flex-1 w-full overflow-y-auto'
+                        className='flex flex-col-reverse flex-1 overflow-auto'
                         pageStart={0}
                         loadMore={fetchMessage}
                         hasMore={hasMore}
-                        loader={
-                            <div className='loader' key={0}>
-                                Loading ...
-                            </div>
-                        }
                     >
                         {renderMessage()}
                     </InfiniteScroll>
