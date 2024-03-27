@@ -106,7 +106,7 @@ const config = {
                 sans: ['Inter', 'sans-serif'],
             },
             fontSize: {
-                h1: ['36px', { lineHeight: '54px' }],
+                h1: ['36px', { lineHeight: '44px' }],
                 h2: ['30px', { lineHeight: '36px' }],
                 h3: ['22px', { lineHeight: '30px' }],
                 h4: ['20px', { lineHeight: '26px' }],
@@ -121,7 +121,7 @@ const config = {
             fontWeight: {
                 h1: '600', //semibold
                 h2: '500', //medium
-                h3: '500', //medium
+                h3: '600', //medium
                 h4: '500', //medium
                 p: '400', //regular
                 small: '400', //regular
@@ -132,10 +132,10 @@ const config = {
                 'button-m': '500',
             },
             letterSpacing: {
-                h1: '-0.012em',
-                h2: '-0.0075em',
-                h3: '-0.006em',
-                h4: '-0.005em',
+                h1: '0.012em',
+                h2: '0.0075em',
+                h3: '0.03em',
+                h4: '0.005em',
                 p: '0em',
                 small: '0em',
                 smaller: '0em',
