@@ -113,7 +113,7 @@ export default function Profile( data: UserProfile | null ) {
                     <TabsTrigger value="past" className='justify-center rounded-md'>Experience</TabsTrigger>
                 </TabsList>
                 <TabsContent value="open" className='font-semibold tracking-tight'>
-                    <div className='flex flex-wrap justify-start gap-x-4 gap-y-4'>
+                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-3.5'>
                         {openTasks.length > 0 ? (
                             openTasks.map(task => (
                                 <TaskCard
@@ -127,7 +127,7 @@ export default function Profile( data: UserProfile | null ) {
                     </div>
                 </TabsContent>
                 <TabsContent value="past">
-                    <div className='flex flex-wrap justify-start gap-x-4 gap-y-4'>
+                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-4'>
                         {pastTasks.length > 0 ? (
                             pastTasks.map(task => (
                                 <TaskCard
