@@ -57,7 +57,7 @@ export default function AdsToggleList({
                         startDate: dayjs(task.startDate).format('DD MMM YYYY'),
                         endDate: dayjs(task.endDate).format('DD MMM YYYY'),
                         location: task.location?.name,
-                        applications: task.workers.toLocaleString(),
+                        applications: task.applicants.length.toLocaleString(),
                         hiredworkersNumber: task.hiredWorkers.length,
                         wages: task.wages.toLocaleString(),
                         category: task.category,

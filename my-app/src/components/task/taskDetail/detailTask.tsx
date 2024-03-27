@@ -1,6 +1,6 @@
 'use client';
 
-import { ViewAdsProps, ViewJobProps } from '@/types/task';
+import { ViewAdsProps, ViewJobProps, WorkerProps } from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -16,6 +16,8 @@ import AdsUser from './adsUser';
 import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import UserProfile from '@/components/ui/userProfile';
 
 export default function ViewTask({
     props,
@@ -25,6 +27,10 @@ export default function ViewTask({
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     const router = useRouter();
+    const [sideState, setSideState] = useState<'general' | 'submitted'>(
+        'general',
+    );
+    const [checkWorker, setCheckWorker] = useState<WorkerProps | null>(null);
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
@@ -86,10 +92,21 @@ export default function ViewTask({
                                 setIsLoading={setIsLoading}
                             />
                         ) : (
-                            <AdsButtons
-                                props={props as ViewAdsProps}
-                                setIsLoading={setIsLoading}
-                            />
+                            <>
+                                {checkWorker && sideState == 'submitted' ? (
+                                    <div className='flex flex-col gap-[8px]'>
+                                        <small className='text-slate-400'>
+                                            Individual work from
+                                        </small>
+                                        <UserProfile {...checkWorker} />
+                                    </div>
+                                ) : null}
+                                <AdsButtons
+                                    props={props as ViewAdsProps}
+                                    setIsLoading={setIsLoading}
+                                    checkWorker={checkWorker}
+                                />
+                            </>
                         )}
                         <FullWidthBar />
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
@@ -97,8 +114,8 @@ export default function ViewTask({
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
-                            <div className='col-span-5 flex '>
-                                <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
+                            <div className='col-span-5 flex'>
+                                <div className='inline-flex whitespace-nowrap text-button-s font-button-s max-w-[140px] tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 overflow-x-auto'>
                                     {props.category}
                                 </div>
                             </div>
@@ -129,7 +146,11 @@ export default function ViewTask({
                         {props.viewType == 'job' ? (
                             <JobUser {...(props as ViewJobProps)} />
                         ) : (
-                            <AdsUser {...(props as ViewAdsProps)} />
+                            <AdsUser
+                                props={props as ViewAdsProps}
+                                setCheckWorker={setCheckWorker}
+                                setSideState={setSideState}
+                            />
                         )}
                     </aside>
                 </section>

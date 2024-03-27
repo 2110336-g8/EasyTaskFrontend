@@ -1,6 +1,6 @@
 'use client';
 
-import { AdsCardProps } from '@/types/task';
+import { AdsCardProps, TaskStateOptions } from '@/types/task';
 import Link from 'next/link';
 import {
     ClockIcon,
@@ -12,18 +12,31 @@ import {
 import { Button } from '../ui/button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '../ui/dialog';
+import { toast } from '../ui/use-toast';
+import { startTask } from '@/lib/taskManagement';
 
-export default function AdsCard({
-    props,
-}: {
-    props: AdsCardProps;
-}) {
+export default function AdsCard({ props }: { props: AdsCardProps }) {
     // Assuming you have a functional component
     const router = useRouter();
 
     const handleViewTask = () => {
         router.push('/task/' + props.taskId);
     };
+
+    const handleGoToMessage = () => {
+        router.push(`/messages/${props.taskId}`);
+    };
+
     // const [isCanceled, setIsCanceled] = useState(false);
 
     // const handleCancelTask = (
@@ -50,6 +63,11 @@ export default function AdsCard({
             }
         } else if (props.status == 'InProgress') {
             buttonText = 'Go to Messages';
+            return (
+                <Button onClick={handleGoToMessage} size='m' font='m'>
+                    {buttonText}
+                </Button>
+            );
         } else {
             return <div></div>;
         }
@@ -76,9 +94,11 @@ export default function AdsCard({
             </div>
             <div className='flex flex-row w-full p-[16px]'>
                 <div className='flex flex-col  h-auto w-full p-[16px] gap-[8px]'>
-                    <h3 className='text-slate-900 line-clamp-2 break-words'>
-                        {props.title}
-                    </h3>
+                    <div className='max-w-[600px]'>
+                        <h3 className='text-slate-900 line-clamp-1 break-words'>
+                            {props.title}
+                        </h3>
+                    </div>
                     {/* <div className='flex items-center gap-[4px]'>
                         <Button>hi</Button>
                     </div> */}

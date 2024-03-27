@@ -18,13 +18,15 @@ export default function JobCard(props: JobsCardProps) {
         let buttonText;
         if (props.taskStatus === 'Offering') {
             buttonText = 'Response';
+        } else if (props.taskStatus == 'Accepted') {
+            return <Button variant='disabled'>{props.taskStatus}</Button>;
         } else if (props.taskStatus == 'InProgress') {
             buttonText = 'Submission';
         } else if (
             props.taskStatus == 'Submitted' ||
             props.taskStatus == 'Resubmitted'
         ) {
-            buttonText = props.taskStatus;
+            return <Button variant='disabled'>{props.taskStatus}</Button>;
         } else if (props.taskStatus == 'Revising') {
             buttonText = 'Resubmission';
         } else {
@@ -48,9 +50,11 @@ export default function JobCard(props: JobsCardProps) {
             </div>
             <div className='flex flex-row w-full p-[16px]'>
                 <div className='flex flex-col  h-auto w-full p-[16px] gap-[8px]'>
-                    <h3 className='text-slate-900 line-clamp-2 break-words'>
-                        {props.title}
-                    </h3>
+                    <div className='max-w-[600px]'>
+                        <h3 className='text-slate-900 line-clamp-1 break-words'>
+                            {props.title}
+                        </h3>
+                    </div>
                     {/* <div className='flex items-center gap-[4px]'>
                         <Button>hi</Button>
                     </div> */}
@@ -65,10 +69,10 @@ export default function JobCard(props: JobsCardProps) {
                                 {props.locationName}
                             </small>
                         ) : null}
-                        {props.applicationsNumber ? (
+                        {props.applicationNumber ? (
                             <small className='inline-block whitespace-nowrap gap-[4px] flex items-center text-slate-500'>
                                 <InboxIcon className='stroke-slate-500 stroke-2 w-[16px] h-[16px]' />
-                                {props.applicationsNumber} Applications
+                                {props.applicationNumber} Applications
                             </small>
                         ) : null}
                     </div>

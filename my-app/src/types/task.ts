@@ -247,7 +247,7 @@ export interface JobsCardProps {
     wages: string;
     startDate: string;
     endDate: string;
-    applicationsNumber: string;
+    applicationNumber: string;
     taskStatus?: string;
 }
 
@@ -289,6 +289,18 @@ export interface StartTaskResponse {
 }
 
 export interface DismissTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface AcceptTaskResponse {
+    success: boolean;
+    result?: Task;
+    error?: string;
+}
+
+export interface ReviseTaskResponse {
     success: boolean;
     result?: Task;
     error?: string;
