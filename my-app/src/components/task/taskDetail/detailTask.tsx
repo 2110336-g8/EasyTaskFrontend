@@ -114,7 +114,7 @@ export default function ViewTask({
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
-                            <div className='col-span-5 flex '>
+                            <div className='col-span-5 flex'>
                                 <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
                                     {props.category}
                                 </div>
