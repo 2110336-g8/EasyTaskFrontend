@@ -27,16 +27,16 @@ export default function ViewTask({
     const router = useRouter();
     return (
         <main className='flex justify-center items-center'>
-            <div className='flex flex-col w-[1000px] gap-[24px] relative'>
+            <div className='flex flex-col w-[1000px] gap-[24px]'>
+                <div className='absolute'>
+                    <a
+                        className='relative right-[80px] cursor-pointer'
+                        onClick={() => router.back()}
+                    >
+                        <ArrowLeftIcon className='w-[40px] h-[54px]' />
+                    </a>
+                </div>
                 <header className='w-full flex flex-col gap-[2px]'>
-                    <div className='absolute left-[20px] top-[20px]'>
-                        <a
-                            className='cursor-pointer'
-                            onClick={() => router.back()}
-                        >
-                            <ArrowLeftIcon className='w-[40px] h-[40px]' />
-                        </a>
-                    </div>
                     <h1 className='text-slate-900 text-balance break-words '>
                         {props.title}
                     </h1>
