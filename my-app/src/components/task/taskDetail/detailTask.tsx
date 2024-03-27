@@ -115,7 +115,7 @@ export default function ViewTask({
                                 <p className='text-slate-700'>Category</p>
                             </p>
                             <div className='col-span-5 flex'>
-                                <div className='inline-flex whitespace-nowrap text-button-s font-button-s max-w-[140px] tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 overflow-x-auto'>
+                                <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 overflow-x-auto'>
                                     {props.category}
                                 </div>
                             </div>
