@@ -15,6 +15,7 @@ import JobUser from './jobUser';
 import AdsUser from './adsUser';
 import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
+import { useRouter } from 'next/navigation';
 
 export default function ViewTask({
     props,
@@ -23,11 +24,15 @@ export default function ViewTask({
     props: ViewJobProps | ViewAdsProps;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+    const router = useRouter();
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
                 <div className='absolute'>
-                    <a className='relative right-[80px]' href='/task'>
+                    <a
+                        className='relative right-[80px] cursor-pointer'
+                        onClick={() => router.back()}
+                    >
                         <ArrowLeftIcon className='w-[40px] h-[40px]' />
                     </a>
                 </div>
