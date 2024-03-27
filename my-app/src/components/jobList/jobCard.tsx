@@ -36,7 +36,7 @@ export default function JobCard(props: JobsCardProps) {
 
     return (
         <Link
-            href={'/ads/' + props.taskId}
+            href={'/task/' + props.taskId}
             className='rounded-lg bg-card items-center flex text-card-foreground hover:shadow-md inner-border w-[1328px] h-auto overflow-hidden'
         >
             <div className=''>
