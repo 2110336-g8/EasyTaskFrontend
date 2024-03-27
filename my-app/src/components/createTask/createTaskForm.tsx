@@ -390,48 +390,7 @@ export default function CreateTaskForm() {
                                             />
                                         </div>
                                         <div className='w-1/2'>
-                                            <FormField
-                                                control={form.control}
-                                                name='dateRange'
-                                                render={({ field }) => (
-                                                    <FormItem className='flex flex-col'>
-                                                        <FormLabel className='text-black font-p text-p tracking-p'>
-                                                            <div className='flex flex-row'>
-                                                                <h4>
-                                                                    Date Range
-                                                                </h4>
-                                                                <h4 className='text-error-500'>
-                                                                    *
-                                                                </h4>
-                                                            </div>
-                                                        </FormLabel>
-                                                        <FormControl className='flex flex-row'>
-                                                            <div className='font-small text-p tracking-small'>
-                                                                <DateRangePicker
-                                                                    date={date}
-                                                                    setDate={
-                                                                        setDate
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {/* <div className='flex flex-row'>
-                                                <h4>Date Range</h4>
-                                                <h4 className='text-error-500'>
-                                                    *
-                                                </h4>
-                                            </div>
-                                            <DateRange /> */}
-                                        </div>
-                                    </div>
-
-                                    <div className='flex'>
-                                        <div className='w-1/2 flex flex-col'>
-                                            <div className='flex flex-col space-y-1.5'>
+                                        <div className='flex flex-col gap-[24px]'>
                                                 <FormField
                                                     control={form.control}
                                                     name='wages'
@@ -485,10 +444,8 @@ export default function CreateTaskForm() {
                                                         </FormItem>
                                                     )}
                                                 />
-                                            </div>
-                                        </div>
-
-                                        <div className='w-1/2 flex flex-col'>
+                                              
+                                            
                                             <div>
                                                 <FormField
                                                     control={form.control}
@@ -544,19 +501,103 @@ export default function CreateTaskForm() {
                                                         </FormItem>
                                                     )}
                                                 />
-                                                {/* <div className='flex flex-row mt-2'>
-                                            <h4>Size of Team</h4>
-                                            <h4 className='text-error-500'>
-                                                *
-                                            </h4>
-                                        </div>
-                                        <Slider
-                                            defaultValue={[5]}
-                                            max={20}
-                                            step={1}
-                                            className='mt-2'
-                                        /> */}
+                                            
                                             </div>
+                                            
+                                            <FormField
+                                                control={form.control}
+                                                name='dateRange'
+                                                render={({ field }) => (
+                                                    <FormItem className='flex flex-col'>
+                                                        <FormLabel className='text-black font-p text-p tracking-p'>
+                                                            <div className='flex flex-row'>
+                                                                <h4>
+                                                                    Application Date Range
+                                                                </h4>
+                                                                <h4 className='text-error-500'>
+                                                                    *
+                                                                </h4>
+                                                            </div>
+                                                        </FormLabel>
+                                                        <FormControl className='flex flex-row'>
+                                                            <div className='font-small text-p tracking-small'>
+                                                                <DateRangePicker
+                                                                    date={date}
+                                                                    setDate={
+                                                                        setDate
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='flex'>
+                                        <div className='w-1/2 flex flex-col'>
+                                            {/* <div className='flex flex-col space-y-1.5'>
+                                                <FormField
+                                                    control={form.control}
+                                                    name='wages'
+                                                    render={({ field }) => (
+                                                        <FormItem className='flex flex-col'>
+                                                            <FormLabel className='text-black font-p text-p tracking-p'>
+                                                                <div className='flex flex-row mt-2'>
+                                                                    <h4>
+                                                                        Wages
+                                                                    </h4>
+                                                                    <h4 className='text-error-500'>
+                                                                        *
+                                                                    </h4>
+                                                                </div>
+                                                            </FormLabel>
+                                                            <FormControl className='flex flex-row'>
+                                                                <div>
+                                                                    <Input
+                                                                        placeholder='20,000'
+                                                                        className='font-small text-p tracking-small'
+                                                                        {...field}
+                                                                        type='text'
+                                                                        onChange={e => {
+                                                                            const value =
+                                                                                parseFloat(
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                                );
+                                                                            if (
+                                                                                !isNaN(
+                                                                                    value,
+                                                                                )
+                                                                            ) {
+                                                                                field.onChange(
+                                                                                    value,
+                                                                                ); // If the value is a valid number, update the field value
+                                                                            } else {
+                                                                                field.onChange(
+                                                                                    '',
+                                                                                ); // If the value is not a valid number, clear the field value
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <p className='mt-2 ml-2 mr-[80px]'>
+                                                                        Baht/Person
+                                                                    </p>
+                                                                </div>
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div> */}
+                                        </div>
+
+                                        <div className='w-1/2 flex flex-col'>
+                                            
                                         </div>
                                     </div>
 
