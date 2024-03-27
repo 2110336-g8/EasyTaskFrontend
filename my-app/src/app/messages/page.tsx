@@ -52,6 +52,7 @@ export default function Inbox() {
                         imageUrl={room.imageUrl}
                         latestMessage={room.latestMessage}
                         unreadCount={room.unreadCount}
+                        isArchived={false}
                     ></MessagePreviewBox>
                 ))}
                 <hr></hr>
@@ -69,6 +70,7 @@ export default function Inbox() {
                                     imageUrl={room.imageUrl}
                                     latestMessage={room.latestMessage}
                                     unreadCount={room.unreadCount}
+                                    isArchived={true}
                                 ></MessagePreviewBox>
                             );
                         })}

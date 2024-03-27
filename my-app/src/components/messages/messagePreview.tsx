@@ -10,6 +10,7 @@ export interface MessagePreview {
     imageUrl?: string;
     latestMessage?: MessagePreviewInfo;
     unreadCount: number;
+    isArchived: boolean;
 }
 
 export interface MessagePreviewInfo {
@@ -33,7 +34,10 @@ export default function MessagePreviewBox(props: MessagePreview) {
         >
             <div className='flex flex-row gap-x-[16px]'>
                 <Image
-                    className='w-[160px] h-[90px] rounded-[6px] object-cover'
+                    className={
+                        'w-[160px] h-[90px] rounded-[6px] object-cover' +
+                        (props.isArchived && ' grayscale')
+                    }
                     src={props.imageUrl || '/mocktask.png'}
                     alt={''}
                     width={160}
