@@ -68,7 +68,7 @@ export default function TaskCard(props: TaskCardProps) {
                 </div>
                 <div className='w-full flex flex-row justify-between'>
                     {props.category ? (
-                        <div className='text-button-xs font-button-xs tracking-button-xs px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 max-w-[140px]'>
+                        <div className='inline-flex whitespace-nowrap text-button-xs font-button-xs tracking-button-xs px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500 max-w-[140px] overflow-x-auto'>
                             {props.category}
                         </div>
                     ) : (
