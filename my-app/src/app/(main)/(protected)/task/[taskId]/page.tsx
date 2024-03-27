@@ -21,7 +21,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useEffect, useState } from 'react';
 
 dayjs.extend(relativeTime);
-dayjs.extend(duration);
 
 export default function TaskDetailPage({
     params,
