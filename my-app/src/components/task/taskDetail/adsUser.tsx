@@ -17,13 +17,14 @@ import { Button } from '@/components/ui/button';
 export default function AdsUser({
     props,
     setCheckWorker,
-    setSideState
+    setSideState,
 }: {
     props: ViewAdsProps;
     setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
 }) {
     switch (props.status) {
+        //=============OPEN=============//
         case TaskStateOptions.OPEN:
             const havePending = (props.pendingApplicants?.length || 0) > 0;
             const haveOffering = (props.offeringApplicants?.length || 0) > 0;
@@ -51,7 +52,13 @@ export default function AdsUser({
                     ) : null}
                 </div>
             );
+
+        //=============INPROGRESS=============//
         case TaskStateOptions.INPROGRESS:
+        //=============COMPLETE=============//
+        case TaskStateOptions.COMPLETED:
+        //=============DISMISSED=============//
+        case TaskStateOptions.DISMISSED:
             return (
                 <Workers
                     workers={props.hiredWorkers || []}

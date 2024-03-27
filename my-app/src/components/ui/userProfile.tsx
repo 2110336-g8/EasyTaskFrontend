@@ -43,7 +43,7 @@ export function WorkerProfile({
             [WorkerStatusOptions.REVISING]: 'Revision Pending',
             [WorkerStatusOptions.RESUBMITTED]: 'Resubmitted',
             [WorkerStatusOptions.COMPLETED]: 'Completed',
-            [WorkerStatusOptions.DISMISSED]: 'Dismissed',
+            [WorkerStatusOptions.DISMISSED]: 'Not Proceed',
         };
 
         const statusText: string = statusTextMap[props.status];
