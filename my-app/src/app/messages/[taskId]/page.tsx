@@ -15,7 +15,7 @@ export default function MessageRoomPage({
         <div className='w-full h-full flex flex-row gap-x-[40px]'>
             <a
                 onClick={() => router.back()}
-                className='pt-[8px] cursor-pointer'
+                className='pt-[8px] cursor-pointer max-desktop:hidden'
             >
                 <ArrowLeft size={40}></ArrowLeft>
             </a>
