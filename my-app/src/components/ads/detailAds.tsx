@@ -6,11 +6,13 @@ import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import FullWidthBar from '@/components/ui/hbar';
 import React, { useState } from 'react';
-// import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { numberWithCommas } from '@/utils/utils';
 import MapReadOnly from '@/components/map/mapBoxReadOnly';
+
+dayjs.extend(relativeTime);
 
 export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
     return (
