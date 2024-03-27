@@ -110,7 +110,7 @@ export default function ViewTask({
                         )}
                         <FullWidthBar />
                         <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
-                            <p className='col-span-2.5 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
@@ -119,21 +119,21 @@ export default function ViewTask({
                                     {props.category}
                                 </div>
                             </div>
-                            <p className='col-span-2.5 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <UsersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Team</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
                                 {props.workers} people
                             </p>
-                            <p className='col-span-2.5 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <BanknoteIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Wages</p>
                             </p>
                             <p className='col-span-5 text-slate-700'>
                                 {props.wages} Baht/person
                             </p>
-                            <p className='col-span-2.5 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
                                 <CalendarDaysIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Apply</p>
                             </p>
