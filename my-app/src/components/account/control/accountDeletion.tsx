@@ -87,6 +87,7 @@ export default function AccountDeletion() {
                         variant='destructive'
                         className='w-full'
                         size='sm'
+                        font='s'
                         type='button'
                     >
                         Delete Account
@@ -130,13 +131,19 @@ export default function AccountDeletion() {
                     </DialogHeader>
                     <DialogFooter className='flex flex-row justify-end gap-[8px]'>
                         <DialogClose asChild>
-                            <Button variant='secondary' size='sm' type='button'>
+                            <Button
+                                variant='secondary'
+                                size='sm'
+                                font='s'
+                                type='button'
+                            >
                                 Cancel
                             </Button>
                         </DialogClose>
                         <Button
                             variant='destructive'
                             size='sm'
+                            font='s'
                             type='submit'
                             form='my-form'
                         >

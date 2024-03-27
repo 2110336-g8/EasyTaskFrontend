@@ -164,11 +164,7 @@ export default function ChangePasssword() {
                     />
                 </div>
             </Form>
-            <Button
-                type='submit'
-                size='sm'
-                className='w-[168px] text-slate-50 bg-primary-500'
-            >
+            <Button type='submit' size='sm' font='s' className='w-[168px]'>
                 Update password
             </Button>
             {getError()}
