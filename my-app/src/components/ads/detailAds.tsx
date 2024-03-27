@@ -6,10 +6,13 @@ import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import FullWidthBar from '@/components/ui/hbar';
 import React, { useState } from 'react';
-import { dateNow, dateToString, formatDateDuration } from '@/utils/datetime';
 import { clientStorage } from '@/utils/storageService';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { numberWithCommas } from '@/utils/utils';
 import MapReadOnly from '@/components/map/mapBoxReadOnly';
+
+dayjs.extend(relativeTime);
 
 export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
     return (
@@ -24,8 +27,7 @@ export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
                 <header>
                     <h1 className='text-slate-900'>{props.title}</h1>
                     <p className='text-slate-400'>
-                        Posted {formatDateDuration(props.createdAt, dateNow())}{' '}
-                        ago
+                        Posted {dayjs(props.createdAt).fromNow().toString()}{' '}
                     </p>
                 </header>
 
@@ -124,10 +126,8 @@ export default function ViewAds(props: ViewAdsProps): React.JSX.Element {
                                     </div>
                                     <div className='flex flex-2 w-2/3 items-center justify-self-start'>
                                         <p className='text-slate-700 justify-self-start'>
-                                            {formatDateDuration(
-                                                props.startDate,
-                                                props.endDate,
-                                            )}
+
+                                            {dayjs(props.endDate).from(dayjs(props.startDate), true)}
                                         </p>
                                     </div>
                                 </div>
