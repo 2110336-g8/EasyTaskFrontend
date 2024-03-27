@@ -28,7 +28,7 @@ export default function AdsCard({
     const router = useRouter();
 
     const handleViewTask = () => {
-        router.push('/ads/' + props.taskId);
+        router.push('/task/' + props.taskId);
     };
     const [isCanceled, setIsCanceled] = useState(false);
 
