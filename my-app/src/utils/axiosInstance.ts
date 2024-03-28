@@ -31,7 +31,7 @@ instance.interceptors.request.use(
 );
 
 export const instanceBinary: AxiosInstance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME}`,
+    baseURL: `${process.env.NEXT_PUBLIC_BACK_HOSTNAME || 'https://api.easytask.vt.in.th'}`,
     headers: {},
 });
 
