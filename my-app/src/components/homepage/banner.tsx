@@ -91,7 +91,7 @@ const LayoutBox: React.FC = () => {
                     </div>
                     <button
                         className='button bg-primary-500 font-h2 text-h3 tracking-h3 w-full h-[48px]'
-                        onClick={handleCreateTaskClick}
+                        onClick={handleTasklistClick}
                     >
                         Apply Your Dream Job
                     </button>
