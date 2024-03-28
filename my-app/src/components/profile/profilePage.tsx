@@ -35,11 +35,11 @@ export default function Profile( data: UserProfile | null ) {
             }
 
             console.error('Error fetching task data:', error);
-            toast({
-                variant: 'destructive',
-                title: 'Error Fetching Task Data',
-                description: 'Failed to fetch task data. Please try again later.',
-            });
+            // toast({
+            //     variant: 'destructive',
+            //     title: 'Error Fetching Task Data',
+            //     description: 'Failed to fetch task data. Please try again later.',
+            // }); // Suspected False Positive
             return null;
         }
     };
@@ -51,6 +51,13 @@ export default function Profile( data: UserProfile | null ) {
         return currentDate.isBefore(givenDate);
     }
 
+    function afterStartDate(date: Date | string): boolean {
+        const currentDate = dayjs();
+        const givenDate = dayjs(date);
+
+        return currentDate.isAfter(givenDate);
+    }
+
     const convertToTaskCardProps = (task: Task): TaskCardProps => {
         return {
             taskId: task._id,
@@ -58,7 +65,14 @@ export default function Profile( data: UserProfile | null ) {
             category: task.category,
             imageUrl: task.imageUrl ? task.imageUrl : undefined,
             location: task.location ? task.location.name : undefined,
-            wages: task.wages.toString(),
+            wages:
+            task.wages / 1000000000000 >= 1
+                ? (task.wages / 1000000000000).toFixed(1) + 'T+'
+                : task.wages / 1000000000 >= 1
+                    ? (task.wages / 1000000000).toFixed(1) + 'B+'
+                    : task.wages / 1000000 >= 1
+                        ? (task.wages / 1000000).toFixed(1) + 'M+'
+                        : task.wages.toLocaleString(),
             startDate: dayjs(task.startDate).format('DD MMM YYYY').toString(),
             endDate: dayjs(task.endDate).format('DD MMM YYYY').toString(),
             workers: task.workers.toString()
@@ -77,7 +91,7 @@ export default function Profile( data: UserProfile | null ) {
     
                 fetchedTasks.forEach(task => {
                     if (task) {
-                        if (task.status === TaskStateOptions.OPEN && beforeEndDate(task.endDate)) {
+                        if (task.status === TaskStateOptions.OPEN && afterStartDate(task.startDate) && beforeEndDate(task.endDate)) {
                             setOpenTasks([...openTasks, task]);
                         } else if (task.status === TaskStateOptions.COMPLETED) {
                             setPastTasks([...pastTasks, task]);
@@ -113,7 +127,7 @@ export default function Profile( data: UserProfile | null ) {
                     <TabsTrigger value="past" className='justify-center rounded-md'>Experience</TabsTrigger>
                 </TabsList>
                 <TabsContent value="open" className='font-semibold tracking-tight'>
-                    <div className='flex flex-wrap justify-start gap-x-4 gap-y-4'>
+                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-3.5'>
                         {openTasks.length > 0 ? (
                             openTasks.map(task => (
                                 <TaskCard
@@ -127,7 +141,7 @@ export default function Profile( data: UserProfile | null ) {
                     </div>
                 </TabsContent>
                 <TabsContent value="past">
-                    <div className='flex flex-wrap justify-start gap-x-4 gap-y-4'>
+                    <div className='flex flex-wrap justify-start gap-x-3.5 gap-y-3.5'>
                         {pastTasks.length > 0 ? (
                             pastTasks.map(task => (
                                 <TaskCard

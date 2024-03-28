@@ -20,7 +20,7 @@ export default function AdsUser({
     setSideState,
 }: {
     props: ViewAdsProps;
-    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
 }) {
     switch (props.status) {
@@ -78,7 +78,7 @@ const PendingApplicants = ({
 }) => {
     return (
         <div className='flex flex-col gap-[16px]'>
-            <h4>Candidate Application ({applicants?.length})</h4>
+            {textAndCount('Canidate Application', applicants.length)}
             {applicants.length > 0 ? (
                 <div className='grid grid-cols-5 gap-4'>
                     {applicants.map(applicant => (
@@ -104,7 +104,7 @@ const AcceptApplicants = ({
 }) => {
     return (
         <div className='flex flex-col gap-[16px]'>
-            <h4>Employees ({applicants?.length})</h4>
+            {textAndCount('Employees', applicants.length)}
             {applicants?.length > 0 ? (
                 <div className='flex flex-col gap-[16px]'>
                     {applicants?.map(applicant => (
@@ -136,7 +136,7 @@ const OfferingApplicants = ({
     return (
         <div>
             <div className='flex flex-col gap-[16px]'>
-                <h4>Pending for Response ({applicants?.length})</h4>
+                {textAndCount('Pending for Response', applicants.length)}
                 <div className='flex flex-col gap-[16px]'>
                     {applicants?.map(applicant => (
                         <UserProfile {...applicant} />
@@ -153,13 +153,13 @@ const Workers = ({
     setSideState,
 }: {
     workers: WorkerProps[];
-    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
 }) => {
     return (
         <div>
             <div className='flex flex-col gap-[16px]'>
-                <h4>Employees ({workers?.length})</h4>
+                {textAndCount('Employees', workers.length)}
                 <div className='flex flex-col gap-[16px]'>
                     {workers?.map(worker => (
                         <div className='flex flex-col gap-[2px]'>
@@ -172,6 +172,17 @@ const Workers = ({
                     ))}
                 </div>
             </div>
+        </div>
+    );
+};
+
+const textAndCount = (text: string, count: number) => {
+    return (
+        <div className='flex flex-row items-center gap-[12px]'>
+            <h4>{text}</h4>
+            <p className='text-primary-500 border-primary-500 border-[1px] px-[4px] rounded-[4px] min-w-[24px] h-[26px] text-center'>
+                {count}
+            </p>
         </div>
     );
 };

@@ -14,42 +14,36 @@ const LayoutBox: React.FC = () => {
         router.push('/task/create');
     };
     return (
-        <div>
-            <div className='layout-box bg-primary-100 font-sans w-[1200px] h-[400px] rounded-lg mb-[50px] p-[50px]'>
-                <div className='left-side w-[400px] h-full mr-[50px]'>
-                    <div className='description text-slate-500 font-h4 text-h4 tracking-h4 mb-[10px]'>
+        <div className= 'px-[200px] py-[0px] flex flex-col gap-[40px] w-screen'>
+            <div className='bg-primary-100 w-full font-sans rounded-lg px-[32px] py-[32px] flex items-center justify-between gap-[40px]'>
+                <div className='left-side w-5/12 flex justify-between h-full flex-col'>
+                    <div className='description text-slate-500 font-h4 text-h4 tracking-h4'>
                         For Client
                     </div>
-                    <div className='header text-slate-900  font-bold text-[64px] leading-[64px] tracking-[-0.01em] mb-[10px]'>
-                        Find talent & get jobs done
+                    <div className='header text-slate-900 font-bold text-[64px] leading-[68px] tracking-[-0.01em]'>
+                        Find talent <br/> & get jobs done
                     </div>
                     <button
-                        className='button bg-primary-500 font-h3 text-h3 tracking-h3 w-full h-[50px]'
+                        className='button bg-primary-500 font-h2 text-h3 tracking-h3 w-full h-[48px]'
                         onClick={handleCreateTaskClick}
                     >
                         Create your job ads
                     </button>
                 </div>
-                <div className='right-side w-[800px] flex items-center'>
+                <div className='right-side w-7/12 h-full flex items-center'>
                     <Image
                         src='/banner1.png'
                         alt='Image'
                         className='image object-cover'
-                        width={800}
-                        height={400}
+                        width={2000}
+                        height={1500}
                     />
                 </div>
                 <style jsx>{`
-                    .layout-box {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        border: px solid #ccc;
-                    }
                     .button {
                         color: #fff;
                         border: none;
-                        border-radius: 6px;
+                        border-radius: 8px;
                         cursor: pointer;
                         margin-top: 7px;
                     }
@@ -62,27 +56,21 @@ const LayoutBox: React.FC = () => {
                     }
                 `}</style>
             </div>
-            <div className='layout-box bg-primary-100 font-sans w-[1200px] h-[400px] rounded-lg p-[50px]'>
-                <div className='right-side w-[800px] mr-[50px] flex items-center'>
-                    <Image 
-                        src='/banner2.png' 
-                        alt='Image' 
-                        className='image' 
-                        width={800}
-                        height={400}
+            <div className='bg-primary-100 w-full font-sans rounded-lg px-[32px] py-[32px] flex items-center justify-between gap-[40px]'>
+                <div className='right-side w-7/12 flex items-center'>
+                    <Image
+                        src='/banner2.png'
+                        alt='Image'
+                        className='image object-cover'
+                        width={2000}
+                        height={1500}
                     />
                 </div>
                 <style jsx>{`
-                    .layout-box {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        border: px solid #ccc;
-                    }
                     .button {
                         color: #fff;
                         border: none;
-                        border-radius: 6px;
+                        border-radius: 8px;
                         cursor: pointer;
                         margin-top: 7px;
                     }
@@ -94,16 +82,16 @@ const LayoutBox: React.FC = () => {
                         height: auto;
                     }
                 `}</style>
-                <div className='left-side w-[400px] h-full'>
-                    <div className='description text-slate-500 font-h4 text-h4 tracking-h4 mb-[10px]'>
+                <div className='left-side w-5/12 flex justify-between h-full flex-col'>
+                    <div className='description text-slate-500 font-h4 text-h4 tracking-h4'>
                         For Talent
                     </div>
-                    <div className='header text-slate-900  font-bold text-[64px] leading-[64px] tracking-[-0.01em] mb-[10px]'>
-                        Explore great work to earn
+                    <div className='header text-slate-900 font-bold text-[64px] leading-[68px] tracking-[-0.01em]'>
+                        Explore great <br/> work to earn
                     </div>
                     <button
-                        className='button bg-primary-500 font-h3 text-h3 tracking-h3 w-full h-[50px]'
-                        onClick={handleTasklistClick}
+                        className='button bg-primary-500 font-h2 text-h3 tracking-h3 w-full h-[48px]'
+                        onClick={handleCreateTaskClick}
                     >
                         Apply Your Dream Job
                     </button>

@@ -52,7 +52,7 @@ const config = {
                     DEFAULT: 'hsl(var(--secondary))',
                     foreground: 'hsl(var(--secondary-foreground))',
                     100: '#FEF3C7',
-                    500: '#F7B60E',
+                    500: '#F58D13',
                     700: '#B56D17',
                     900: '#814B24',
                 },
@@ -106,7 +106,7 @@ const config = {
                 sans: ['Inter', 'sans-serif'],
             },
             fontSize: {
-                h1: ['36px', { lineHeight: '54px' }],
+                h1: ['36px', { lineHeight: '44px' }],
                 h2: ['30px', { lineHeight: '36px' }],
                 h3: ['22px', { lineHeight: '30px' }],
                 h4: ['20px', { lineHeight: '26px' }],
@@ -114,35 +114,35 @@ const config = {
                 small: ['14px', { lineHeight: '20px' }],
                 smaller: ['12px', { lineHeight: '16px' }],
                 button: ['20px', { lineHeight: '28px' }],
-                "button-xs": ['14px', { lineHeight: '18px' }],
-                "button-s": ['16px', { lineHeight: '24px' }],
-                "button-m": ['18px', { lineHeight: '24px' }],
+                'button-xs': ['14px', { lineHeight: '18px' }],
+                'button-s': ['16px', { lineHeight: '24px' }],
+                'button-m': ['18px', { lineHeight: '24px' }],
             },
             fontWeight: {
                 h1: '600', //semibold
                 h2: '500', //medium
-                h3: '600', //semibold
+                h3: '600', //medium
                 h4: '500', //medium
                 p: '400', //regular
                 small: '400', //regular
                 smaller: '400', //regular
                 button: '600',
-                "button-xs": '500',
-                "button-s": '600',
-                "button-m": '500',
+                'button-xs': '500',
+                'button-s': '500',
+                'button-m': '500',
             },
             letterSpacing: {
-                h1: '-0.012em',
-                h2: '-0.0075em',
-                h3: '-0.006em',
-                h4: '-0.005em',
+                h1: '0.012em',
+                h2: '0.0075em',
+                h3: '0.03em',
+                h4: '0.005em',
                 p: '0em',
                 small: '0em',
                 smaller: '0em',
                 button: '-0.005em',
-                "button-xs": '-0.005em',
-                "button-s": '-0.005em',
-                "button-m": '-0.005em',
+                'button-xs': '-0.005em',
+                'button-s': '-0.005em',
+                'button-m': '-0.005em',
             },
         },
     },

@@ -155,11 +155,11 @@ export interface ViewJobProps extends ViewTaskProps {
 }
 
 export interface ViewAdsProps extends ViewTaskProps {
-    applicants?: ApplicantProps[];
-    pendingApplicants?: ApplicantProps[];
-    acceptApplicants?: ApplicantProps[];
-    offeringApplicants?: ApplicantProps[];
-    hiredWorkers?: WorkerProps[];
+    applicants: ApplicantProps[];
+    pendingApplicants: ApplicantProps[];
+    acceptApplicants: ApplicantProps[];
+    offeringApplicants: ApplicantProps[];
+    hiredWorkers: WorkerProps[];
 }
 export interface ProfileProps {
     _id: string;

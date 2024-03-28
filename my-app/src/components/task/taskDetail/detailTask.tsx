@@ -1,6 +1,11 @@
 'use client';
 
-import { ViewAdsProps, ViewJobProps, WorkerProps } from '@/types/task';
+import {
+    TaskStateOptions,
+    ViewAdsProps,
+    ViewJobProps,
+    WorkerProps,
+} from '@/types/task';
 import {
     ArrowLeftIcon,
     BanknoteIcon,
@@ -13,11 +18,13 @@ import Image from 'next/image';
 import FullWidthBar from '../../ui/hbar';
 import JobUser from './jobUser';
 import AdsUser from './adsUser';
-import AdsButtons from './adsButton';
 import JobButtons from './jobButtons';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 import UserProfile from '@/components/ui/userProfile';
+import AdsGeneralButtons from './adsGeneralButton';
+import AdsSubmittedButtons from './adsSubmittedButton';
 
 export default function ViewTask({
     props,
@@ -30,7 +37,50 @@ export default function ViewTask({
     const [sideState, setSideState] = useState<'general' | 'submitted'>(
         'general',
     );
-    const [checkWorker, setCheckWorker] = useState<WorkerProps | null>(null);
+    const [checkWorker, setCheckWorker] = useState<WorkerProps>(
+        (props as ViewAdsProps).hiredWorkers?.[0],
+    );
+
+    const SideTag = () => {
+        const defaultStyle =
+            'text-button-xs font-button-xs  tracking-button-xs items-center text-center px-[12px] py-[6px] cursor-pointer';
+        const selectedStyle =
+            'text-primary-500 border-b-[1.5px] border-primary-500';
+        const notSelectedStyle = 'text-slate-500 bg-slate-200';
+        return (
+            <div className='grid grid-cols-2 w-full'>
+                <div
+                    className={cn(
+                        { 'rounded-l-[3px]': sideState !== 'general' },
+                        defaultStyle,
+                        {
+                            [selectedStyle]: sideState === 'general',
+                            [notSelectedStyle]: sideState !== 'general',
+                        },
+                    )}
+                    onClick={() => setSideState('general')}
+                >
+                    General
+                </div>
+                <div
+                    className={cn(
+                        { 'rounded-r-[3px]': sideState !== 'submitted' },
+                        defaultStyle,
+                        {
+                            [selectedStyle]: sideState === 'submitted',
+                            [notSelectedStyle]: sideState !== 'submitted',
+                        },
+                    )}
+                    onClick={() => {
+                        setSideState('submitted');
+                    }}
+                >
+                    Submitted
+                </div>
+            </div>
+        );
+    };
+
     return (
         <main className='flex justify-center items-center'>
             <div className='flex flex-col w-[1000px] gap-[24px]'>
@@ -93,52 +143,75 @@ export default function ViewTask({
                             />
                         ) : (
                             <>
-                                {checkWorker && sideState == 'submitted' ? (
-                                    <div className='flex flex-col gap-[8px]'>
-                                        <small className='text-slate-400'>
-                                            Individual work from
-                                        </small>
-                                        <UserProfile {...checkWorker} />
-                                    </div>
-                                ) : null}
-                                <AdsButtons
-                                    props={props as ViewAdsProps}
-                                    setIsLoading={setIsLoading}
-                                    checkWorker={checkWorker}
-                                />
+                                {props.status !== TaskStateOptions.OPEN ? (
+                                    <>
+                                        <SideTag />
+                                        {sideState == 'submitted' ? (
+                                            <>
+                                                <div className='flex flex-col gap-[8px]'>
+                                                    <small className='text-slate-400'>
+                                                        Individual work from
+                                                    </small>
+                                                    <UserProfile
+                                                        {...checkWorker}
+                                                    />
+                                                </div>
+                                                <AdsSubmittedButtons
+                                                    props={
+                                                        props as ViewAdsProps
+                                                    }
+                                                    setIsLoading={setIsLoading}
+                                                    checkWorker={checkWorker}
+                                                />
+                                            </>
+                                        ) : (
+                                            <AdsGeneralButtons
+                                                props={props as ViewAdsProps}
+                                                setIsLoading={setIsLoading}
+                                            />
+                                        )}
+                                    </>
+                                ) : (
+                                    <AdsGeneralButtons
+                                        props={props as ViewAdsProps}
+                                        setIsLoading={setIsLoading}
+                                    />
+                                )}
                             </>
                         )}
-                        <FullWidthBar />
-                        <section className='grid grid-cols-8 auto-cols-auto items-center gap-y-[16px] gap-x-[2px]'>
-                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
+
+                        <section className='grid grid-cols-6 auto-cols-auto items-center gap-y-[16px] gap-x-[4px]'>
+                            <p className='col-span-2 flex w-fit items-center gap-[4px]'>
                                 <FoldersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Category</p>
                             </p>
-                            <div className='col-span-5 flex'>
-                                <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
-                                    {props.category}
+                            <div className='col-span-4 flex'>
+                                <div>
+                                    <div className='inline-flex text-button-s font-button-s tracking-button-s px-[12px] py-[4px] rounded-[6px] border-[1px] border-primary-500 text-primary-500'>
+                                        {props.category}
+                                    </div>
                                 </div>
                             </div>
-                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-2 flex w-fit items-center gap-[4px]'>
                                 <UsersIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Team</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
+                            <p className='col-span-4 text-slate-700'>
                                 {props.workers} people
                             </p>
-                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-2 flex w-fit items-center gap-[4px]'>
                                 <BanknoteIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Wages</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
+                            <p className='col-span-4 text-slate-700'>
                                 {props.wages} Baht/person
                             </p>
-                            <p className='col-span-3 flex w-fit items-center gap-[4px]'>
+                            <p className='col-span-2 flex w-fit items-center gap-[4px]'>
                                 <CalendarDaysIcon className='stroke-slate-700 stroke-2 w-[16px] h-[16px]' />
                                 <p className='text-slate-700'>Apply</p>
                             </p>
-                            <p className='col-span-5 text-slate-700'>
-                                {props.startDate.format('DD/MM/YYYY')} - {' '}
+                            <p className='col-span-4 text-slate-700'>
+                                {props.startDate.format('DD/MM/YYYY')} -{' '}
                                 {props.endDate.format('DD/MM/YYYY')}
                             </p>
                         </section>

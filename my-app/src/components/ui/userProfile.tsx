@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ProfileProps, WorkerProps, WorkerStatusOptions } from '@/types/task';
 import { PhoneIcon } from 'lucide-react';
 import { Button } from './button';
+import { cn } from '@/lib/utils';
 
 export default function UserProfile(props: ProfileProps) {
     return (
@@ -29,12 +30,11 @@ export default function UserProfile(props: ProfileProps) {
 export function WorkerProfile({
     props,
     setCheckWorker,
-    setSideState
+    setSideState,
 }: {
     props: WorkerProps;
-    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps | null>>;
+    setCheckWorker: React.Dispatch<React.SetStateAction<WorkerProps>>;
     setSideState: React.Dispatch<React.SetStateAction<'general' | 'submitted'>>;
-
 }) {
     const WorkerStatus = () => {
         const statusTextMap: { [key in WorkerStatusOptions]: string } = {
@@ -46,27 +46,26 @@ export function WorkerProfile({
             [WorkerStatusOptions.DISMISSED]: 'Not Proceed',
         };
 
+        const statusColorMap: { [key in WorkerStatusOptions]: string } = {
+            [WorkerStatusOptions.INPROGRESS]: 'bg-primary-300',
+            [WorkerStatusOptions.SUBMITTED]: 'bg-primary-500',
+            [WorkerStatusOptions.REVISING]: 'bg-primary-300',
+            [WorkerStatusOptions.RESUBMITTED]: 'bg-primary-500',
+            [WorkerStatusOptions.COMPLETED]: 'bg-slate-400',
+            [WorkerStatusOptions.DISMISSED]: 'bg-slate-400',
+        };
+
         const statusText: string = statusTextMap[props.status];
+        const statusColor: string = statusColorMap[props.status];
 
         return (
             <Button
-                className='w-fit rounded-[26px]'
+                className={cn('w-fit rounded-[26px]', statusColor)}
                 size='xs'
                 font='xs'
-                variant={
-                    props.status === WorkerStatusOptions.SUBMITTED ||
-                    props.status === WorkerStatusOptions.RESUBMITTED
-                        ? 'default'
-                        : 'disabled'
-                }
                 onClick={() => {
-                    if (
-                        props.status === WorkerStatusOptions.SUBMITTED ||
-                        props.status === WorkerStatusOptions.RESUBMITTED
-                    ) {
-                        setCheckWorker(props);
-                        setSideState("submitted");
-                    }
+                    setCheckWorker(props);
+                    setSideState('submitted');
                 }}
             >
                 {statusText}
